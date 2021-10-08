@@ -1,6 +1,7 @@
 package org.uispec4j.interception.toolkit;
 
 import sun.awt.CausedFocusEvent;
+import sun.awt.CausedFocusEvent.Cause;
 import sun.awt.image.SunVolatileImage;
 import sun.java2d.pipe.Region;
 
@@ -247,8 +248,8 @@ public final class Empty {
     public void updateCursorImmediately() {
     }
 
-    public boolean requestFocus(Component component, boolean b, boolean b1, long l, CausedFocusEvent.Cause cause) {
-      return false;
+    public boolean requestFocus(Component lightweightChild, boolean temporary, boolean focusedWindowChangeAllowed, long time, Cause cause) {
+    	return false;
     }
 
     public void setOpacity(float opacity) {
@@ -640,7 +641,7 @@ public final class Empty {
     public void setBounds(int x, int y, int width, int height, int op) {
     }
 
-    public boolean requestFocus(Component component, boolean b, boolean b1, long l, CausedFocusEvent.Cause cause) {
+    public boolean requestFocus(Component lightweightChild, boolean temporary, boolean focusedWindowChangeAllowed, long time, Cause cause) {
       return false;
     }
 

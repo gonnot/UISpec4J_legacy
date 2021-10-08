@@ -32,14 +32,14 @@
       <plugins>
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.18.1</version>
+          <version>3.0.0-M5</version>
           <configuration>
             <argLine>-Dfile.encoding=MacRoman</argLine>
           </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.2</version>
+          <version>3.8.1</version>
           <configuration>
             <encoding>x-MacRoman</encoding>
           </configuration>

@@ -4,9 +4,9 @@ import sun.security.action.GetPropertyAction;
 
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.security.AccessController;
 import java.util.HashMap;
 import java.util.Map;
-import java.security.AccessController;
 
 /**
  * Contants class defining keyboard keys.
@@ -197,7 +197,7 @@ public final class Key {
   }
 
   public Character getChar() {
-    return (chr == null)? KeyEvent.CHAR_UNDEFINED : chr;
+    return (chr == null) ? KeyEvent.CHAR_UNDEFINED : chr;
   }
 
   public Modifier getModifier() {

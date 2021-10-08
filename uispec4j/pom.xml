@@ -109,10 +109,9 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.2</version>
+        <version>3.8.1</version>
         <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
+          <release>17</release>
           <encoding>UTF-8</encoding>
           <showDeprecation>true</showDeprecation>
           <showWarnings>true</showWarnings>
@@ -121,7 +120,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.18.1</version>
+        <version>3.0.0-M5</version>
         <configuration>
           <systemProperties>
             <property>
@@ -173,9 +172,9 @@
 
   <profiles>
     <profile>
-      <id>jdk6</id>
+      <id>jdk17</id>
       <activation>
-        <jdk>1.6</jdk>
+        <jdk>17</jdk>
       </activation>
       <build>
         <plugins>
@@ -186,7 +185,7 @@
             <executions>
               <execution>
                 <configuration>
-                  <classifier>jdk6</classifier>
+                  <classifier>jdk17</classifier>
                 </configuration>
                 <goals>
                   <goal>jar</goal>
@@ -206,93 +205,7 @@
                 </goals>
                 <configuration>
                   <sources>
-                    <source>${basedir}/src/main/java-jdk6</source>
-                  </sources>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>jdk7</id>
-      <activation>
-        <jdk>1.7</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jar-plugin</artifactId>
-            <version>2.5</version>
-            <executions>
-              <execution>
-                <configuration>
-                  <classifier>jdk7</classifier>
-                </configuration>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>build-helper-maven-plugin</artifactId>
-            <version>1.9.1</version>
-            <executions>
-              <execution>
-                <id>add-specific-source</id>
-                <goals>
-                  <goal>add-source</goal>
-                </goals>
-                <configuration>
-                  <sources>
-                    <source>${basedir}/src/main/java-jdk7</source>
-                  </sources>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>jdk8</id>
-      <activation>
-        <jdk>1.8</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jar-plugin</artifactId>
-            <version>2.5</version>
-            <executions>
-              <execution>
-                <configuration>
-                  <classifier>jdk8</classifier>
-                </configuration>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>build-helper-maven-plugin</artifactId>
-            <version>1.9.1</version>
-            <executions>
-              <execution>
-                <id>add-specific-source</id>
-                <goals>
-                  <goal>add-source</goal>
-                </goals>
-                <configuration>
-                  <sources>
-                    <source>${basedir}/src/main/java-jdk8</source>
+                    <source>${basedir}/src/main/java-jdk17</source>
                   </sources>
                 </configuration>
               </execution>
