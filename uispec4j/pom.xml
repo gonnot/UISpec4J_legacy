@@ -21,15 +21,15 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>asm</groupId>
+      <groupId>org.ow2.asm</groupId>
       <artifactId>asm</artifactId>
-      <version>20041228.180559</version>
+      <version>9.2</version>
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>asm</groupId>
+      <groupId>org.ow2.asm</groupId>
       <artifactId>asm-util</artifactId>
-      <version>20041228.180559</version>
+      <version>9.2</version>
       <optional>true</optional>
       <scope>test</scope>
     </dependency>
@@ -114,6 +114,22 @@
           <encoding>UTF-8</encoding>
           <showDeprecation>true</showDeprecation>
           <showWarnings>true</showWarnings>
+          <compilerArgs>
+            <arg>--add-exports</arg>
+            <arg>java.desktop/java.awt.peer=uispec4j</arg>
+            <arg>--add-exports</arg>
+            <arg>java.desktop/java.awt.dnd.peer=uispec4j</arg>
+
+            <arg>--add-exports</arg>
+            <arg>java.desktop/sun.awt=uispec4j</arg>
+            <arg>--add-exports</arg>
+            <arg>java.desktop/sun.awt.image=uispec4j</arg>
+            <arg>--add-exports</arg>
+            <arg>java.desktop/sun.awt.datatransfer=uispec4j</arg>
+
+            <arg>--add-exports</arg>
+            <arg>java.desktop/sun.java2d.pipe=uispec4j</arg>
+          </compilerArgs>
         </configuration>
       </plugin>
       <plugin>

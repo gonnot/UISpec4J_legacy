@@ -184,7 +184,7 @@ public final class Key {
    * Returns META-Key on MacOS X, and CTRL-Key on other platforms.
    */
   public static Key plaformSpecificCtrl(Key key) {
-    String os = (String)AccessController.doPrivileged(new GetPropertyAction("os.name"));
+    String os = System.getProperty("os.name", "");
     boolean isMacOSX = os.contains("Mac OS X");
     return isMacOSX ? meta(key) : control(key);
   }

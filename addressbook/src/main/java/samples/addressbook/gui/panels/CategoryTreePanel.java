@@ -38,7 +38,7 @@ public class CategoryTreePanel implements CategoryCreationListener {
 
   private void addKeyBindingForNewCategory(JPanel panel, CreateCategoryAction createCategoryAction) {
     InputMap inMap = panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-    KeyStroke ctrlN = KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK, true);
+    KeyStroke ctrlN = KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK, true);
     inMap.put(ctrlN, "ctrl-n");
     panel.getActionMap().put("ctrl-n", createCategoryAction);
   }

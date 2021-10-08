@@ -9,7 +9,7 @@ import org.uispec4j.finder.ComponentFinder;
 import org.uispec4j.finder.ComponentMatcher;
 import org.uispec4j.utils.UIComponentFactory;
 
-class PanelClassEnhancer extends ClassAdapter implements Opcodes {
+class PanelClassEnhancer extends ClassVisitor implements Opcodes {
   private Extension[] extensions;
 
   public static byte[] transformClass(ClassReader reader, Extension[] extensions) {
@@ -20,7 +20,7 @@ class PanelClassEnhancer extends ClassAdapter implements Opcodes {
   }
 
   private PanelClassEnhancer(ClassVisitor cv, Extension[] extensions) {
-    super(cv);
+    super(Opcodes.ASM9, cv);
     this.extensions = extensions;
   }
 
@@ -39,9 +39,9 @@ class PanelClassEnhancer extends ClassAdapter implements Opcodes {
     return cd;
   }
 
-  private class StaticInitEnhancer extends MethodAdapter {
+  private class StaticInitEnhancer extends MethodVisitor {
     public StaticInitEnhancer(MethodVisitor mv) {
-      super(mv);
+      super(Opcodes.ASM9, mv);
     }
 
     public void visitInsn(int opcode) {
@@ -120,7 +120,8 @@ class PanelClassEnhancer extends ClassAdapter implements Opcodes {
       MethodVisitor v = cv.visitMethod(ACC_PUBLIC, methodName,
                                        "(" + Type.getDescriptor(String.class) + ")L" + slashedComponentClassName + ";",
                                        null,
-                                       new String[]{Type.getInternalName(ItemNotFoundException.class), Type.getInternalName(ComponentAmbiguityException.class)});
+                                       new String[]{Type.getInternalName(ItemNotFoundException.class), Type.getInternalName(
+                                         ComponentAmbiguityException.class)});
       Label l0 = new Label();
       v.visitLabel(l0);
       v.visitVarInsn(ALOAD, 0);
@@ -141,7 +142,8 @@ class PanelClassEnhancer extends ClassAdapter implements Opcodes {
       v.visitVarInsn(ALOAD, 1);
       v.visitMethodInsn(INVOKESTATIC, Type.getInternalName(Panel.class), "getComponent",
                         Type.getMethodDescriptor(Type.getType(UIComponent.class),
-                                                 new Type[]{Type.getType(ComponentFinder.class), Type.getType(Class.class), Type.getType(String.class)}));
+                                                 new Type[]{Type.getType(ComponentFinder.class), Type.getType(Class.class), Type.getType(
+                                                   String.class)}));
       v.visitTypeInsn(CHECKCAST, slashedComponentClassName);
       v.visitInsn(ARETURN);
       v.visitMaxs(3, 2);
@@ -171,7 +173,8 @@ class PanelClassEnhancer extends ClassAdapter implements Opcodes {
       v.visitInsn(ACONST_NULL);
       v.visitMethodInsn(INVOKESTATIC, Type.getInternalName(Panel.class), "getComponent",
                         Type.getMethodDescriptor(Type.getType(UIComponent.class),
-                                                 new Type[]{Type.getType(ComponentFinder.class), Type.getType(Class.class), Type.getType(String.class)}));
+                                                 new Type[]{Type.getType(ComponentFinder.class), Type.getType(Class.class), Type.getType(
+                                                   String.class)}));
       v.visitTypeInsn(CHECKCAST, slashedComponentClassName);
       v.visitInsn(ARETURN);
       v.visitMaxs(3, 1);
@@ -202,9 +205,11 @@ class PanelClassEnhancer extends ClassAdapter implements Opcodes {
       v.visitLabel(l2);
       v.visitVarInsn(ALOAD, 1);
       v.visitMethodInsn(INVOKESPECIAL, Type.getInternalName(Panel.class), "getMatcherByClass",
-                        Type.getMethodDescriptor(Type.getType(ComponentMatcher.class), new Type[]{Type.getType(Class.class), Type.getType(ComponentMatcher.class)}));
+                        Type.getMethodDescriptor(Type.getType(ComponentMatcher.class),
+                                                 new Type[]{Type.getType(Class.class), Type.getType(ComponentMatcher.class)}));
       v.visitMethodInsn(INVOKESTATIC, Type.getInternalName(Panel.class), "getComponent",
-                        Type.getMethodDescriptor(Type.getType(UIComponent.class), new Type[]{Type.getType(ComponentFinder.class), Type.getType(ComponentMatcher.class)}));
+                        Type.getMethodDescriptor(Type.getType(UIComponent.class),
+                                                 new Type[]{Type.getType(ComponentFinder.class), Type.getType(ComponentMatcher.class)}));
       v.visitTypeInsn(CHECKCAST, slashedComponentClassName);
       v.visitInsn(ARETURN);
       Label l3 = new Label();

@@ -7,8 +7,8 @@ import samples.utils.GridBag;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 public class CategorySelectionDialog {
   private JList jList;
@@ -47,7 +47,7 @@ public class CategorySelectionDialog {
   }
 
   private void addCategories(Category category, List result) {
-    for (Iterator iterator = category.getChildren().iterator(); iterator.hasNext();) {
+    for (Iterator iterator = category.getChildren().iterator(); iterator.hasNext(); ) {
       Category subCategory = (Category)iterator.next();
       result.add(subCategory);
       addCategories(subCategory, result);
@@ -60,7 +60,7 @@ public class CategorySelectionDialog {
     }
 
     public void actionPerformed(ActionEvent e) {
-      result = Arrays.asList(jList.getSelectedValues());
+      result = List.of(jList.getSelectedValuesList());
       dialog.dispose();
     }
   }

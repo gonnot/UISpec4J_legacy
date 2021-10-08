@@ -26,7 +26,7 @@ public class ArrayUtils {
   private static Integer[] toArray(int[] actual) {
     Integer[] result = new Integer[actual.length];
     for (int i = 0; i < actual.length; i++) {
-      result[i] = new Integer(actual[i]);
+      result[i] = actual[i];
     }
     return result;
   }
@@ -80,7 +80,7 @@ public class ArrayUtils {
   public static String toString(List list) {
     StringBuffer buffer = new StringBuffer();
     buffer.append('[');
-    for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+    for (Iterator iterator = list.iterator(); iterator.hasNext(); ) {
       buffer.append(iterator.next());
       if (iterator.hasNext()) {
         buffer.append(',');
@@ -151,7 +151,7 @@ public class ArrayUtils {
     List actualList = new ArrayList();
     while (actualIterator.hasNext()) {
       if (index >= expectedArray.length) {
-        for (Iterator iterator = actualIterator; iterator.hasNext();) {
+        for (Iterator iterator = actualIterator; iterator.hasNext(); ) {
           actualList.add(iterator.next());
         }
         Assert.fail("The iterator contains too many elements: expected: " +
@@ -171,27 +171,17 @@ public class ArrayUtils {
   }
 
   public static void orderedCompare(Object[][] expectedData, Object[][] actualData) {
-    compareCollection(actualData, expectedData, ArrayList.class);
+    compareCollection(actualData, expectedData);
   }
 
-  private static void compareCollection(Object[][] actualData, Object[][] expectedData, Class collectionClass) {
-    Collection actual;
-    Collection expected;
-    try {
-      actual = (Collection)collectionClass.newInstance();
-      expected = (Collection)collectionClass.newInstance();
+  private static void compareCollection(Object[][] actualData, Object[][] expectedData) {
+    Collection<String> actual = new ArrayList<>();
+    for (Object[] actualDatum : actualData) {
+      actual.add(toString(actualDatum));
     }
-    catch (InstantiationException e) {
-      throw new RuntimeException(e);
-    }
-    catch (IllegalAccessException e) {
-      throw new RuntimeException(e);
-    }
-    for (int i = 0; i < actualData.length; i++) {
-      actual.add(toString(actualData[i]));
-    }
-    for (int i = 0; i < expectedData.length; i++) {
-      expected.add(toString(expectedData[i]));
+    Collection<String> expected = new ArrayList<>();
+    for (Object[] expectedDatum : expectedData) {
+      expected.add(toString(expectedDatum));
     }
     Assert.assertEquals(expected, actual);
   }
