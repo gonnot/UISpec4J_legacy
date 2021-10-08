@@ -2,6 +2,7 @@ package org.uispec4j.interception;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.Button;
 import org.uispec4j.Trigger;
 import org.uispec4j.UISpec4J;
@@ -24,6 +25,7 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
     }
   }
 
+  @Test
   public void testInterceptingAModalDialog() throws Exception {
     Window window = WindowInterceptor.getModalDialog(new Trigger() {
       public void run() {
@@ -44,6 +46,7 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
     assertFalse(window.isVisible());
   }
 
+  @Test
   public void testInterceptingAFrame() throws Exception {
     try {
       WindowInterceptor.getModalDialog(new Trigger() {
@@ -59,6 +62,7 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
     }
   }
 
+  @Test
   public void testInterceptingANonModalJDialog() throws Exception {
     try {
       WindowInterceptor.getModalDialog(new Trigger() {
@@ -76,6 +80,7 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
     }
   }
 
+  @Test
   public void testInterceptionWithATriggerThatDisplaysNothing() throws Exception {
     try {
       WindowInterceptor.getModalDialog(Trigger.DO_NOTHING);
@@ -87,6 +92,7 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
     }
   }
 
+  @Test
   public void testTriggerExceptionsAreConvertedIntoInterceptionErrors() throws Exception {
     final Exception exception = new IllegalAccessException("error");
     try {
@@ -102,6 +108,7 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
     }
   }
 
+  @Test
   public void testTriggerExceptionsAreStoredAndRethrownWhenNotCaughtImmediately() throws Exception {
     final Exception exception = new RuntimeException("unexpected production code exception");
     Window window1 = WindowInterceptor.getModalDialog(new Trigger() {
@@ -136,6 +143,7 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
     }
   }
 
+  @Test
   public void testTriggerExceptionsAreStoredWhenNotCaughtImmediately2() throws Exception {
     final RuntimeException exception = new RuntimeException("unexpected production code exception");
     Window window = WindowInterceptor.getModalDialog(new Trigger() {
@@ -158,6 +166,7 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
     }
   }
 
+  @Test
   public void testInterceptingUsingAButtonTrigger() throws Exception {
     Button button = new Button(new JButton(new ShowDialogAction(true)));
     Window window = WindowInterceptor.getModalDialog(button.triggerClick());
@@ -165,6 +174,7 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
     window.dispose();
   }
 
+  @Test
   public void testInterceptingAJDialogShownFromAnotherThread() throws Exception {
     Window window = WindowInterceptor.getModalDialog(new Trigger() {
       public void run() throws Exception {

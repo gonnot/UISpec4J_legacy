@@ -2,6 +2,7 @@ package org.uispec4j;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.xml.XmlAssert;
 
@@ -20,10 +21,12 @@ public abstract class SpinnerTestCase extends UIComponentTestCase {
     init();
   }
 
+  @Test
   public final void testGetComponentTypeName() throws Exception {
     Assertions.assertEquals("spinner", spinner.getDescriptionTypeName());
   }
 
+  @Test
   public final void testGetDescription() throws Exception {
     XmlAssert.assertEquivalent("<spinner name='marcel'>" +
                                "  <button name='Spinner.nextButton'/>" +
@@ -62,6 +65,7 @@ public abstract class SpinnerTestCase extends UIComponentTestCase {
     spinner = createSpinner(jSpinner);
   }
 
+  @Test
   public void testFactory() throws Exception {
     checkFactory(jSpinner, Spinner.class);
   }

@@ -1,5 +1,6 @@
 package org.uispec4j.interception;
 
+import org.junit.jupiter.api.Test;
 import org.uispec4j.Trigger;
 import org.uispec4j.Window;
 import org.uispec4j.utils.Functor;
@@ -9,6 +10,7 @@ import javax.swing.*;
 
 public class WindowInterceptorCustomMethodsTest extends WindowInterceptorTestCase {
 
+  @Test
   public void testProcessTransientWindow() throws Exception {
     WindowInterceptor
       .init(new TransientWindowTrigger())
@@ -16,6 +18,7 @@ public class WindowInterceptorCustomMethodsTest extends WindowInterceptorTestCas
       .run();
   }
 
+  @Test
   public void testProcessTransientWindowWithNoTitle() throws Exception {
     WindowInterceptor
       .init(new TransientWindowTrigger())
@@ -23,6 +26,7 @@ public class WindowInterceptorCustomMethodsTest extends WindowInterceptorTestCas
       .run();
   }
 
+  @Test
   public void testProcessTransientWindowError() throws Exception {
     checkInterceptionError(new Functor() {
       public void run() throws Exception {
@@ -34,6 +38,7 @@ public class WindowInterceptorCustomMethodsTest extends WindowInterceptorTestCas
     }, "Invalid window title - expected:<[Expected]> but was:<[Actual]>");
   }
 
+  @Test
   public void testWindowTitleChecking() throws Exception {
     WindowInterceptor
       .init(new Trigger() {
@@ -50,6 +55,7 @@ public class WindowInterceptorCustomMethodsTest extends WindowInterceptorTestCas
                         "</log>");
   }
 
+  @Test
   public void testWindowTitleError() throws Exception {
     checkAssertionError(
       WindowInterceptor
@@ -64,6 +70,7 @@ public class WindowInterceptorCustomMethodsTest extends WindowInterceptorTestCas
       "Unexpected title - expected:<[error]> but was:<[dialog title]>");
   }
 
+  @Test
   public void testWindowTitleErrorInASequence() throws Exception {
     checkAssertionError(
       WindowInterceptor
@@ -73,7 +80,8 @@ public class WindowInterceptorCustomMethodsTest extends WindowInterceptorTestCas
       "Error in handler 'error': Unexpected title - expected:<[error]> but was:<[second dialog]>");
   }
 
-  public void testProcessWithButtonClick() {
+  @Test
+  public void testProcessWithButtonClick() throws Exception {
     WindowInterceptor
       .init(getShowFirstDialogTrigger())
       .processWithButtonClick("OK")
@@ -88,6 +96,7 @@ public class WindowInterceptorCustomMethodsTest extends WindowInterceptorTestCas
                         "</log>");
   }
 
+  @Test
   public void testProcessSeveralHandlers() throws Exception {
     WindowInterceptor
       .init(getShowFirstDialogTrigger())
@@ -95,7 +104,7 @@ public class WindowInterceptorCustomMethodsTest extends WindowInterceptorTestCas
         new ButtonTriggerHandler("OK"),
         new ButtonTriggerHandler("OK"),
         new ButtonTriggerHandler("Dispose"),
-      })
+        })
       .run();
     logger.assertEquals("<log>" +
                         "  <trigger/>" +
@@ -117,13 +126,15 @@ public class WindowInterceptorCustomMethodsTest extends WindowInterceptorTestCas
     }
   }
 
+  @Test
   public void testProcessWithButtonClickWithAnUnknownButtonName() throws Exception {
     checkAssertionError(WindowInterceptor
-      .init(getShowFirstDialogTrigger())
-      .processWithButtonClick("unknown"),
-                              "Component 'unknown' of type 'button' not found - available names: [Dispose,OK]");
+                          .init(getShowFirstDialogTrigger())
+                          .processWithButtonClick("unknown"),
+                        "Component 'unknown' of type 'button' not found - available names: [Dispose,OK]");
   }
 
+  @Test
   public void testProcessWithButtonClickHandlesJOptionPaneDialogs() throws Exception {
     final JFrame frame = new JFrame();
     WindowInterceptor.run(new Trigger() {
@@ -145,6 +156,7 @@ public class WindowInterceptorCustomMethodsTest extends WindowInterceptorTestCas
                         "</log>");
   }
 
+  @Test
   public void testProcessWithButtonClickWithAnInvalidTitle() throws Exception {
     checkInterceptionError(new Functor() {
       public void run() throws Exception {

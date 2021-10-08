@@ -1,6 +1,7 @@
 package org.uispec4j;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.Counter;
 
@@ -11,6 +12,7 @@ import java.awt.event.MouseEvent;
 
 public class TreeClickingTest extends TreeTestCase {
 
+  @Test
   public void testClickOnlyChangesTheSelectionOnce() throws Exception {
     checkClickOnlyChangesTheSelectionOnce(new DirectClicker());
     checkClickOnlyChangesTheSelectionOnce(new TriggerClicker());
@@ -31,6 +33,7 @@ public class TreeClickingTest extends TreeTestCase {
     Assertions.assertEquals(3, counter.getCount());
   }
 
+  @Test
   public void testClickFailsWhenAppliedOnNonExistingPath() throws Exception {
     checkClickFailsWhenAppliedOnNonExistingPath(new DirectClicker());
     checkClickFailsWhenAppliedOnNonExistingPath(new TriggerClicker());
@@ -60,6 +63,7 @@ public class TreeClickingTest extends TreeTestCase {
     Assertions.assertEquals(0, counter.getCount());
   }
 
+  @Test
   public void testRightClickBehaviour() throws Exception {
     checkRightClickBehaviour(new DirectClicker());
     checkRightClickBehaviour(new TriggerClicker());
@@ -94,6 +98,7 @@ public class TreeClickingTest extends TreeTestCase {
     Assertions.assertEquals(4, counter.getCount());
   }
 
+  @Test
   public void testRightClickInSelectionNeedsASelection() throws Exception {
     checkRightClickInSelectionNeedsASelection(new DirectClicker());
     checkRightClickInSelectionNeedsASelection(new TriggerClicker());
@@ -109,6 +114,7 @@ public class TreeClickingTest extends TreeTestCase {
     }
   }
 
+  @Test
   public void testDoubleClickBehaviour() throws Exception {
     checkDoubleClickBehaviour(new DirectClicker());
     checkDoubleClickBehaviour(new TriggerClicker());

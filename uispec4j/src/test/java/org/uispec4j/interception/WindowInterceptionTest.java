@@ -1,6 +1,7 @@
 package org.uispec4j.interception;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.Utils;
 
@@ -8,6 +9,7 @@ import javax.swing.*;
 
 public class WindowInterceptionTest extends InterceptionTestCase {
 
+  @Test
   public void testShowingAnUnexpectedWindow() throws Exception {
     JFrame frame = new JFrame();
     String frameTitle = "frame(" + getClass().getSimpleName() + ")";

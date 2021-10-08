@@ -2,6 +2,7 @@ package org.uispec4j;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.xml.XmlAssert;
 
 import javax.swing.AbstractButton;
@@ -26,20 +27,24 @@ public class ToggleButtonTest extends ButtonTestCase {
     return jToggleButton;
   }
 
+  @Test
   public void testGetComponentTypeName() throws Exception {
     Assertions.assertEquals("toggleButton", toggle.getDescriptionTypeName());
   }
 
+  @Test
   public void testGetDescription() throws Exception {
     XmlAssert.assertEquivalent("<toggleButton/>", toggle.getDescription());
     jToggleButton.setText("toto");
     XmlAssert.assertEquivalent("<toggleButton label='toto'/>", toggle.getDescription());
   }
 
+  @Test
   public void testFactory() throws Exception {
     checkFactory(new JToggleButton(), ToggleButton.class);
   }
 
+  @Test
   public void testSelectionThroughClick() throws Exception {
     jToggleButton.setSelected(false);
     toggle.click();
@@ -48,6 +53,7 @@ public class ToggleButtonTest extends ButtonTestCase {
     assertFalse(toggle.isSelected());
   }
 
+  @Test
   public void testSelectAndUnselect() throws Exception {
 
     toggle.select();

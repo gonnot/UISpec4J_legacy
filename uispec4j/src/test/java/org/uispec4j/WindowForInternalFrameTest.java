@@ -1,12 +1,15 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Test;
+
 import javax.swing.*;
 
 /**
  * Test class for {@link Window}.
  */
 public class WindowForInternalFrameTest extends WindowTestCase {
-  
+
+  @Test
   public void testIsModal() throws Exception {
     Window window = new Window(new JInternalFrame());
     checkIsModal(window, false);

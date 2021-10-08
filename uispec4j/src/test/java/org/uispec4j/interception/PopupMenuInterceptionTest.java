@@ -1,15 +1,17 @@
 package org.uispec4j.interception;
 
+import org.junit.jupiter.api.Test;
 import org.uispec4j.Trigger;
 
 import javax.swing.*;
 
 public class PopupMenuInterceptionTest extends InterceptionTestCase {
+  @Test
   public void test() throws Exception {
     String[] items = {"item 1", "item 2"};
     assertTrue(PopupMenuInterceptor
-      .run(new PopupTrigger(items))
-      .contentEquals(items));
+                 .run(new PopupTrigger(items))
+                 .contentEquals(items));
   }
 
   private static class PopupTrigger implements Trigger {

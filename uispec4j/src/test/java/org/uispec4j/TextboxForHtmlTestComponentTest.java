@@ -2,6 +2,7 @@ package org.uispec4j;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.FileTestUtils;
 import org.uispec4j.utils.Functor;
@@ -29,14 +30,17 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
     textBox.setText(text);
   }
 
+  @Test
   public void testGetComponentTypeName() throws Exception {
     Assertions.assertEquals("textBox", UIComponentFactory.createUIComponent(new JTextPane()).getDescriptionTypeName());
   }
 
+  @Test
   public void testGetDescription() throws Exception {
     Assertions.assertTrue(textBox.getDescription().startsWith("<textBox name='myText' text='&lt;html".replaceAll("'", "\"")));
   }
 
+  @Test
   public void testFactory() throws Exception {
     checkFactory(new JTextArea(), TextBox.class);
     checkFactory(new JTextPane(), TextBox.class);
@@ -44,6 +48,7 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
     checkFactory(new JTextField(), TextBox.class);
   }
 
+  @Test
   public void testAssertTextEqualsWithHtml() throws Exception {
     initWithHtmlTextPane();
     String text = "Universal <b>rules</b>:" +
@@ -61,6 +66,7 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
     }
   }
 
+  @Test
   public void testAssertHtmlEqualsWithMetaInHeader() throws Exception {
     initWithHtmlTextPane();
     String text = "<html>" +
@@ -89,6 +95,7 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
     }
   }
 
+  @Test
   public void testAssertHtmlEquals() throws Exception {
     initWithHtmlTextPane();
     String text = "Universal <b>rules</b>:" +
@@ -109,6 +116,7 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
     }
   }
 
+  @Test
   public void testAssertTextContainsWithHtml() throws Exception {
     initWithHtmlTextPane();
     String text = "My name is <b>Bond</b>";
@@ -128,6 +136,7 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
     }
   }
 
+  @Test
   public void testAssertTextEqualsWithEmptyStringIsTheSameAsAssertTextIsEmpty() throws Exception {
     initWithHtmlTextPane();
     assertTrue(textBox.textEquals(""));
@@ -136,6 +145,7 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
     assertTrue(textBox.textEquals(""));
   }
 
+  @Test
   public void testAssertTextContainsHandlesHtmlLineBreaksAndFormatting() throws Exception {
     initWithHtmlTextPane();
     StringBuffer buffer = new StringBuffer();
@@ -147,6 +157,7 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
     assertTrue(textBox.textContains(text));
   }
 
+  @Test
   public void testAssertEmptyWithHtml() throws Exception {
     initWithHtmlTextPane();
     assertTrue(textBox.textIsEmpty());
@@ -188,6 +199,7 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
     assertTrue(textBox.textIsEmpty());
   }
 
+  @Test
   public void testAssertEmptyAfterReset() throws Exception {
     initWithHtmlTextPane();
     assertTrue(textBox.textIsEmpty());
@@ -203,18 +215,21 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
     return textPane;
   }
 
+  @Test
   public void testClickOnHyperlink() throws Exception {
     checkClickOnHyperlink("<html>blah blah<a href=\"http://www.junit.org\">link text</a>reblah</html>",
                           "link text",
                           "http://www.junit.org");
   }
 
+  @Test
   public void testClickOnHyperlinkAcceptsSubstrings() throws Exception {
     checkClickOnHyperlink("<html>blah blah<a href=\"http://www.junit.org\">link text</a>reblah</html>",
                           "link",
                           "http://www.junit.org");
   }
 
+  @Test
   public void testClickOnHyperLinkAcceptsLineSeparators() throws Exception {
     String link = "link text is very long so it will be on two lines";
     checkClickOnHyperlink("<html>blah blah<a href=\"http://www.junit.org\">" + link + "</a>reblah</html>",
@@ -222,12 +237,14 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
                           "http://www.junit.org");
   }
 
+  @Test
   public void testClickOnHyperlinkIsCaseInsensitive() throws Exception {
     checkClickOnHyperlink("<html>blah blah<a href=\"http://www.junit.org\">link text</a>reblah</html>",
                           "liNk tEXt",
                           "http://www.junit.org");
   }
 
+  @Test
   public void testClickOnHyperLinkWaitsForTheCompletePageLoad() throws Exception {
     String content1 = "<html>\n" +
                       "  <head>\n" +
@@ -259,6 +276,7 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
     checkSwitchBetweenPages(textComponent, content1, content2);
   }
 
+  @Test
   public void testClickOnHyperlinkGivesPriorityToExactMatches() throws Exception {
     checkClickOnHyperlink("<html>blah blah<a href=\"http://www.junit.org\">a link text</a>reblah" +
                           "blah blah<a href=\"http://www.apache.org\">link text</a>reblah</html>",
@@ -266,6 +284,7 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
                           "http://www.apache.org");
   }
 
+  @Test
   public void testClickOnUnknownHyperlink() throws Exception {
     checkClickOnHyperlinkError("<html>blah blah<a href=\"http://www.junit.org\">a link text</a>reblah" +
                                "blah blah<a href=\"http://www.apache.org\">link text</a>reblah</html>",
@@ -273,6 +292,7 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
                                "Hyperlink 'unknown' not found");
   }
 
+  @Test
   public void testClickOnHyperlinkWithAmbiguity() throws Exception {
     checkClickOnHyperlinkError("<html>blah blah<a href=\"http://www.junit.org\">a link text</a>reblah" +
                                "blah blah<a href=\"http://www.apache.org\">another link text</a>reblah</html>",
@@ -280,6 +300,7 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
                                "Ambiguous command - found several hyperlinks matching 'link text'");
   }
 
+  @Test
   public void testClickOnHyperlinkAcceptsAttributesOnATag() throws Exception {
     checkClickOnHyperlink("<html>blah blah<a title=\"JUNIT \" " +
                           "                  href=\"http://www.junit.org\" " +
@@ -288,6 +309,7 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
                           "http://www.junit.org");
   }
 
+  @Test
   public void testClickOnHyperlinkWithBigHtml() throws Exception {
     StringBuffer htmlText = new StringBuffer("<html>" +
                                              "  <head>" +

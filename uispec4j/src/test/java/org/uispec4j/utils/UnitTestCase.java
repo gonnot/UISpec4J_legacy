@@ -13,7 +13,7 @@ public abstract class UnitTestCase {
   }
 
   @BeforeEach
-  final protected void unitTestCaseSetUp() {
+  final public void unitTestCaseSetUp() {
     UISpec4J.setWindowInterceptionTimeLimit(100);
     UISpec4J.setAssertionTimeLimit(30);
   }

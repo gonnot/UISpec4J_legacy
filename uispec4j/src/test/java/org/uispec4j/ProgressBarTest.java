@@ -2,6 +2,7 @@ package org.uispec4j;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.assertion.UISpecAssert;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.UIComponentFactory;
@@ -21,14 +22,17 @@ public class ProgressBarTest extends UIComponentTestCase {
     progressBar = (ProgressBar)UIComponentFactory.createUIComponent(jProgressBar);
   }
 
+  @Test
   public void testGetComponentTypeName() throws Exception {
     Assertions.assertEquals("progressBar", progressBar.getDescriptionTypeName());
   }
 
+  @Test
   public void testGetDescription() throws Exception {
     XmlAssert.assertEquivalent("<progressBar name='myProgressBar'/>", progressBar.getDescription());
   }
 
+  @Test
   public void testFactory() throws Exception {
     checkFactory(new JProgressBar(), ProgressBar.class);
   }
@@ -37,12 +41,14 @@ public class ProgressBarTest extends UIComponentTestCase {
     return progressBar;
   }
 
+  @Test
   public void testAssertValueEquals() throws Exception {
     setProgressValues(5, 15, 10);
     assertTrue(progressBar.completionEquals(50));
     checkAssertCompletionError(10, 50);
   }
 
+  @Test
   public void testCompleted() throws Exception {
     setProgressValues(5, 15, 15);
     assertTrue(progressBar.completionEquals(100));
@@ -67,11 +73,13 @@ public class ProgressBarTest extends UIComponentTestCase {
     }
   }
 
+  @Test
   public void testAssertCompletionEqualsAcceptsValuesBetween0And100() throws Exception {
     checkAssertCompletionError(-2, "Expected value should be in range [0,100]");
     checkAssertCompletionError(101, "Expected value should be in range [0,100]");
   }
 
+  @Test
   public void testExpectedValueIsMinusOneWhenTheProgressBarIsUndeterminate() throws Exception {
     jProgressBar.setIndeterminate(false);
     try {
@@ -83,6 +91,7 @@ public class ProgressBarTest extends UIComponentTestCase {
     }
   }
 
+  @Test
   public void testAssertCompletionEqualsChecksTheValidityOfTheMinMaxRange() throws Exception {
     setProgressValues(10, -5, 8);
     checkAssertCompletionError(8, "Invalid range [-5,-5]");
@@ -90,11 +99,13 @@ public class ProgressBarTest extends UIComponentTestCase {
     checkAssertCompletionError(10, "Invalid range [10,10]");
   }
 
+  @Test
   public void testAssertValueWhenProgressBarIsInIndeterminateMode() throws Exception {
     jProgressBar.setIndeterminate(true);
     assertTrue(progressBar.completionEquals(-1));
   }
 
+  @Test
   public void testUsingAPrecision() throws Exception {
     setProgressValues(0, 100, 23);
     assertTrue(progressBar.completionEquals(22));
@@ -107,15 +118,18 @@ public class ProgressBarTest extends UIComponentTestCase {
     checkAssertCompletionError(17, 23);
   }
 
+  @Test
   public void testWaitForCompletion() throws Exception {
     checkWaitForCompletion();
   }
 
+  @Test
   public void testWaitForCompletionWithIndeterminateMode() throws Exception {
     jProgressBar.setIndeterminate(true);
     checkWaitForCompletion();
   }
 
+  @Test
   public void testAssertDisplayedValueEquals() throws Exception {
     assertTrue(progressBar.displayedValueEquals(jProgressBar.getString()));
     jProgressBar.setString("done");

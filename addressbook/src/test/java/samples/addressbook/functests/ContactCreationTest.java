@@ -1,5 +1,6 @@
 package samples.addressbook.functests;
 
+import org.junit.jupiter.api.Test;
 import org.uispec4j.DefaultTableCellValueConverter;
 import org.uispec4j.Key;
 import org.uispec4j.utils.ColorUtils;
@@ -8,6 +9,7 @@ import java.awt.*;
 
 public class ContactCreationTest extends AddressBookTestCase {
 
+  @Test
   public void testTableStateAtStartup() throws Exception {
     assertThat(contactTable.isEmpty());
     assertThat(contactTable.getHeader().contentEquals("First name",
@@ -17,6 +19,7 @@ public class ContactCreationTest extends AddressBookTestCase {
                                                       "Mobile"));
   }
 
+  @Test
   public void testCreatingAContact() throws Exception {
     newContactButton.click();
     assertThat(contactTable.contentEquals(new String[][]{
@@ -31,6 +34,7 @@ public class ContactCreationTest extends AddressBookTestCase {
     }));
   }
 
+  @Test
   public void testCreatingAContactIsDefaultAction() throws Exception {
     getMainWindow().typeKey(Key.ENTER);
 
@@ -39,6 +43,7 @@ public class ContactCreationTest extends AddressBookTestCase {
     }));
   }
 
+  @Test
   public void testTextFieldsAreDisabledWhenNoContactIsSelected() throws Exception {
     assertTextFieldsEditable(false);
     newContactButton.click();
@@ -47,6 +52,7 @@ public class ContactCreationTest extends AddressBookTestCase {
     assertTextFieldsEditable(false);
   }
 
+  @Test
   public void testTheTableIsEditable() throws Exception {
     createContact("Homer", "Simpson",
                   "homer@simpsons.org",
@@ -56,6 +62,7 @@ public class ContactCreationTest extends AddressBookTestCase {
     }));
   }
 
+  @Test
   public void testSwitchingBetweenContacts() throws Exception {
     createContact("Homer", "Simpson",
                   "homer@simpsons.org",
@@ -73,6 +80,7 @@ public class ContactCreationTest extends AddressBookTestCase {
     checkFields("", "", "", "", "");
   }
 
+  @Test
   public void testApplyUpdatesTheFieldsWhenEnterWasNotPressed() throws Exception {
     createContact("Homer", "Simpson",
                   "homer@simpsons.org",
@@ -89,6 +97,7 @@ public class ContactCreationTest extends AddressBookTestCase {
     }));
   }
 
+  @Test
   public void testPhoneCellsAreRedWhenNotDefined() throws Exception {
     contactTable.setDefaultCellValueConverter(new DefaultTableCellValueConverter() {
       public Object getValue(int row, int column, Component renderedComponent, Object modelObject) {

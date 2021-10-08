@@ -2,6 +2,7 @@ package org.uispec4j;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.UIComponentFactory;
 import org.uispec4j.xml.XmlAssert;
 
@@ -24,14 +25,17 @@ public class TableComponentTest extends UIComponentTestCase {
     this.table = (Table)UIComponentFactory.createUIComponent(jTable);
   }
 
+  @Test
   public void testGetComponentTypeName() throws Exception {
     Assertions.assertEquals("table", table.getDescriptionTypeName());
   }
 
+  @Test
   public void testGetDescription() throws Exception {
     XmlAssert.assertEquivalent("<table name='myTable'/>", table.getDescription());
   }
 
+  @Test
   public void testFactory() throws Exception {
     checkFactory(new JTable(), Table.class);
   }

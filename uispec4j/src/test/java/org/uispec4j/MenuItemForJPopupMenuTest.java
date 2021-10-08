@@ -1,6 +1,7 @@
 package org.uispec4j;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.UIComponentFactory;
 import org.uispec4j.xml.EventLogger;
@@ -9,10 +10,12 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 public class MenuItemForJPopupMenuTest extends MenuItemTestCase {
+  @Test
   public void testFactory() throws Exception {
     checkFactory(new JPopupMenu(), MenuItem.class);
   }
 
+  @Test
   public void testClickFailsIfTheMenuItemIsNotEnabled() throws Exception {
     JPopupMenu menu = new JPopupMenu();
     menu.add("a");
@@ -91,7 +94,7 @@ public class MenuItemForJPopupMenuTest extends MenuItemTestCase {
     }
   }
 
-  public MenuItemTestCase.MenuBuilder getBuilder(String text) {
+  public MenuBuilder getBuilder(String text) {
     return new JPopupMenuBuilder(text);
   }
 }

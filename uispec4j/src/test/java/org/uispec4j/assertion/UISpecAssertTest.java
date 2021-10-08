@@ -1,6 +1,7 @@
 package org.uispec4j.assertion;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.UISpec4J;
 import org.uispec4j.utils.Chrono;
 import org.uispec4j.utils.Functor;
@@ -14,6 +15,7 @@ public class UISpecAssertTest extends UnitTestCase {
     UISpec4J.setAssertionTimeLimit(UISpec4J.DEFAULT_ASSERTION_TIME_LIMIT);
   }
 
+  @Test
   public void testAssertTrue() throws Exception {
     UISpecAssert.assertTrue(DummyAssertion.TRUE);
     checkAssertionError(new Functor() {
@@ -23,12 +25,14 @@ public class UISpecAssertTest extends UnitTestCase {
     });
   }
 
+  @Test
   public void testAssertTrueRetriesUntilTheAssertionSucceeds() throws Exception {
     Chrono chrono = Chrono.start();
     runThreadAndCheckAssertion(40, true);
     chrono.assertElapsedTimeLessThan(150);
   }
 
+  @Test
   public void testWaitForAssertionDoesNotTakeIntoAccountGlobalWaitTimeLimit() throws Exception {
     UISpec4J.setAssertionTimeLimit(0);
     Chrono chrono = Chrono.start();
@@ -57,6 +61,7 @@ public class UISpecAssertTest extends UnitTestCase {
     }, "other message");
   }
 
+  @Test
   public void testAssertTrueRetriesUpToATimeLimit() throws Exception {
     checkAssertionError(new Functor() {
       public void run() throws Exception {
@@ -65,6 +70,7 @@ public class UISpecAssertTest extends UnitTestCase {
     }, "error!");
   }
 
+  @Test
   public void testAssertTrueAssertionErrorMessage() throws Exception {
     UISpec4J.setAssertionTimeLimit(0);
     final DummyAssertion assertion = new DummyAssertion("custom message");
@@ -85,6 +91,7 @@ public class UISpecAssertTest extends UnitTestCase {
     }, "assertTrue message");
   }
 
+  @Test
   public void testAssertFalseAssertionErrorMessage() throws Exception {
     UISpec4J.setAssertionTimeLimit(0);
     final DummyAssertion assertion = new DummyAssertion("custom message");
@@ -102,6 +109,7 @@ public class UISpecAssertTest extends UnitTestCase {
     }, "other message");
   }
 
+  @Test
   public void testAssertFalse() throws Exception {
     UISpecAssert.assertFalse(DummyAssertion.FALSE);
     checkAssertionError(new Functor() {
@@ -111,12 +119,14 @@ public class UISpecAssertTest extends UnitTestCase {
     });
   }
 
+  @Test
   public void testAssertFalseRetriesUntilTheAssertionFails() throws Exception {
     Chrono chrono = Chrono.start();
     runThreadAndCheckAssertion(80, false);
     chrono.assertElapsedTimeLessThan(200);
   }
 
+  @Test
   public void testAssertFalseRetriesUpToATimeLimit() throws Exception {
     checkAssertionError(new Functor() {
       public void run() throws Exception {
@@ -125,6 +135,7 @@ public class UISpecAssertTest extends UnitTestCase {
     });
   }
 
+  @Test
   public void testAssertEquals() throws Exception {
     UISpecAssert.assertEquals(false, DummyAssertion.FALSE);
     UISpecAssert.assertEquals(true, DummyAssertion.TRUE);
@@ -140,6 +151,7 @@ public class UISpecAssertTest extends UnitTestCase {
     });
   }
 
+  @Test
   public void testAssertEqualsWithMessage() throws Exception {
     final String message = "my custom message";
     UISpecAssert.assertEquals(message, false, DummyAssertion.FALSE);
@@ -156,12 +168,14 @@ public class UISpecAssertTest extends UnitTestCase {
     }, message);
   }
 
+  @Test
   public void testAssertionNegationOperator() throws Exception {
     UISpecAssert.assertTrue(DummyAssertion.TRUE);
     UISpecAssert.assertFalse(UISpecAssert.not(DummyAssertion.TRUE));
     UISpecAssert.assertTrue(UISpecAssert.not(UISpecAssert.not(DummyAssertion.TRUE)));
   }
 
+  @Test
   public void testAssertionIntersectionOperator() throws Exception {
     DummyAssertion assertion = new DummyAssertion(true);
     UISpecAssert.assertTrue(UISpecAssert.and(assertion, DummyAssertion.TRUE));
@@ -172,6 +186,7 @@ public class UISpecAssertTest extends UnitTestCase {
     UISpecAssert.assertFalse(UISpecAssert.and(assertion, DummyAssertion.FALSE));
   }
 
+  @Test
   public void testAssertionUnionOperator() throws Exception {
     DummyAssertion assertion = new DummyAssertion(true);
     UISpecAssert.assertTrue(UISpecAssert.or(assertion, DummyAssertion.TRUE));

@@ -1,6 +1,7 @@
 package org.uispec4j.interception;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.*;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.Functor;
@@ -14,11 +15,13 @@ import java.io.IOException;
 
 public class PopupMenuInterceptorTest extends InterceptionTestCase {
 
+  @Test
   public void testStandardUsageWithHeavyweightPopup() throws Exception {
     JPopupMenu.setDefaultLightWeightPopupEnabled(false);
     checkStandardUsage();
   }
 
+  @Test
   public void testStandardUsageWithLightweightPopup() throws Exception {
     JPopupMenu.setDefaultLightWeightPopupEnabled(true);
     checkStandardUsage();
@@ -32,6 +35,7 @@ public class PopupMenuInterceptorTest extends InterceptionTestCase {
                         "</log>");
   }
 
+  @Test
   public void testRetryStrategy() throws Exception {
     checkInterceptionAfterSomeTime(false);
     logger.assertEquals("<log>" +
@@ -39,6 +43,7 @@ public class PopupMenuInterceptorTest extends InterceptionTestCase {
                         "</log>");
   }
 
+  @Test
   public void testRetryStrategyWithAnotherTimeout() throws Exception {
     checkInterceptionAfterSomeTime(true);
   }
@@ -87,6 +92,7 @@ public class PopupMenuInterceptorTest extends InterceptionTestCase {
     return new PopupDisplayTrigger(button);
   }
 
+  @Test
   public void testAnErrorIsRaisedIfTheTriggerDoesNotPopupAMenu() throws Exception {
     checkAssertionError(new Functor() {
       public void run() throws Exception {
@@ -95,7 +101,8 @@ public class PopupMenuInterceptorTest extends InterceptionTestCase {
     }, "No popup was shown");
   }
 
-  public void testExceptionRaisedWhenAPopupAppearsWithoutInterceptionOnMacOsX() throws Throwable {
+  @Test
+  public void testExceptionRaisedWhenAPopupAppearsWithoutInterceptionOnMacOsX() throws Exception {
     if (!TestUtils.isMacOsX()) {
       return;
     }
@@ -110,7 +117,8 @@ public class PopupMenuInterceptorTest extends InterceptionTestCase {
     }
   }
 
-  public void testNoExceptionRaisedWhenAPopupAppearsWithoutInterception() throws Throwable {
+  @Test
+  public void testNoExceptionRaisedWhenAPopupAppearsWithoutInterception() throws Exception {
     if (TestUtils.isMacOsX()) {
       return;
     }
@@ -119,6 +127,7 @@ public class PopupMenuInterceptorTest extends InterceptionTestCase {
     new PopupDisplayTrigger(button).run();
   }
 
+  @Test
   public void testExceptionRaisedByTheTriggerAreConvertedIntoRuntimeExceptions() throws Exception {
     try {
       PopupMenuInterceptor.run(new Trigger() {
@@ -133,6 +142,7 @@ public class PopupMenuInterceptorTest extends InterceptionTestCase {
     }
   }
 
+  @Test
   public void testHandlingADialogShownByAPopupMenu() throws Exception {
     final JPanel panel = new JPanel();
     showLargeDialogWithComponent(panel);
@@ -176,6 +186,7 @@ public class PopupMenuInterceptorTest extends InterceptionTestCase {
                         "</log>");
   }
 
+  @Test
   public void testPopupMenuShownFromATree() throws Exception {
     final JTree jTree = new JTree();
     jTree.addMouseListener(new MouseAdapter() {

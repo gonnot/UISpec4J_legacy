@@ -1,6 +1,7 @@
 package org.uispec4j.finder;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.Button;
 import org.uispec4j.TextBox;
 
@@ -23,6 +24,7 @@ public class PanelContainsComponentTest extends PanelComponentFinderTestCase {
     button = addComponent(JButton.class, "button1");
   }
 
+  @Test
   public void testContainsComponentByClass() throws Exception {
     assertFalse(panel.containsUIComponent(TextBox.class));
     assertFalse(panel.containsSwingComponent(JTextField.class));
@@ -35,6 +37,7 @@ public class PanelContainsComponentTest extends PanelComponentFinderTestCase {
     assertTrue(panel.containsSwingComponent(JButton.class));
   }
 
+  @Test
   public void testContainsComponentByName() throws Exception {
     assertFalse(panel.containsUIComponent(Button.class, "unknown"));
     assertFalse(panel.containsSwingComponent(JTextField.class, "button"));
@@ -49,6 +52,7 @@ public class PanelContainsComponentTest extends PanelComponentFinderTestCase {
     assertTrue(panel.containsSwingComponent(JButton.class, "button"));
   }
 
+  @Test
   public void testContainsComponentWithCustomComponentMatcher() throws Exception {
     assertFalse(panel.containsComponent(CUSTOM_MATCHER));
 

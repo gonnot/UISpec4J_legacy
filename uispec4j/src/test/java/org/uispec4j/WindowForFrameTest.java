@@ -1,6 +1,7 @@
 package org.uispec4j;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 
 import javax.swing.*;
@@ -8,6 +9,7 @@ import java.awt.*;
 
 public class WindowForFrameTest extends WindowTestCase {
 
+  @Test
   public void testIsModal() throws Exception {
     Window window = new Window(new Frame());
     assertFalse(window.isModal());
@@ -19,6 +21,7 @@ public class WindowForFrameTest extends WindowTestCase {
     }
   }
 
+  @Test
   public void testWindowManagesMenuBars() throws Exception {
     Window window = new Window(new Frame());
     try {

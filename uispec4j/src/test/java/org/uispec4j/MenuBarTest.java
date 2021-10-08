@@ -2,6 +2,7 @@ package org.uispec4j;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.UIComponentFactory;
 import org.uispec4j.xml.XmlAssert;
@@ -28,10 +29,12 @@ public class MenuBarTest extends UIComponentTestCase {
     menuBar = (MenuBar)UIComponentFactory.createUIComponent(jMenuBar);
   }
 
+  @Test
   public void testGetComponentTypeName() throws Exception {
     Assertions.assertEquals("menuBar", menuBar.getDescriptionTypeName());
   }
 
+  @Test
   public void testGetDescription() throws Exception {
     XmlAssert.assertEquivalent("<menuBar name='myMenuBar'>" +
                                "  <menu name='fileMenu'/>" +
@@ -39,6 +42,7 @@ public class MenuBarTest extends UIComponentTestCase {
                                "</menuBar>", menuBar.getDescription());
   }
 
+  @Test
   public void testFactory() throws Exception {
     checkFactory(new JMenuBar(), MenuBar.class);
   }
@@ -47,10 +51,12 @@ public class MenuBarTest extends UIComponentTestCase {
     return menuBar;
   }
 
+  @Test
   public void testGetContents() throws Exception {
     assertTrue(menuBar.contentEquals("File", "Edit"));
   }
 
+  @Test
   public void testGetContentsError() throws Exception {
     try {
       assertTrue(menuBar.contentEquals("File", "Other"));
@@ -60,6 +66,7 @@ public class MenuBarTest extends UIComponentTestCase {
     }
   }
 
+  @Test
   public void testGetMenu() throws Exception {
     Assertions.assertSame(jFileMenu, menuBar.getMenu("File").getAwtComponent());
     Assertions.assertSame(jEditMenu, menuBar.getMenu("Edit").getAwtComponent());

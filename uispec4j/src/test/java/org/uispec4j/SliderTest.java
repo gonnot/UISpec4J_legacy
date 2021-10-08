@@ -1,6 +1,7 @@
 package org.uispec4j;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.assertion.Assertion;
 import org.uispec4j.utils.Functor;
 import org.uispec4j.xml.XmlAssert;
@@ -12,14 +13,17 @@ public class SliderTest extends UIComponentTestCase {
   private final JSlider jSlider = createTemperatureSlider();
   private final Slider slider = new Slider(jSlider);
 
+  @Test
   public void testGetComponentTypeName() throws Exception {
     Assertions.assertEquals("slider", slider.getDescriptionTypeName());
   }
 
+  @Test
   public void testGetDescription() throws Exception {
     XmlAssert.assertEquivalent("<slider name='my thermometer'/>", slider.getDescription());
   }
 
+  @Test
   public void testFactory() throws Exception {
     checkFactory(createTemperatureSlider(), Slider.class);
   }
@@ -28,6 +32,7 @@ public class SliderTest extends UIComponentTestCase {
     return slider;
   }
 
+  @Test
   public void testLabels() throws Exception {
     checkAssertionFails(slider.labelsEqual("1", "2", "3", "4"),
                         "4 elements instead of 6\n" +
@@ -50,6 +55,7 @@ public class SliderTest extends UIComponentTestCase {
 
   }
 
+  @Test
   public void testPositionCheckBasedOnLabels() throws Exception {
     changeLabels();
 
@@ -70,6 +76,7 @@ public class SliderTest extends UIComponentTestCase {
     checkPosition(0, "Cold", "Hot");
   }
 
+  @Test
   public void testRelativePosition() throws Exception {
     jSlider.setValue(16);
     Assertion positionIsMiddle = slider.relativePositionEquals(50);
@@ -82,6 +89,7 @@ public class SliderTest extends UIComponentTestCase {
     assertTrue(positionIsMiddle);
   }
 
+  @Test
   public void testSettingARelativePosition() throws Exception {
     slider.setRelativePosition(50);
     Assertions.assertEquals(15, jSlider.getValue());

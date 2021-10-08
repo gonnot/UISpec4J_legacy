@@ -1,6 +1,7 @@
 package org.uispec4j.finder;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.TestUtils;
 
 import javax.swing.*;
@@ -23,6 +24,7 @@ public class CollectionComponentMatchersTest extends PanelComponentFinderTestCas
     component4 = addComponent(JTextField.class, "last text");
   }
 
+  @Test
   public void testIntersectionMatcher() throws Exception {
     ComponentMatcher matcher = and(displayedNameSubstring("text"), fromClass(JButton.class));
 
@@ -30,6 +32,7 @@ public class CollectionComponentMatchersTest extends PanelComponentFinderTestCas
                                           panel.getSwingComponents(matcher));
   }
 
+  @Test
   public void testUnionComponentMatcher() throws Exception {
     ComponentMatcher matcher = or(displayedNameSubstring("text"), fromClass(JButton.class));
 
@@ -37,6 +40,7 @@ public class CollectionComponentMatchersTest extends PanelComponentFinderTestCas
                                           panel.getSwingComponents(matcher));
   }
 
+  @Test
   public void testNegatedComponentMatcher() throws Exception {
     ComponentMatcher matcher = ComponentMatchers.not(displayedNameSubstring("text"));
     TestUtils.assertSwingComponentsEquals(new Component[]{component3},

@@ -1,6 +1,7 @@
 package samples.addressbook.model;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import samples.addressbook.model.events.DummyBookListener;
 import samples.addressbook.model.events.DummyCategoryListener;
 import samples.addressbook.model.events.DummyContactListener;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class AddressBookTest extends UnitTestCase {
   private final AddressBook book = new AddressBook();
 
+  @Test
   public void testCreatingAndChangingAContactDispatchesEvents() throws Exception {
     DummyContactListener listener = DummyContactListener.register(book);
 
@@ -37,6 +39,7 @@ public class AddressBookTest extends UnitTestCase {
     }
   }
 
+  @Test
   public void testDeletingContactDispatchesAnEvent() throws Exception {
     Contact john = createContact("Smith", "John");
     Contact sandra = createContact("Bullock", "Sandra");
@@ -49,6 +52,7 @@ public class AddressBookTest extends UnitTestCase {
                           "</log>");
   }
 
+  @Test
   public void testClearingTheAddressBookDispatchesAnEvent() throws Exception {
     Category rootCategory = book.getRootCategory();
     book.createCategory(rootCategory, "friends");
@@ -72,6 +76,7 @@ public class AddressBookTest extends UnitTestCase {
     return contact;
   }
 
+  @Test
   public void testCreatingCategories() throws Exception {
     Category root = book.getRootCategory();
     assertNull(root.getParent());
@@ -86,6 +91,7 @@ public class AddressBookTest extends UnitTestCase {
     createAndCheckCategory(category12, "1", "All/1/2/1", new String[]{"1"}, listener);
   }
 
+  @Test
   public void testCategoryPaths() throws Exception {
     Category root = book.getRootCategory();
     Category cat1 = book.createCategory(root, "Cat1");
@@ -113,6 +119,7 @@ public class AddressBookTest extends UnitTestCase {
     return category;
   }
 
+  @Test
   public void testCreatingACategoryWithAnAlreadyUsedName() throws Exception {
     Category root = book.getRootCategory();
     book.createCategory(root, "1");
@@ -124,6 +131,7 @@ public class AddressBookTest extends UnitTestCase {
     }
   }
 
+  @Test
   public void testCreatingContactUnderAGivenCategory() throws Exception {
     Category root = book.getRootCategory();
     Category cat1 = book.createCategory(root, "1");
@@ -159,6 +167,7 @@ public class AddressBookTest extends UnitTestCase {
                           "</log>");
   }
 
+  @Test
   public void testAddingContactsToCategories() throws Exception {
     Category root = book.getRootCategory();
     Category cat1 = book.createCategory(root, "1");
@@ -183,12 +192,14 @@ public class AddressBookTest extends UnitTestCase {
                           "</log>");
   }
 
+  @Test
   public void testAddingTheRootCategoryDoesNothing() throws Exception {
     Contact contact = book.createContact();
     book.addCategory(contact, book.getRootCategory());
     ArrayUtils.assertEmpty(contact.getCategories());
   }
 
+  @Test
   public void testCategoriesAreOnlyStoredOnce() throws Exception {
     Contact contact = book.createContact();
     Category category = book.createCategory(book.getRootCategory(), "cat");
@@ -197,6 +208,7 @@ public class AddressBookTest extends UnitTestCase {
     ArrayUtils.assertEquals(new Category[]{category}, contact.getCategories());
   }
 
+  @Test
   public void testAddingAContactRemovesAllSubcontacts() throws Exception {
     Category root = book.getRootCategory();
     Category cat1 = book.createCategory(root, "1");
@@ -219,6 +231,7 @@ public class AddressBookTest extends UnitTestCase {
                           "</log>");
   }
 
+  @Test
   public void testFilteringContactsWithCategories() throws Exception {
     Category root = book.getRootCategory();
     Category cat1 = book.createCategory(root, "1");

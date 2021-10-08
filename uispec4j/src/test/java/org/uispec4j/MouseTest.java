@@ -2,12 +2,15 @@ package org.uispec4j;
 
 
 
+import org.junit.jupiter.api.Test;
+
 import javax.swing.*;
 
-public class MouseTest{
+public class MouseTest {
   TextBox textBox = new TextBox(new JLabel());
   final MouseLogger logger = new MouseLogger(textBox);
 
+  @Test
   public void testSimpleClickOnComponent() throws Exception {
     Mouse.click(textBox);
 
@@ -18,6 +21,7 @@ public class MouseTest{
                         "</log>");
   }
 
+  @Test
   public void testDoubleClickOnComponent() throws Exception {
     Mouse.doubleClick(textBox);
 

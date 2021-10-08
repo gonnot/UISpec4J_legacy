@@ -2,6 +2,7 @@ package org.uispec4j.interception;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.Button;
 import org.uispec4j.Trigger;
 import org.uispec4j.UISpec4J;
@@ -26,6 +27,7 @@ public class WindowInterceptorForNonModalWindowsTest extends WindowInterceptorTe
     }
   }
 
+  @Test
   public void testInterceptingAFrame() throws Exception {
     Window window = WindowInterceptor.run(new Trigger() {
       public void run() {
@@ -43,6 +45,7 @@ public class WindowInterceptorForNonModalWindowsTest extends WindowInterceptorTe
                         "</log>");
   }
 
+  @Test
   public void testInterceptingANonModalJDialog() throws Exception {
     Window window = WindowInterceptor.run(new Trigger() {
       public void run() {
@@ -61,6 +64,7 @@ public class WindowInterceptorForNonModalWindowsTest extends WindowInterceptorTe
                         "</log>");
   }
 
+  @Test
   public void testNonModalJDialogAfterATransientDialog() throws Exception {
     final Trigger trigger = new Trigger() {
       public void run() {
@@ -92,6 +96,7 @@ public class WindowInterceptorForNonModalWindowsTest extends WindowInterceptorTe
                         "</log>");
   }
 
+  @Test
   public void testInterceptionWithATriggerThatDisplaysNothing() throws Exception {
     try {
       WindowInterceptor.run(Trigger.DO_NOTHING);
@@ -103,6 +108,7 @@ public class WindowInterceptorForNonModalWindowsTest extends WindowInterceptorTe
     }
   }
 
+  @Test
   public void testTriggerExceptionsAreConvertedIntoInterceptionErrors() throws Exception {
     final Exception exception = new IllegalAccessException("error");
     try {
@@ -137,12 +143,14 @@ public class WindowInterceptorForNonModalWindowsTest extends WindowInterceptorTe
     }
   }
 
+  @Test
   public void testInterceptingUsingAButtonTrigger() throws Exception {
     Button button = new Button(new JButton(new ShowDialogAction(false)));
     Window window = WindowInterceptor.run(button.triggerClick());
     window.titleEquals("MyDialog");
   }
 
+  @Test
   public void testInterceptingAModalDialogMustUseAHandler() throws Exception {
     try {
       WindowInterceptor.run(new Trigger() {
@@ -163,6 +171,7 @@ public class WindowInterceptorForNonModalWindowsTest extends WindowInterceptorTe
     }
   }
 
+  @Test
   public void testInterceptingAJFrameShownFromAnotherThread() throws Exception {
     Window window = WindowInterceptor.run(new Trigger() {
       public void run() throws Exception {
@@ -178,6 +187,7 @@ public class WindowInterceptorForNonModalWindowsTest extends WindowInterceptorTe
     window.titleEquals("expected title");
   }
 
+  @Test
   public void testInterceptingANonModalDialogShownFromAnotherThread() throws Exception {
     showNonModalDialogInThread(200, 100);
     logger.assertEquals("<log>" +
@@ -185,6 +195,7 @@ public class WindowInterceptorForNonModalWindowsTest extends WindowInterceptorTe
                         "</log>");
   }
 
+  @Test
   public void testNonModalWindowsDoNotNeedToBeClosed() throws Exception {
     final JFrame frame = new JFrame();
     WindowInterceptor

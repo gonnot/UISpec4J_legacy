@@ -2,6 +2,7 @@ package org.uispec4j;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
 import java.util.Calendar;
@@ -34,6 +35,7 @@ public class DateSpinnerTest extends SpinnerTestCase {
     return new DateSpinner(jSpinner);
   }
 
+  @Test
   public void testStartAndEndDate() throws Exception {
     assertTrue(dateSpinner.startDateEquals(START_DATE));
     assertTrue(dateSpinner.endDateEquals(END_DATE));
@@ -42,11 +44,13 @@ public class DateSpinnerTest extends SpinnerTestCase {
     assertFalse(dateSpinner.endDateEquals(OTHER_DATE));
   }
 
+  @Test
   public void testCalendarFielsEquals() throws Exception {
     assertTrue(dateSpinner.calendarFieldsEquals(Calendar.MONTH));
     assertFalse(dateSpinner.calendarFieldsEquals(Calendar.YEAR));
   }
 
+  @Test
   public void testUsingDateSpinnerWithOtherModelThanSpinnerDateModelThrowsAnException() throws Exception {
     try {
       new DateSpinner(new JSpinner());

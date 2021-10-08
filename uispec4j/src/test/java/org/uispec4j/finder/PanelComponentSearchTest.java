@@ -2,6 +2,7 @@ package org.uispec4j.finder;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.Button;
 import org.uispec4j.Desktop;
 import org.uispec4j.Panel;
@@ -42,6 +43,7 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     componentAccessors = createAccessors(panel);
   }
 
+  @Test
   public void testGetCustomComponent() throws Exception {
     String name = "hello world";
     Component component = createComponentWithText(JCountingButton.class, name);
@@ -50,10 +52,12 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     Assertions.assertTrue(panel.findUIComponent(CustomCountingButton.class, "hello") instanceof CustomCountingButton);
   }
 
-  public void testGetComponentTypeName() {
+  @Test
+  public void testGetComponentTypeName() throws Exception {
     Assertions.assertEquals("panel", UIComponentFactory.createUIComponent(new JPanel()).getDescriptionTypeName());
   }
 
+  @Test
   public void testGetComponentWithText() throws Exception {
     checkGetComponentWithText(JButton.class, Button.TYPE_NAME);
     checkGetComponentWithText(JCheckBox.class, CheckBox.TYPE_NAME);
@@ -61,12 +65,14 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     checkGetComponentWithText(JRadioButton.class, RadioButton.TYPE_NAME);
   }
 
+  @Test
   public void testGetComponentWithClassAndName() throws Exception {
     for (Class componentClass : COMPONENT_CLASSES) {
       checkGetComponentWithClassAndName(componentClass);
     }
   }
 
+  @Test
   public void testGetComponentWithClass() throws Exception {
     for (Class componentClass : COMPONENT_CLASSES) {
       if (componentClass != Panel.class) {
@@ -75,6 +81,7 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     }
   }
 
+  @Test
   public void testGetComponentWithCustomMatcher() throws Exception {
     for (Class componentClass : COMPONENT_CLASSES) {
       if (componentClass != Panel.class) {
@@ -83,12 +90,14 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     }
   }
 
+  @Test
   public void testComponentNotFoundErrors() throws Exception {
     for (Class componentClass : COMPONENT_CLASSES) {
       checkComponentNotFound(UIComponentAnalyzer.getTypeName(componentClass));
     }
   }
 
+  @Test
   public void testComponentTypeMismatch() throws Exception {
     checkComponentTypeMismatch("name1", JList.class, Button.TYPE_NAME);
     checkComponentTypeMismatch("name2", JList.class, TextBox.TYPE_NAME);
@@ -99,6 +108,7 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     checkComponentTypeMismatch("name8", JList.class, RadioButton.TYPE_NAME);
   }
 
+  @Test
   public void testPasswordField() throws Exception {
     JPasswordField jPasswordField = new JPasswordField();
     jPanel.add(jPasswordField);
@@ -106,6 +116,7 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     Assertions.assertSame(jPasswordField, passwordField.getAwtComponent());
   }
 
+  @Test
   public void testSearchTraversalByClassExploresInDepthAllSubComponents() throws Exception {
     JTextField innerTextField = new JTextField("hello");
     JPanel innerPanel = new JPanel();
@@ -129,6 +140,7 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     TestUtils.assertUIComponentRefersTo(innerTextField, labelAccessor.getComponent("hello"));
   }
 
+  @Test
   public void testSearchTraversalByNameExploresInDepthAllSubComponents() throws Exception {
     JLabel innerLabel = new JLabel();
     innerLabel.setName("Hello Marc");
@@ -152,6 +164,7 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     TestUtils.assertUIComponentRefersTo(label, labelAccessor.getComponent("Hello regis"));
   }
 
+  @Test
   public void testSearchByNameStrategyIsFirstWithDisplayedNameThenLabelForAndFinallyWithInnerName() throws Exception {
     TypedComponentAccessor checkBoxAccessor = getAccessor(CheckBox.TYPE_NAME);
     try {
@@ -178,6 +191,7 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     TestUtils.assertUIComponentRefersTo(checkBox, checkBoxAccessor.getComponent("toto"));
   }
 
+  @Test
   public void testSearchWithinAComplexPanel() throws Exception {
     JPanel main = new JPanel();
     for (int i = 0; i < 10; i++) {
@@ -217,6 +231,7 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     Assertions.assertNotNull(mainPanel.getRadioButton("radio2.3"));
   }
 
+  @Test
   public void testComponentNameAmbiguityException() throws Exception {
     jPanel.add(new JButton("myButton1"));
     jPanel.add(new JButton("myButton2"));
@@ -247,6 +262,7 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     checkComponentNameAmbiguity("my checkbox", CheckBox.TYPE_NAME, new String[]{"this is my checkbox", "this is also my checkbox"});
   }
 
+  @Test
   public void testAmbiguityExceptionIsDetectedBetweenLabelAndTextComponents() throws Exception {
     JLabel jLabel = new JLabel("myText1");
     jPanel.add(jLabel);
@@ -266,6 +282,7 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     }
   }
 
+  @Test
   public void testComponentsWithSameNameAreFoundAccordingToTheirType() throws Exception {
     JLabel label = new JLabel("test");
     JTable table = new JTable();
@@ -278,6 +295,7 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     TestUtils.assertUIComponentRefersTo(table, panel.getTable("test"));
   }
 
+  @Test
   public void testComponentsWithSamePatternInNameAreFoundAccordingToTheirType() throws Exception {
     JLabel label = new JLabel("another label");
     JTable table = new JTable();
@@ -290,6 +308,7 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     TestUtils.assertUIComponentRefersTo(table, panel.getTable("another"));
   }
 
+  @Test
   public void testComponentThatShouldBeUniqueInPanel() throws Exception {
     checkComponentUnicityAmbiguity(JTable.class, Table.TYPE_NAME, "myTable");
     checkComponentUnicityAmbiguity(JList.class, ListBox.TYPE_NAME, "myList");
@@ -298,6 +317,7 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     checkComponentUnicityAmbiguity(JTree.class, Tree.TYPE_NAME, "myTree");
   }
 
+  @Test
   public void testComponentsAreFoundDeepInTheComponentsHierarchy() throws Exception {
     JPanel newPanel = new JPanel();
     JButton button = new JButton("button");
@@ -306,6 +326,7 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     TestUtils.assertUIComponentRefersTo(button, panel.getButton("button"));
   }
 
+  @Test
   public void testContainmentSkipsScrollpaneButtons() throws Exception {
     JPanel rootPanel = new JPanel();
     rootPanel.setName("rootPanel");
@@ -317,6 +338,7 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
                                new Panel(rootPanel).getDescription());
   }
 
+  @Test
   public void testContainmentSkipsUnnamedContainers() throws Exception {
     JPanel rootPanel = new JPanel();
     rootPanel.setName("rootPanel");
@@ -334,6 +356,7 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
                                new Panel(rootPanel).getDescription());
   }
 
+  @Test
   public void testSelectedPanelIsTheOneVisibleInCardLayout() throws Exception {
     JPanel cardPanel = new JPanel();
     JPanel firstPanel = new JPanel();
@@ -377,6 +400,7 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
                                panelWithCardLayoutChecker.getDescription());
   }
 
+  @Test
   public void testAmbiguityMessageContents() throws Exception {
     JButton apply = new JButton("apply");
     JButton noApply = new JButton(" don't apply");
@@ -397,6 +421,7 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
                             message.toString());
   }
 
+  @Test
   public void testGetInputTextBoxExcludesJLabels() throws Exception {
     JLabel label = new JLabel("label");
     label.setName("name");
@@ -409,6 +434,7 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     panel.getInputTextBox().textEquals("textField");
   }
 
+  @Test
   public void testGetPanelSearchesForSpecificClasses() throws Exception {
     checkGetPanel(new JPanel());
     checkGetPanel(new JInternalFrame());

@@ -1,18 +1,21 @@
 package org.uispec4j.utils;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class ArrayUtilsTest extends UnitTestCase {
+  @Test
   public void testToStringWithObjects() throws Exception {
     Assertions.assertEquals("[3,true,Hello]",
                             ArrayUtils.toString(new Object[]{3, Boolean.TRUE, "Hello"}));
   }
 
-  public void testToStringForArrays() {
+  @Test
+  public void testToStringForArrays() throws Exception {
     Assertions.assertEquals("[]", ArrayUtils.toString(new String[0]));
     Assertions.assertEquals("[a]", ArrayUtils.toString(new String[]{"a"}));
     Assertions.assertEquals("[a,b]", ArrayUtils.toString(new String[]{"a", "b"}));
@@ -27,6 +30,7 @@ public class ArrayUtilsTest extends UnitTestCase {
     }));
   }
 
+  @Test
   public void testToStringForLists() throws Exception {
     List list = new ArrayList();
     Assertions.assertEquals("[]", ArrayUtils.toString(list));
@@ -38,17 +42,20 @@ public class ArrayUtilsTest extends UnitTestCase {
     Assertions.assertEquals("[a,b,c]", ArrayUtils.toString(new String[]{"a", "b", "c"}));
   }
 
+  @Test
   public void testToStringWithIntegers() throws Exception {
     Assertions.assertEquals("[4,6,9]",
                             ArrayUtils.toString(new int[]{4, 6, 9}));
   }
 
+  @Test
   public void testToStringForTwoDimensionalArrays() throws Exception {
     Assertions.assertEquals("[]", ArrayUtils.toString(new String[][]{}));
     Assertions.assertEquals("[[a]]", ArrayUtils.toString(new String[][]{{"a"}}));
     Assertions.assertEquals("[[a,\tb]\n [c,\td]]", ArrayUtils.toString(new String[][]{{"a", "b"}, {"c", "d"}}));
   }
 
+  @Test
   public void testAssertEmptyForAnArray() throws Exception {
     ArrayUtils.assertEmpty((String[])null);
     ArrayUtils.assertEmpty(new Object[0]);
@@ -61,6 +68,7 @@ public class ArrayUtilsTest extends UnitTestCase {
     }
   }
 
+  @Test
   public void testAssertEmpty() throws Exception {
     ArrayUtils.assertEmpty((List[])null);
     ArrayUtils.assertEmpty(Collections.EMPTY_LIST);

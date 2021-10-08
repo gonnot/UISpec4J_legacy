@@ -144,12 +144,17 @@
           </compilerArgs>
         </configuration>
       </plugin>
-<!--
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.0.0-M5</version>
         <configuration>
+          <argLine>
+            --add-opens java.desktop/java.awt=uispec4j
+            --add-exports java.desktop/sun.awt=uispec4j
+            --add-exports java.desktop/sun.lwawt.macosx=uispec4j
+          </argLine>
+<!--
           <systemProperties>
             <property>
               <name>uispec4j.test.library</name>
@@ -163,9 +168,9 @@
           <parallel>methods</parallel>
           <forkedProcessTimeoutInSeconds>600</forkedProcessTimeoutInSeconds>
           <rerunFailingTestsCount>1</rerunFailingTestsCount>
+-->
         </configuration>
       </plugin>
--->
     </plugins>
   </build>
 

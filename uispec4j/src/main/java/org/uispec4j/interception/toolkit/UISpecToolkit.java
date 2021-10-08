@@ -17,6 +17,7 @@ public class UISpecToolkit extends ToolkitDelegate {
   static final String SYSTEM_PROPERTY = "awt.toolkit";
   static final String UNIX_SYSTEM_DEFAULT_VALUE = System.getProperty("awt.toolkit", "sun.awt.X11.XToolkit");
   static final String WINDOWS_SYSTEM_DEFAULT_VALUE = "sun.awt.windows.WToolkit";
+  static final String MAC_DEFAULT_VALUE = "sun.lwawt.macosx.LWCToolkit";
 
   private static String awtToolkit;
 
@@ -130,7 +131,13 @@ public class UISpecToolkit extends ToolkitDelegate {
         awtToolkit = UNIX_SYSTEM_DEFAULT_VALUE;
       }
       catch (ClassNotFoundException e1) {
-        throw new AWTError("Unable to locate AWT Toolkit");
+        try {
+          Class.forName(MAC_DEFAULT_VALUE);
+          awtToolkit = MAC_DEFAULT_VALUE;
+        }
+        catch (Exception ignored) {
+          throw new AWTError("Unable to locate AWT Toolkit");
+        }
       }
     }
   }

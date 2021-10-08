@@ -2,6 +2,7 @@ package org.uispec4j;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.DummyActionListener;
 import org.uispec4j.utils.Functor;
@@ -31,14 +32,17 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
     textBox.setText(text);
   }
 
+  @Test
   public void testGetComponentTypeName() throws Exception {
     Assertions.assertEquals("textBox", UIComponentFactory.createUIComponent(new JTextField()).getDescriptionTypeName());
   }
 
+  @Test
   public void testGetDescription() throws Exception {
     XmlAssert.assertEquivalent("<textBox name='myText'/>", textBox.getDescription());
   }
 
+  @Test
   public void testFactory() throws Exception {
     checkFactory(new JTextArea(), TextBox.class);
     checkFactory(new JTextPane(), TextBox.class);
@@ -46,6 +50,7 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
     checkFactory(new JTextField(), TextBox.class);
   }
 
+  @Test
   public void testAssertTextEquals() throws Exception {
     assertTrue(textBox.textEquals(""));
     jTextComponent.setText("some text");
@@ -60,6 +65,7 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
     }
   }
 
+  @Test
   public void testAssertTextContains() throws Exception {
     jTextComponent.setText("some text");
     assertTrue(textBox.textContains("some"));
@@ -73,6 +79,7 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
     }
   }
 
+  @Test
   public void testAssertTextDoesNotContain() throws Exception {
     jTextComponent.setText("some text");
     assertTrue(textBox.textDoesNotContain("xxx"));
@@ -86,6 +93,7 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
     }
   }
 
+  @Test
   public void testAssertTextIsEditable() throws Exception {
     jTextComponent.setEditable(true);
     assertTrue(textBox.isEditable());
@@ -93,6 +101,7 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
     assertFalse(textBox.isEditable());
   }
 
+  @Test
   public void testAssertEmptyWithPlainText() throws Exception {
     jTextComponent.setText("");
     assertTrue(textBox.textIsEmpty());
@@ -106,11 +115,13 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
     }
   }
 
+  @Test
   public void testSetText() throws Exception {
     textBox.setText("new text");
     Assertions.assertEquals("new text", jTextComponent.getText());
   }
 
+  @Test
   public void testSetTextChecksThatTheComponentIsEditable() throws Exception {
     textBox.setText("text");
     jTextComponent.setEditable(false);
@@ -124,6 +135,7 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
     Assertions.assertEquals("text", jTextComponent.getText());
   }
 
+  @Test
   public void testInsertText() throws Exception {
     jTextComponent.setEditable(true);
     textBox.insertText("text", 0);
@@ -136,6 +148,7 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
     Assertions.assertEquals("this is some interesting text, isn't it?", textBox.getText());
   }
 
+  @Test
   public void testInsertTextAtABadPosition() throws Exception {
     textBox.setText("text");
     try {
@@ -147,6 +160,7 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
     }
   }
 
+  @Test
   public void testAppendAndClear() throws Exception {
     jTextComponent.setEditable(true);
     textBox.clear();
@@ -162,6 +176,7 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
     Assertions.assertEquals("", textBox.getText());
   }
 
+  @Test
   public void testInsertAppendAndClearDoNotNotifyActionListeners() throws Exception {
     DummyActionListener actionListener = initWithTextFieldAndActionListener();
     textBox.insertText("text", 0);
@@ -170,6 +185,7 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
     Assertions.assertEquals(0, actionListener.getCallCount());
   }
 
+  @Test
   public void testInsertAppendAndClearChecksThatTheComponentIsEditable() throws Exception {
     textBox.setText("text");
     jTextComponent.setEditable(false);
@@ -197,6 +213,7 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
     Assertions.assertEquals("text", jTextComponent.getText());
   }
 
+  @Test
   public void testTextCannotBeEnteredWhenTheComponentIsDisabled() throws Exception {
     jTextComponent.setEnabled(false);
 
@@ -235,6 +252,7 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
     }
   }
 
+  @Test
   public void testGetText() throws Exception {
     jTextComponent.setText("some text");
     Assertions.assertEquals("some text", textBox.getText());
@@ -244,6 +262,7 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
     Assertions.assertEquals("new <b>text</b>", textBox.getText());
   }
 
+  @Test
   public void testSetTextNotifiesActionListenersForJTextField() throws Exception {
     DummyActionListener actionListener = initWithTextFieldAndActionListener();
 
@@ -251,6 +270,7 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
     Assertions.assertEquals(1, actionListener.getCallCount());
   }
 
+  @Test
   public void testClickOnHyperlinkIsNotSupported() throws Exception {
     checkAssertionError(new Functor() {
       public void run() throws Exception {
@@ -264,6 +284,7 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
     }, "This component does not support hyperlinks.");
   }
 
+  @Test
   public void testPressingPrintableKeyAddsItToText() throws Exception {
     JTextField textField = new JTextField();
     TextBox textBox = new TextBox(textField);
@@ -275,6 +296,7 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
     assertTrue(textBox.textEquals("aBc"));
   }
 
+  @Test
   public void testPressingPrintableKeyRejectedByTextField() throws Exception {
     JTextField textField = new JTextField();
     ((AbstractDocument)textField.getDocument()).setDocumentFilter(new DocumentFilter() {
@@ -295,6 +317,7 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
     assertTrue(textBox.textEquals("bA"));
   }
 
+  @Test
   public void testPressingPrintableKeyInANonEmptyTextBoxStartsAtPosition0() throws Exception {
     JTextField textField = new JTextField("text");
     TextBox textBox = new TextBox(textField);

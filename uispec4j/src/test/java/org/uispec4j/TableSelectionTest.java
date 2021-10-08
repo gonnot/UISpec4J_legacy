@@ -1,6 +1,7 @@
 package org.uispec4j;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.assertion.UISpecAssert;
 import org.uispec4j.utils.ArrayUtils;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
@@ -15,6 +16,7 @@ import java.awt.event.MouseEvent;
 
 public class TableSelectionTest extends TableTestCase {
 
+  @Test
   public void testClickCallsMouseListeners() throws Exception {
     MouseLogger mouseLogger = new MouseLogger(jTable);
     table.click(0, 1);
@@ -25,6 +27,7 @@ public class TableSelectionTest extends TableTestCase {
                              "</log>");
   }
 
+  @Test
   public void testAssertSelectionEquals() throws Exception {
     jTable.setCellSelectionEnabled(true);
     table.click(0, 1);
@@ -55,6 +58,7 @@ public class TableSelectionTest extends TableTestCase {
     }
   }
 
+  @Test
   public void testAssertRowSelected() throws Exception {
     jTable.setCellSelectionEnabled(false);
     table.click(0, 1);
@@ -77,6 +81,7 @@ public class TableSelectionTest extends TableTestCase {
     }
   }
 
+  @Test
   public void testAssertRowsSelected() throws Exception {
     checkAssertRowsSelected(false);
     checkAssertRowsSelected(true);
@@ -106,6 +111,7 @@ public class TableSelectionTest extends TableTestCase {
     }
   }
 
+  @Test
   public void testDoubleClickChangesSelection() throws Exception {
     final Counter doubleClickCounter = new Counter();
     jTable.addMouseListener(new MouseAdapter() {
@@ -133,6 +139,7 @@ public class TableSelectionTest extends TableTestCase {
     }));
   }
 
+  @Test
   public void testAssertCellSelected() throws Exception {
     jTable.setCellSelectionEnabled(true);
     table.click(0, 1);
@@ -155,6 +162,7 @@ public class TableSelectionTest extends TableTestCase {
     }
   }
 
+  @Test
   public void testAssertCellSelectedWithRowLevelSelection() throws Exception {
     jTable.setCellSelectionEnabled(false);
     table.click(0, 1);
@@ -168,6 +176,7 @@ public class TableSelectionTest extends TableTestCase {
     }
   }
 
+  @Test
   public void testAssertSelectionIsEmpty() throws Exception {
     assertTrue(table.selectionIsEmpty());
     table.click(1, 0);
@@ -182,12 +191,14 @@ public class TableSelectionTest extends TableTestCase {
     table.selectionIsEmpty();
   }
 
+  @Test
   public void testClearSelection() throws Exception {
     jTable.addRowSelectionInterval(1, 1);
     table.clearSelection();
     assertTrue(table.selectionIsEmpty());
   }
 
+  @Test
   public void testSelectCell() throws Exception {
     jTable.setCellSelectionEnabled(true);
     table.selectCell(0, 0);
@@ -202,6 +213,7 @@ public class TableSelectionTest extends TableTestCase {
     }));
   }
 
+  @Test
   public void testSelectCellWithCellSelectionDisabled() throws Exception {
     jTable.setCellSelectionEnabled(false);
     try {
@@ -213,6 +225,7 @@ public class TableSelectionTest extends TableTestCase {
     }
   }
 
+  @Test
   public void testSelectRow() throws Exception {
     checkSelectRow(false);
     checkSelectRow(true);
@@ -227,6 +240,7 @@ public class TableSelectionTest extends TableTestCase {
     checkRowSelection(false, true);
   }
 
+  @Test
   public void testSelectRows() throws Exception {
     checkSelectRows(false);
     checkSelectRows(true);
@@ -256,12 +270,14 @@ public class TableSelectionTest extends TableTestCase {
     checkRowSelection(true, true);
   }
 
+  @Test
   public void testSelectRowsWithEmptyTable() throws Exception {
     jTable.setModel(new DefaultTableModel());
     table.selectAllRows();
     UISpecAssert.assertThat(table.selectionIsEmpty());
   }
 
+  @Test
   public void testSelectRowsRequiresThatTheStartIndexBeLessThanTheEndIndex() throws Exception {
     try {
       table.selectRowSpan(1, 0);
@@ -272,6 +288,7 @@ public class TableSelectionTest extends TableTestCase {
     }
   }
 
+  @Test
   public void testSelectRowsWithText() throws Exception {
     jTable.setModel(new DefaultTableModel(new Object[][]{
       {"yellow", "blue", "green"},
@@ -293,6 +310,7 @@ public class TableSelectionTest extends TableTestCase {
     ArrayUtils.assertEquals(new int[]{}, jTable.getSelectedRows());
   }
 
+  @Test
   public void testSelectRowsWithTextDoesNotAcceptUnknownLabels() throws Exception {
     jTable.setModel(new DefaultTableModel(new Object[][]{
       {"yellow", "blue", "green"},
@@ -310,6 +328,7 @@ public class TableSelectionTest extends TableTestCase {
     }
   }
 
+  @Test
   public void testSelectBlock() throws Exception {
     jTable.setCellSelectionEnabled(true);
     table.selectBlock(0, 0, 1, 1);
@@ -329,6 +348,7 @@ public class TableSelectionTest extends TableTestCase {
     });
   }
 
+  @Test
   public void testSelectBlockWithInvalidRectangle() throws Exception {
     jTable.setCellSelectionEnabled(true);
     try {
@@ -340,6 +360,7 @@ public class TableSelectionTest extends TableTestCase {
     }
   }
 
+  @Test
   public void testSelectBlockWithJTableCellSelectionDisabled() throws Exception {
     jTable.setCellSelectionEnabled(false);
     try {
@@ -351,11 +372,13 @@ public class TableSelectionTest extends TableTestCase {
     }
   }
 
+  @Test
   public void testAddRemoveSelectedRow() throws Exception {
     checkAddRemoveSelectedRows(false);
     checkAddRemoveSelectedRows(true);
   }
 
+  @Test
   public void testRemoveRowFromSelectionChecksThatTheRowWasSelected() throws Exception {
     try {
       table.removeRowFromSelection(1);
@@ -366,6 +389,7 @@ public class TableSelectionTest extends TableTestCase {
     }
   }
 
+  @Test
   public void testMultiSelectionUpdatedTheAValueIsAdjustingMode() throws Exception {
     final EventLogger logger = new EventLogger();
     jTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {

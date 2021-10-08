@@ -1,6 +1,7 @@
 package org.uispec4j;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
 
@@ -16,6 +17,7 @@ public class SpinnerTest extends SpinnerTestCase {
     return new Spinner(jSpinner);
   }
 
+  @Test
   public void testFactory() throws Exception {
     checkFactory(new JSpinner(), Spinner.class);
   }
@@ -24,6 +26,7 @@ public class SpinnerTest extends SpinnerTestCase {
     return "1";
   }
 
+  @Test
   public void testCurrentPreviousAndNextValues() throws Exception {
     assertTrue(spinner.valueEquals("1"));
     assertTrue(spinner.nextValueEquals("2"));
@@ -38,6 +41,7 @@ public class SpinnerTest extends SpinnerTestCase {
     assertTrue(spinner.nextValueEquals("3"));
   }
 
+  @Test
   public void testSettingAValueNotInTheSequenceFails() throws Exception {
     try {
       spinner.setValue("4");
@@ -48,6 +52,7 @@ public class SpinnerTest extends SpinnerTestCase {
     }
   }
 
+  @Test
   public void testFailureWithCurrentPreviousAndNextValues() throws Exception {
     spinner.setValue("1");
     checkPreviousValueFails("4");
@@ -58,6 +63,7 @@ public class SpinnerTest extends SpinnerTestCase {
     checkNextValueFails(null);
   }
 
+  @Test
   public void testClickButtons() throws Exception {
     spinner.setValue("1");
     spinner.clickForNextValue();
@@ -73,6 +79,7 @@ public class SpinnerTest extends SpinnerTestCase {
     assertTrue(spinner.valueEquals("1"));
   }
 
+  @Test
   public void testClickButtonsDoesNotFailIfNotValueAvailable() throws Exception {
     spinner.setValue("1");
     spinner.clickForPreviousValue();

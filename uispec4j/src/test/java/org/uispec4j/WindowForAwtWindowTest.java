@@ -1,6 +1,7 @@
 package org.uispec4j;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.xml.XmlAssert;
 
@@ -8,11 +9,13 @@ import javax.swing.*;
 import java.awt.*;
 
 public class WindowForAwtWindowTest extends WindowTestCase {
+  @Test
   public void test() throws Exception {
     Window window = createWindow();
     Assertions.assertEquals("", window.getTitle());
   }
 
+  @Test
   public void testWindowManagesMenuBars() throws Exception {
     Window window = new Window(new Frame());
     try {
@@ -24,10 +27,12 @@ public class WindowForAwtWindowTest extends WindowTestCase {
     }
   }
 
+  @Test
   public void testGetTitle() throws Exception {
     Assertions.assertEquals("", createWindow().getTitle());
   }
 
+  @Test
   public void testAssertTitleEquals() throws Exception {
     final Window window = createWindow();
     assertTrue(window.titleEquals(""));
@@ -35,6 +40,7 @@ public class WindowForAwtWindowTest extends WindowTestCase {
                         "Unexpected title - expected:<[title]> but was:<[]>");
   }
 
+  @Test
   public void testAssertTitleContains() throws Exception {
     final Window window = createWindow();
     assertTrue(window.titleContains(""));
@@ -42,6 +48,7 @@ public class WindowForAwtWindowTest extends WindowTestCase {
                         "expected to contain:<title> but was:<>");
   }
 
+  @Test
   public void testGetDescription() throws Exception {
     Window window = createWindow();
     window.getAwtComponent().setName("myFrame");

@@ -1,12 +1,14 @@
 package org.uispec4j;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 
 import javax.swing.tree.TreePath;
 
 public class TreeExpansionTest extends TreeTestCase {
 
+  @Test
   public void testExpandAndCollapsePath() throws Exception {
     TreePath path = new TreePath(child1Node.getPath());
     jTree.expandPath(path);
@@ -15,6 +17,7 @@ public class TreeExpansionTest extends TreeTestCase {
     checkExpanded("child1", false);
   }
 
+  @Test
   public void testAssertPathExpanded() throws Exception {
     tree.expand("child1", true);
     checkExpanded("child1", true);
@@ -22,6 +25,7 @@ public class TreeExpansionTest extends TreeTestCase {
     checkExpanded("child1", false);
   }
 
+  @Test
   public void testAssertPathExpandedNeedsAValidPath() throws Exception {
     try {
       tree.expand("unknown", true);

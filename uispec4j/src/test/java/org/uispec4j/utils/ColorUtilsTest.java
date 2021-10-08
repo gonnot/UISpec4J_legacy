@@ -1,6 +1,7 @@
 package org.uispec4j.utils;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.awt.*;
 
@@ -11,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class ColorUtilsTest extends UnitTestCase {
 
+  @Test
   public void testAssertEqualsWithPrefix() throws Exception {
     ColorUtils.assertEquals("Message", "FF0000", Color.RED);
     ColorUtils.assertEquals("Message", "red", Color.RED);
@@ -22,6 +24,7 @@ public class ColorUtilsTest extends UnitTestCase {
                            "Message - expected:<112233> but was:<332211>");
   }
 
+  @Test
   public void testAssertEquals() throws Exception {
     ColorUtils.assertEquals("FF0000", Color.RED);
     ColorUtils.assertEquals("red", Color.RED);
@@ -31,6 +34,7 @@ public class ColorUtilsTest extends UnitTestCase {
                            "expected:<112233> but was:<332211>");
   }
 
+  @Test
   public void testInvalidArgumentsToAssertEquals() throws Exception {
     try {
       ColorUtils.assertEquals(2, Color.red);
@@ -49,11 +53,13 @@ public class ColorUtilsTest extends UnitTestCase {
     }
   }
 
+  @Test
   public void testEqualsByHexaAndRGB() throws Exception {
     Assertions.assertTrue(ColorUtils.equals("FF0000", new Color(255, 0, 0)));
     Assertions.assertTrue(ColorUtils.equals("FF0000", new Color(0xFF0000)));
   }
 
+  @Test
   public void testEqualsByName() throws Exception {
     Assertions.assertTrue(ColorUtils.equals("red", Color.RED));
     Assertions.assertTrue(ColorUtils.equals("RED", Color.RED));
@@ -62,6 +68,7 @@ public class ColorUtilsTest extends UnitTestCase {
     Assertions.assertTrue(ColorUtils.equals("darkGray", Color.darkGray));
   }
 
+  @Test
   public void testEqualsWithAdditionalNamedColor() throws Exception {
     Assertions.assertTrue(ColorUtils.equals("darkGrey", ColorUtils.getColor("555555")));
     Assertions.assertTrue(ColorUtils.equals("darkRed", ColorUtils.getColor("550000")));
@@ -74,6 +81,7 @@ public class ColorUtilsTest extends UnitTestCase {
     Assertions.assertTrue(ColorUtils.equals("DARK_BLUE", ColorUtils.getColor("000055")));
   }
 
+  @Test
   public void testEqualsByNameAndSimilarity() throws Exception {
     Assertions.assertFalse(ColorUtils.equals("blue", Color.red));
     Assertions.assertTrue(ColorUtils.equals("red", Color.red));
@@ -88,6 +96,7 @@ public class ColorUtilsTest extends UnitTestCase {
     Assertions.assertFalse(ColorUtils.equals("red", ColorUtils.getColor("ffaaff")));
   }
 
+  @Test
   public void testBadColorDescription() throws Exception {
     try {
       ColorUtils.equals("not a color", Color.red);
@@ -106,12 +115,14 @@ public class ColorUtilsTest extends UnitTestCase {
     }
   }
 
+  @Test
   public void testGetColor() throws Exception {
     Assertions.assertEquals(Color.red, ColorUtils.getColor("ff0000"));
     Assertions.assertEquals(Color.green, ColorUtils.getColor("00ff00"));
     Assertions.assertEquals(Color.blue, ColorUtils.getColor("0000ff"));
   }
 
+  @Test
   public void testGetColorDescriptionByColor() throws Exception {
     Assertions.assertEquals("112233", ColorUtils.getColorDescription(new Color(0x112233)));
 
@@ -119,6 +130,7 @@ public class ColorUtilsTest extends UnitTestCase {
     Assertions.assertEquals("404040", ColorUtils.getColorDescription(Color.DARK_GRAY));
   }
 
+  @Test
   public void testGetColorDescriptionByString() throws Exception {
     Assertions.assertEquals("112233", ColorUtils.getColorDescription("112233"));
 

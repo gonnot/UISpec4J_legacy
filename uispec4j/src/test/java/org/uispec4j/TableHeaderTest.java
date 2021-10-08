@@ -1,6 +1,7 @@
 package org.uispec4j;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.ArrayUtils;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.Functor;
@@ -12,6 +13,7 @@ import java.awt.*;
 import java.util.regex.Pattern;
 
 public class TableHeaderTest extends TableTestCase {
+  @Test
   public void test() throws Exception {
     JTableHeader tableHeader = jTable.getTableHeader();
     tableHeader.setVisible(false);
@@ -19,6 +21,7 @@ public class TableHeaderTest extends TableTestCase {
     Assertions.assertEquals(1, table.getHeader().findColumnIndex("1"));
   }
 
+  @Test
   public void testContent() throws Exception {
     assertTrue(table.getHeader().contentEquals("0", "1", "2"));
     try {
@@ -33,6 +36,7 @@ public class TableHeaderTest extends TableTestCase {
     }
   }
 
+  @Test
   public void testPartialContent() throws Exception {
     assertTrue(table.getHeader().contentEquals(2, "0", "1"));
     try {
@@ -43,6 +47,7 @@ public class TableHeaderTest extends TableTestCase {
     }
   }
 
+  @Test
   public void testClickOnHeader() throws Exception {
     MouseLogger mouseLogger = new MouseLogger(jTable.getTableHeader());
     table.getHeader().click(0);
@@ -53,6 +58,7 @@ public class TableHeaderTest extends TableTestCase {
                              "</log>");
   }
 
+  @Test
   public void testRightClickOnHeader() throws Exception {
     MouseLogger dummyHeaderListener = new MouseLogger(jTable.getTableHeader());
     table.getHeader().rightClick(0);
@@ -63,6 +69,7 @@ public class TableHeaderTest extends TableTestCase {
                                      "</log>");
   }
 
+  @Test
   public void testHeader() throws Exception {
     assertTrue(table.hasHeader());
 
@@ -77,6 +84,7 @@ public class TableHeaderTest extends TableTestCase {
     }
   }
 
+  @Test
   public void testNoHeaderExceptions() throws Exception {
     jTable.setTableHeader(null);
     checkNoHeaderException(new Functor() {
@@ -136,6 +144,7 @@ public class TableHeaderTest extends TableTestCase {
     });
   }
 
+  @Test
   public void testAssertHeaderBackgroundEquals() throws Exception {
     jTable.getTableHeader().setDefaultRenderer(new DefaultTableCellRenderer() {
       public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -161,11 +170,13 @@ public class TableHeaderTest extends TableTestCase {
     }
   }
 
+  @Test
   public void testGetColumnNames() throws Exception {
     ArrayUtils.assertEquals(new String[0], new Table(new JTable()).getHeader().getColumnNames());
     ArrayUtils.assertEquals(new String[]{"0", "1", "2"}, table.getHeader().getColumnNames());
   }
 
+  @Test
   public void testFindColumnIndex() throws Exception {
     Assertions.assertEquals(0, table.getHeader().findColumnIndex("0"));
     Assertions.assertEquals(1, table.getHeader().findColumnIndex("1"));

@@ -1,11 +1,13 @@
 package org.uispec4j.xml;
 
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.UnitTestCase;
 
 public class EventLoggerTest extends UnitTestCase {
   private EventLogger eventLogger = new EventLogger();
 
+  @Test
   public void testEventWithoutArgs() throws Exception {
     eventLogger.log("evt");
     eventLogger.assertEquals("<log>" +
@@ -13,6 +15,7 @@ public class EventLoggerTest extends UnitTestCase {
                              "</log>");
   }
 
+  @Test
   public void testStandardCase() throws Exception {
     eventLogger.log("evt1").add("key1", "value1").add("key2", "value2");
     eventLogger.log("evt2").add("key3", "value3").add("key4", "value4");
@@ -22,6 +25,7 @@ public class EventLoggerTest extends UnitTestCase {
                              "</log>");
   }
 
+  @Test
   public void testErrorCaseWithWrongValue() throws Exception {
     eventLogger.log("evt1").add("key1", "value1").add("key2", "value2");
     eventLogger.log("evt2").add("key3", "value3").add("key4", "value4");
@@ -31,6 +35,7 @@ public class EventLoggerTest extends UnitTestCase {
                "</log>");
   }
 
+  @Test
   public void testErrorCaseWithAdditionalKey() throws Exception {
     eventLogger.log("evt1").add("key1", "value1").add("key2", "value2");
     eventLogger.log("evt2").add("key3", "value3").add("key4", "value4");
@@ -40,6 +45,7 @@ public class EventLoggerTest extends UnitTestCase {
                "</log>");
   }
 
+  @Test
   public void testErrorCaseWithMissingKey() throws Exception {
     eventLogger.log("evt1").add("key1", "value1").add("ThisOneWillbeMissing", "value");
     eventLogger.log("evt2").add("key3", "value3").add("key4", "value4");
@@ -49,6 +55,7 @@ public class EventLoggerTest extends UnitTestCase {
                "</log>");
   }
 
+  @Test
   public void testErrorCaseWithAdditionalEvent() throws Exception {
     eventLogger.log("evt1").add("key1", "value1").add("key2", "value2");
     eventLogger.log("evt2").add("key3", "value3").add("key4", "value4");
@@ -59,6 +66,7 @@ public class EventLoggerTest extends UnitTestCase {
                "</log>");
   }
 
+  @Test
   public void testErrorCaseWithMissingEvent() throws Exception {
     eventLogger.log("evt1").add("key1", "value1").add("key2", "value2");
     eventLogger.log("ThisOneWillBeMissing").add("key3", "value3").add("key4", "value4");
@@ -67,6 +75,7 @@ public class EventLoggerTest extends UnitTestCase {
                "</log>");
   }
 
+  @Test
   public void testOrderIsSignificant() throws Exception {
     eventLogger.log("evt1");
     eventLogger.log("evt2");
@@ -76,6 +85,7 @@ public class EventLoggerTest extends UnitTestCase {
                "</log>");
   }
 
+  @Test
   public void testListenerIsResetAfterEveryCheck() throws Exception {
     eventLogger.log("evt1");
     eventLogger.assertEquals("<log>" +
@@ -87,6 +97,7 @@ public class EventLoggerTest extends UnitTestCase {
                              "</log>");
   }
 
+  @Test
   public void testEmptyExpectedString() throws Exception {
     try {
       eventLogger.assertEquals("");
@@ -96,10 +107,12 @@ public class EventLoggerTest extends UnitTestCase {
     }
   }
 
+  @Test
   public void testAssertEmpty() throws Exception {
     eventLogger.assertEmpty();
   }
 
+  @Test
   public void testAssertEmptyError() throws Exception {
     eventLogger.log("UnexpectedEvent");
     try {
@@ -110,6 +123,7 @@ public class EventLoggerTest extends UnitTestCase {
     }
   }
 
+  @Test
   public void testAssertWithXmlTestLogger() throws Exception {
     eventLogger.log("evt1")
       .add("key", "value");
@@ -118,6 +132,7 @@ public class EventLoggerTest extends UnitTestCase {
     eventLogger.assertEquals(expected);
   }
 
+  @Test
   public void testAssertXmlTestLoggerFailsWithXmlTestLoggerEmpty() throws Exception {
     eventLogger.log("evt1");
 
@@ -130,6 +145,7 @@ public class EventLoggerTest extends UnitTestCase {
     }
   }
 
+  @Test
   public void testAssertXmlTestLoggerFailsXmlTestLoggerNotEmpty() throws Exception {
     eventLogger.log("evt1");
 
@@ -144,6 +160,7 @@ public class EventLoggerTest extends UnitTestCase {
     }
   }
 
+  @Test
   public void testAssertEquivalent() throws Exception {
     eventLogger.log("evt1");
     eventLogger.log("evt2");

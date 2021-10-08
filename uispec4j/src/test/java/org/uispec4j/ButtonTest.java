@@ -2,6 +2,7 @@ package org.uispec4j;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.UIComponentFactory;
 import org.uispec4j.xml.XmlAssert;
 
@@ -26,16 +27,19 @@ public class ButtonTest extends ButtonTestCase {
     return jButton;
   }
 
+  @Test
   public void testGetComponentTypeName() throws Exception {
     Assertions.assertEquals("button", button.getDescriptionTypeName());
   }
 
+  @Test
   public void testGetDescription() throws Exception {
     XmlAssert.assertEquivalent("<button/>", button.getDescription());
     jButton.setText("toto");
     XmlAssert.assertEquivalent("<button label='toto'/>", button.getDescription());
   }
 
+  @Test
   public void testFactory() throws Exception {
     checkFactory(new JButton(), Button.class);
   }

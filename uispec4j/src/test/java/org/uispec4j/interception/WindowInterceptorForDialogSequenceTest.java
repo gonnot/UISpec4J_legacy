@@ -2,6 +2,7 @@ package org.uispec4j.interception;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.Trigger;
 import org.uispec4j.UISpec4J;
 import org.uispec4j.Window;
@@ -25,7 +26,8 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
     }
   }
 
-  public void testStandardSequence() {
+  @Test
+  public void testStandardSequence() throws Exception {
     WindowInterceptor
       .init(getShowFirstDialogTrigger())
       .process(new WindowHandler() {
@@ -59,6 +61,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
                         "</log>");
   }
 
+  @Test
   public void testInterceptingAModalDialogWithAReturnedValue() throws Exception {
     WindowInterceptor
       .init(new Trigger() {
@@ -91,6 +94,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
                         "</log>");
   }
 
+  @Test
   public void testModalInterceptionWithATriggerThatDisplaysNothing() throws Exception {
     checkAssertionError(WindowInterceptor
                           .init(Trigger.DO_NOTHING)
@@ -103,6 +107,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
     Assertions.assertEquals(0, UISpecDisplay.instance().getHandlerCount());
   }
 
+  @Test
   public void testInterceptingAModalDialogWithoutClosingItInTheHandler() throws Exception {
     checkAssertionError(WindowInterceptor
                           .init(new Trigger() {
@@ -127,6 +132,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
                         "</log>");
   }
 
+  @Test
   public void testInterceptingAModalDialogShownFromAnotherThread() throws Exception {
     showModalDialogInThread(200, 100);
     logger.assertEquals("<log>" +
@@ -136,6 +142,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
                         "</log>");
   }
 
+  @Test
   public void testUsingDisposeInShowDialog() throws Exception {
     showDialogAndDispose();
     logger.assertEquals("<log>" +
@@ -145,6 +152,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
                         "</log>");
   }
 
+  @Test
   public void testInterceptionWorksEvenWhenInterceptionIsRunFromTheSwingThread() throws Exception {
     SwingUtilities.invokeAndWait(new Runnable() {
       public void run() {
@@ -159,6 +167,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
                         "</log>");
   }
 
+  @Test
   public void testInterceptingAModalDialogWithoutClosingItInTheWindowHandlerWhenRunFromTheSwingThread() throws Exception {
     SwingUtilities.invokeAndWait(new Runnable() {
       public void run() {
@@ -187,6 +196,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
                         "</log>");
   }
 
+  @Test
   public void testImbricationOfInterceptions() throws Exception {
     final JFrame frame = new JFrame("frame");
 
@@ -234,6 +244,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
                         "</log>");
   }
 
+  @Test
   public void testShowingTheSameDialogTwice() throws Exception {
     WindowInterceptor
       .init(new Trigger() {
@@ -257,6 +268,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
                         "</log>");
   }
 
+  @Test
   public void testShowIsBlocked() throws Exception {
     WindowInterceptor
       .init(new Trigger() {
@@ -284,6 +296,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
                         "</log>");
   }
 
+  @Test
   public void testAwtDialogsAreNotSupported() throws Exception {
     java.awt.Window window = new Dialog(new Frame());
     try {
@@ -295,6 +308,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
     }
   }
 
+  @Test
   public void testErrorWhenTheInitialTriggerDisplaysNoWindow() throws Exception {
     checkAssertionError(WindowInterceptor
                           .init(Trigger.DO_NOTHING)
@@ -308,6 +322,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
                         ShownInterceptionDetectionHandler.NO_WINDOW_WAS_SHOWN_ERROR_MESSAGE);
   }
 
+  @Test
   public void testErrorWhenTheFirstHandlerDisplaysNoWindow() throws Exception {
     checkAssertionError(WindowInterceptor
                           .init(getShowFirstDialogTrigger())
@@ -325,6 +340,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
                               ShownInterceptionDetectionHandler.NO_WINDOW_WAS_SHOWN_ERROR_MESSAGE);
   }
 
+  @Test
   public void testErrorWhenTheFirstHandlerThrowsAnError() throws Exception {
     checkAssertionError(WindowInterceptor
                           .init(getShowFirstDialogTrigger())
@@ -336,6 +352,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
                           .processWithButtonClick("ok"), "Error in handler 'first': error");
   }
 
+  @Test
   public void testErrorWhenTheSecondHandlerThrowsAnError() throws Exception {
     checkAssertionError(WindowInterceptor
                           .init(getShowFirstDialogTrigger())
@@ -347,6 +364,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
                           }), "Error in handler 'second': error");
   }
 
+  @Test
   public void testErrorWhenTheFirstHandlerThrowsAnException() throws Exception {
     checkAssertionError(WindowInterceptor
                           .init(getShowFirstDialogTrigger())
@@ -358,6 +376,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
                           .processWithButtonClick("ok"), "Error in handler 'first': exception");
   }
 
+  @Test
   public void testErrorWhenTheSecondHandlerThrowsAnException() throws Exception {
     checkAssertionError(WindowInterceptor
                           .init(getShowFirstDialogTrigger())
@@ -370,6 +389,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
                           .processWithButtonClick("ok"), "Error in handler 'second': exception");
   }
 
+  @Test
   public void testErrorWhenAModalDialogIsNotClosedInTheOnlyWindowWithOnlyOneHandler() throws Exception {
     checkAssertionError(WindowInterceptor
                           .init(getShowFirstDialogTrigger())
@@ -381,6 +401,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
                               "make sure that setVisible(false) gets called by the production code");
   }
 
+  @Test
   public void testFirstWindowNotClosed() throws Exception {
     checkAssertionError(WindowInterceptor
                           .init(new Trigger() {
@@ -399,6 +420,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
                                                             "called by the production code");
   }
 
+  @Test
   public void testErrorWhenTheFirstWindowOfASequenceIsNotClosed() throws Exception {
     checkAssertionError(WindowInterceptor
                           .init(new Trigger() {
@@ -417,6 +439,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
                                                             "called by the production code");
   }
 
+  @Test
   public void testErrorWhenAModalDialogIsNotClosedInTheSecondAndLastWindow() throws Exception {
     checkAssertionError(WindowInterceptor
                           .init(getShowFirstDialogTrigger())
@@ -433,6 +456,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
                               "make sure that setVisible(false) gets called by the production code");
   }
 
+  @Test
   public void testErrorWhenAModalDialogIsNotClosedInTheSecondWindow() throws Exception {
     checkAssertionError(WindowInterceptor
                           .init(getShowFirstDialogTrigger())
@@ -450,10 +474,12 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
                               ShownInterceptionDetectionHandler.NO_WINDOW_WAS_SHOWN_ERROR_MESSAGE);
   }
 
+  @Test
   public void testNoHandlerAdded() throws Exception {
     checkAssertionError(WindowInterceptor.init(Trigger.DO_NOTHING), "You must add at least one handler");
   }
 
+  @Test
   public void testHandlerNameIsNotGivenInTheMessageIfThereIsOnlyOneHandler() throws Exception {
     checkAssertionError(WindowInterceptor
                           .init(getShowFirstDialogTrigger())
@@ -464,6 +490,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
                           }), "error");
   }
 
+  @Test
   public void testHandlersAreGivenANumberIfNoNameIsSet() throws Exception {
     checkAssertionError(WindowInterceptor
                           .init(getShowFirstDialogTrigger())
@@ -484,6 +511,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
                           .processWithButtonClick(""), "Error in handler '2': error");
   }
 
+  @Test
   public void testModalDialogsShownInSequenceByTheInitialTrigger() throws Exception {
     WindowInterceptor
       .init(createTriggerWithThreeModalDialogsSequence())
@@ -493,6 +521,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
       .run();
   }
 
+  @Test
   public void testErrorForModalDialogsShownInSequenceByTheInitialTrigger() throws Exception {
     checkAssertionError(WindowInterceptor
                           .init(createTriggerWithThreeModalDialogsSequence())
@@ -504,6 +533,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
                           }), "Error in handler '2': error");
   }
 
+  @Test
   public void testNotClosedErrorForModalDialogsShownInSequenceByTheInitialTrigger() throws Exception {
     checkAssertionError(WindowInterceptor
                           .init(createTriggerWithThreeModalDialogsSequence())

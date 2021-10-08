@@ -1,6 +1,7 @@
 package samples.addressbook.functests;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class InteractionsBetweenContactTableAndCategoryTreeTest extends AddressBookTestCase {
   @BeforeEach
@@ -12,16 +13,19 @@ public class InteractionsBetweenContactTableAndCategoryTreeTest extends AddressB
     createCategory("work", "team2");
   }
 
+  @Test
   public void testCreateContactWithoutCategorySelection() throws Exception {
     categoryTree.clearSelection();
     createContactsAndCheckTableContent();
   }
 
+  @Test
   public void testCreateContactWithRootCategorySelected() throws Exception {
     categoryTree.selectRoot();
     createContactsAndCheckTableContent();
   }
 
+  @Test
   public void testCreateContactWithASpecificCategorySelected() throws Exception {
     categoryTree.select("friends");
 
@@ -60,6 +64,7 @@ public class InteractionsBetweenContactTableAndCategoryTreeTest extends AddressB
       }));
   }
 
+  @Test
   public void testCreateContactsInAHierarchyOfCategories() throws Exception {
     categoryTree.select("work/team1");
     createContact("Luke", "Skywalker");

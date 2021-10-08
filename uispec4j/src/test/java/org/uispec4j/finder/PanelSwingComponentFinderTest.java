@@ -2,6 +2,7 @@ package org.uispec4j.finder;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.ComponentAmbiguityException;
 import org.uispec4j.ItemNotFoundException;
 import org.uispec4j.TestUtils;
@@ -23,6 +24,7 @@ public class PanelSwingComponentFinderTest extends PanelComponentFinderTestCase 
     button2.setEnabled(false);
   }
 
+  @Test
   public void testGetSwingComponentWithCustomComponentMatcher() throws Exception {
     assertSame(button1, panel.findSwingComponent(new ComponentMatcher() {
       public boolean matches(Component component) {
@@ -55,6 +57,7 @@ public class PanelSwingComponentFinderTest extends PanelComponentFinderTestCase 
     }
   }
 
+  @Test
   public void testFindComponentsWithCustomComponentMatcher() throws Exception {
     TestUtils.assertSwingComponentsEquals(new JButton[]{button1},
                                           panel.getSwingComponents(new ComponentMatcher() {
