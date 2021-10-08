@@ -1,49 +1,49 @@
 package org.uispec4j.assertion.testlibrairies;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 class JUnitLibrary implements TestLibrary {
   public void fail(String message) {
-    Assert.fail(message);
+    Assertions.fail(message);
   }
 
   public void assertTrue(boolean b) {
-    Assert.assertTrue(b);
+    Assertions.assertTrue(b);
   }
 
   public void assertTrue(String message, boolean b) {
-    Assert.assertTrue(message, b);
+    Assertions.assertTrue(b, message);
   }
 
   public void assertFalse(String description, boolean b) {
-    Assert.assertFalse(description, b);
+    Assertions.assertFalse(b, description);
   }
 
   public void assertEquals(String expected, String actual) {
-    Assert.assertEquals(expected, actual);
+    Assertions.assertEquals(expected, actual);
   }
 
   public void assertEquals(Object expected, Object actual) {
-    Assert.assertEquals(expected, actual);
+    Assertions.assertEquals(expected, actual);
   }
 
   public void assertEquals(String message, String expected, String actual) {
-    Assert.assertEquals(message, expected, actual);
+    Assertions.assertEquals(expected, actual, message);
   }
 
   public void assertEquals(String message, Object expected, Object actual) {
-    Assert.assertEquals(message, expected, actual);
+    Assertions.assertEquals(expected, actual, message);
   }
 
   public void assertSame(String message, Object expected, Object actual) {
-    Assert.assertSame(message, expected, actual);
+    Assertions.assertSame(expected, actual, message);
   }
 
   public void assertNotNull(String message, Object o) {
-    Assert.assertNotNull(message, o);
+    Assertions.assertNotNull(o, message);
   }
 
   public void assertNull(String message, Object o) {
-    Assert.assertNull(message, o);
+    Assertions.assertNull(o, message);
   }
 }

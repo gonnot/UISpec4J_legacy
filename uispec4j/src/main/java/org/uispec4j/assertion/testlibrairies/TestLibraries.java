@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 enum TestLibraries {
-  JUNIT("junit.framework.Assert", JUnitLibrary.class),
+  JUNIT("org.junit.jupiter.api.Assertions", JUnitLibrary.class),
   TESTNG("org.testng.Assert", TestNGLibrary.class);
 
   private final String representativeClassPath;
