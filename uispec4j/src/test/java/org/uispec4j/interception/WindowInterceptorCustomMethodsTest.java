@@ -158,20 +158,16 @@ public class WindowInterceptorCustomMethodsTest extends WindowInterceptorTestCas
 
   @Test
   public void testProcessWithButtonClickWithAnInvalidTitle() throws Exception {
-    checkInterceptionError(new Functor() {
-      public void run() throws Exception {
-        WindowInterceptor
-          .init(new Trigger() {
-            public void run() throws Exception {
-              JDialog dialog = new JDialog(new JFrame(), "Actual");
-              addHideButton(dialog, "ok");
-              dialog.setVisible(true);
-            }
-          })
-          .processWithButtonClick("Expected", "OK")
-          .run();
-      }
-    }, "Invalid window title - expected: <[Expected]> but was: <[Actual]>");
+    checkInterceptionError(() ->
+                             WindowInterceptor
+                               .init(() -> {
+                                 JDialog dialog = new JDialog(new JFrame(), "Actual");
+                                 addHideButton(dialog, "ok");
+                                 dialog.setVisible(true);
+                               })
+                               .processWithButtonClick("Expected", "OK")
+                               .run(),
+                           "Invalid window title - ==> expected: <Expected> but was: <Actual>");
   }
 
   private static class TransientWindowTrigger implements Trigger {
