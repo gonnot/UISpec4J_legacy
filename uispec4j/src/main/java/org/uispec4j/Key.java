@@ -1,10 +1,7 @@
 package org.uispec4j;
 
-import sun.security.action.GetPropertyAction;
-
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.security.AccessController;
 import java.util.HashMap;
 import java.util.Map;
 

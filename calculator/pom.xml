@@ -14,13 +14,13 @@
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>6.8.21</version>
+      <version>7.4.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <version>4.13.2</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -28,12 +28,12 @@
   <!-- Project Information -->
   <name>calculator</name>
   <description>UISpec4J sample application</description>
-  <url>http://www.uispec4j.org</url>
+  <url>https://www.uispec4j.org</url>
   <inceptionYear>2004</inceptionYear>
   <licenses>
     <license>
       <name>Common Public License</name>
-      <url>http://www.opensource.org/licenses/cpl.php</url>
+      <url>https://www.opensource.org/licenses/cpl.php</url>
       <distribution>manual</distribution>
     </license>
   </licenses>
@@ -70,7 +70,8 @@
     <profile>
       <id>jdk17</id>
       <activation>
-        <jdk>17</jdk>
+        <!-- <jdk>17</jdk> -->
+        <activeByDefault/>
       </activation>
       <dependencies>
         <dependency>
