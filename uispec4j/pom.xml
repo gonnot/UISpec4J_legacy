@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.uispec4j</groupId>
-  <version>2.5-SNAPSHOT</version>
+  <version>17-SNAPSHOT</version>
   <artifactId>uispec4j</artifactId>
 
   <dependencies>
