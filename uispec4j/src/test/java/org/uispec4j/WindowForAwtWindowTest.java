@@ -37,7 +37,7 @@ public class WindowForAwtWindowTest extends WindowTestCase {
     final Window window = createWindow();
     assertTrue(window.titleEquals(""));
     checkAssertionFails(window.titleEquals("title"),
-                        "Unexpected title - expected:<[title]> but was:<[]>");
+                        "Unexpected title - ==> expected: <title> but was: <>");
   }
 
   @Test
@@ -45,7 +45,7 @@ public class WindowForAwtWindowTest extends WindowTestCase {
     final Window window = createWindow();
     assertTrue(window.titleContains(""));
     checkAssertionFails(window.titleContains("title"),
-                        "expected to contain:<title> but was:<>");
+                        "expected to contain:<title> but was: <> ==> expected: <true> but was: <false>");
   }
 
   @Test

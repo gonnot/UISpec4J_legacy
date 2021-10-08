@@ -35,7 +35,7 @@ public class BasicHandlerTest extends InterceptionTestCase {
                    .init()
                    .assertTitleEquals("Error")
                    .triggerButtonClick("Hide")),
-      "Unexpected title - expected:<[Error]> but was:<[Dialog title]>");
+      "Unexpected title - expected: <[Error]> but was: <[Dialog title]>");
   }
 
   @Test
@@ -47,7 +47,7 @@ public class BasicHandlerTest extends InterceptionTestCase {
                    .init()
                    .assertTitleContains("Error")
                    .triggerButtonClick("Hide")),
-      "expected to contain:<Error> but was:<Dialog title>");
+      "expected to contain:<Error> but was: <Dialog title>");
   }
 
   @Test

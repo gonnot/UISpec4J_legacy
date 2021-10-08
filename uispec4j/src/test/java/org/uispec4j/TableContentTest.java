@@ -323,7 +323,7 @@ public class TableContentTest extends TableTestCase {
       fail();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("Error at (0,0) - expected:<[invalidValue]> but was:<[a]>", e.getMessage());
+      Assertions.assertEquals("Error at (0,0) - expected: <[invalidValue]> but was: <[a]>", e.getMessage());
     }
   }
 
@@ -346,7 +346,7 @@ public class TableContentTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("expected:<[c,true,4]> but was:<c,false,4>", e.getMessage());
+      Assertions.assertEquals("expected: <[c,true,4]> but was: <c,false,4>", e.getMessage());
     }
 
     try {
@@ -436,7 +436,7 @@ public class TableContentTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("expected:<[[true,true]]> but was:<[true,false]>", e.getMessage());
+      Assertions.assertEquals("expected: <[[true,true]]> but was: <[true,false]>", e.getMessage());
     }
 
     try {
@@ -471,7 +471,7 @@ public class TableContentTest extends TableTestCase {
       fail();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("Unexpected number of rows - expected:<9999> but was:<2>", e.getMessage());
+      Assertions.assertEquals("Unexpected number of rows - expected: <9999> but was: <2>", e.getMessage());
     }
   }
 
@@ -482,7 +482,7 @@ public class TableContentTest extends TableTestCase {
       fail();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("Unexpected number of columns - expected:<9999> but was:<3>", e.getMessage());
+      Assertions.assertEquals("Unexpected number of columns - expected: <9999> but was: <3>", e.getMessage());
     }
   }
 
@@ -588,7 +588,7 @@ public class TableContentTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("expected:<GREEN> but was:<0000FF>", e.getMessage());
+      Assertions.assertEquals("expected: <GREEN> but was: <0000FF>", e.getMessage());
     }
   }
 
@@ -619,7 +619,7 @@ public class TableContentTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("Error at (0, 1) - expected:<GREEN> but was:<0000FF>", e.getMessage());
+      Assertions.assertEquals("Error at (0, 1) - expected: <GREEN> but was: <0000FF>", e.getMessage());
     }
   }
 

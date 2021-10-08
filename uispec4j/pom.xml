@@ -152,6 +152,7 @@
           <argLine>
             --add-opens java.desktop/java.awt=uispec4j
             --add-exports java.desktop/sun.awt=uispec4j
+            --add-exports java.desktop/java.awt.peer=uispec4j
             --add-exports java.desktop/sun.lwawt.macosx=uispec4j
           </argLine>
 <!--

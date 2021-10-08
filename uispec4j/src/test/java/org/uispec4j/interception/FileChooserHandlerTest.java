@@ -107,8 +107,8 @@ public class FileChooserHandlerTest extends InterceptionTestCase {
   public void testAssertCurrentDirEqualsError() throws Exception {
     chooser.setCurrentDirectory(javaHome);
     checkError(SHOW_OPEN_DIALOG_TRIGGER, FileChooserHandler.init().assertCurrentDirEquals(userHome),
-               javaHome, "Unexpected current directory - expected:<"
-                         + userHome + "> but was:<" + javaHome + ">");
+               javaHome, "Unexpected current directory - expected: <"
+                         + userHome + "> but was: <" + javaHome + ">");
   }
 
   @Test
@@ -128,7 +128,7 @@ public class FileChooserHandlerTest extends InterceptionTestCase {
     checkError(SHOW_OPEN_DIALOG_TRIGGER,
                FileChooserHandler.init().assertCurrentFileNameEquals("toto.exe"),
                new File(javaHome, "aFile.txt"),
-               "Unexpected file name - expected:<[toto.exe]> but was:<[aFile.txt]>");
+               "Unexpected file name - expected: <[toto.exe]> but was: <[aFile.txt]>");
   }
 
   @Test
@@ -136,7 +136,7 @@ public class FileChooserHandlerTest extends InterceptionTestCase {
     checkError(SHOW_OPEN_DIALOG_TRIGGER,
                FileChooserHandler.init().assertCurrentFileNameEquals("toto.dat"),
                new File(javaHome, "aFile.txt"),
-               "Unexpected file name - expected:<[toto.dat]> but was:<[]>");
+               "Unexpected file name - expected: <[toto.dat]> but was: <[]>");
   }
 
   @Test
@@ -166,7 +166,7 @@ public class FileChooserHandlerTest extends InterceptionTestCase {
     chooser.setDialogTitle("title");
     checkOk(SHOW_OPEN_DIALOG_TRIGGER, FileChooserHandler.init().titleEquals("title"));
     checkError(SHOW_OPEN_DIALOG_TRIGGER, FileChooserHandler.init().titleEquals("error"),
-               javaHome, "Unexpected title - expected:<[error]> but was:<[title]>");
+               javaHome, "Unexpected title - expected: <[error]> but was: <[title]>");
   }
 
   @Test
@@ -174,7 +174,7 @@ public class FileChooserHandlerTest extends InterceptionTestCase {
     chooser.setApproveButtonText("text");
     checkOk(SHOW_OPEN_DIALOG_TRIGGER, FileChooserHandler.init().assertApplyButtonTextEquals("text"));
     checkError(SHOW_OPEN_DIALOG_TRIGGER, FileChooserHandler.init().assertApplyButtonTextEquals("other"),
-               javaHome, "Unexpected apply button text - expected:<[other]> but was:<[text]>");
+               javaHome, "Unexpected apply button text - expected: <[other]> but was: <[text]>");
   }
 
   @Test

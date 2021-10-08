@@ -70,7 +70,7 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("expected:<[error]> but was:<[some text]>", e.getMessage());
+      Assertions.assertEquals("expected: <error> but was: <some text>", e.getMessage());
     }
   }
 
@@ -122,7 +122,7 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("The component text does not contain 'error' - actual content is:some text",
+      Assertions.assertEquals("The component text does not contain 'error' - actual content is:some text ==> expected: <true> but was: <false>",
                               e.getMessage());
     }
   }
@@ -142,7 +142,7 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
                               "  <head>\n" +
                               "  </head>\n" +
                               "  <body>My name is <b>Bond</b></body>\n" +
-                              "</html>\n",
+                              "</html>\n ==> expected: <true> but was: <false>",
                               e.getMessage());
     }
   }
@@ -177,7 +177,7 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("The component text should not contain 'some' - actual content is:some text",
+      Assertions.assertEquals("The component text should not contain 'some' - actual content is:some text ==> expected: <true> but was: <false>",
                               e.getMessage());
     }
   }
@@ -200,7 +200,7 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("Text should be empty but contains: a", e.getMessage());
+      Assertions.assertEquals("Text should be empty but contains: a ==> expected: <true> but was: <false>", e.getMessage());
     }
   }
 
@@ -270,7 +270,7 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("The text box is not editable", e.getMessage());
+      Assertions.assertEquals("The text box is not editable ==> expected: <true> but was: <false>", e.getMessage());
     }
     Assertions.assertEquals("text", jTextComponent.getText());
   }
@@ -328,7 +328,7 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("The text box is not editable", e.getMessage());
+      Assertions.assertEquals("The text box is not editable ==> expected: <true> but was: <false>", e.getMessage());
     }
     Assertions.assertEquals("text", jTextComponent.getText());
   }

@@ -60,7 +60,7 @@ public class ProgressBarTest extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("Unexpected completion rate - expected:<100> but was:<50>", e.getMessage());
+      Assertions.assertEquals("Unexpected completion rate - expected: <100> but was: <50>", e.getMessage());
     }
 
     jProgressBar.setIndeterminate(true);
@@ -69,7 +69,7 @@ public class ProgressBarTest extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("Unexpected completion rate - expected:<100> but was:<-1>", e.getMessage());
+      Assertions.assertEquals("Unexpected completion rate - expected: <100> but was: <-1>", e.getMessage());
     }
   }
 
@@ -139,7 +139,7 @@ public class ProgressBarTest extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("expected:<[unexpected]> but was:<[done]>", e.getMessage());
+      Assertions.assertEquals("expected: <[unexpected]> but was: <[done]>", e.getMessage());
     }
   }
 
@@ -161,7 +161,7 @@ public class ProgressBarTest extends UIComponentTestCase {
 
   private void checkAssertCompletionError(int expectedValue, int actualValue) {
     checkAssertCompletionError(expectedValue,
-                               "Unexpected completion rate - expected:<" + expectedValue + "> but was:<" + actualValue + ">");
+                               "Unexpected completion rate - expected: <" + expectedValue + "> but was: <" + actualValue + ">");
   }
 
   private void checkWaitForCompletion() throws InterruptedException {

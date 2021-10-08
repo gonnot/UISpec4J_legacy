@@ -23,7 +23,7 @@ public abstract class WindowTestCase extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError failure) {
-      Assertions.assertEquals("Unexpected title - expected:<[you]> but was:<[me]>", failure.getMessage());
+      Assertions.assertEquals("Unexpected title - ==> expected: <you> but was: <me>", failure.getMessage());
     }
   }
 
@@ -39,7 +39,7 @@ public abstract class WindowTestCase extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError failure) {
-      Assertions.assertEquals("expected to contain:<us> but was:<me and you>", failure.getMessage());
+      Assertions.assertEquals("expected to contain:<us> but was: <me and you> ==> expected: <true> but was: <false>", failure.getMessage());
     }
   }
 

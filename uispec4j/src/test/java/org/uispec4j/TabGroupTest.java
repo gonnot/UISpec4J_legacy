@@ -87,7 +87,7 @@ public class TabGroupTest extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("There is no tab labelled 'unknown' - existing tab names: [1, 2, 3]", e.getMessage());
+      Assertions.assertEquals("There is no tab labelled 'unknown' - existing tab names: [1, 2, 3] ==> expected: <true> but was: <false>", e.getMessage());
     }
   }
 
@@ -121,7 +121,7 @@ public class TabGroupTest extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("You specified 2 colors but there are 3 tabs - expected:<2> but was:<3>",
+      Assertions.assertEquals("You specified 2 colors but there are 3 tabs - ==> expected: <2> but was: <3>",
                               e.getMessage());
     }
 

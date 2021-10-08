@@ -61,7 +61,7 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("expected:<[error]> but was:<[some text]>", e.getMessage());
+      Assertions.assertEquals("expected: <[error]> but was: <[some text]>", e.getMessage());
     }
   }
 

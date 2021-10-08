@@ -44,8 +44,8 @@ public class TableSelectionTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("expected:<[[false,false,false], [false,false,false]]> " +
-                              "but was:<[[false,true,false], [false,false,false]]>",
+      Assertions.assertEquals("expected: <[[false,false,false], [false,false,false]]> " +
+                              "but was: <[[false,true,false], [false,false,false]]>",
                               e.getMessage());
     }
 
@@ -185,7 +185,7 @@ public class TableSelectionTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("Selection is not empty", e.getMessage());
+      Assertions.assertEquals("Selection is not empty ==> expected: <true> but was: <false>", e.getMessage());
     }
     table.clearSelection();
     table.selectionIsEmpty();
@@ -368,7 +368,7 @@ public class TableSelectionTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("Only row-level selection is allowed on this table", e.getMessage());
+      Assertions.assertEquals("Only row-level selection is allowed on this table ==> expected: <true> but was: <false>", e.getMessage());
     }
   }
 
@@ -385,7 +385,7 @@ public class TableSelectionTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("Row 1 is not selected", e.getMessage());
+      Assertions.assertEquals("Row 1 is not selected ==> expected: <true> but was: <false>", e.getMessage());
     }
   }
 

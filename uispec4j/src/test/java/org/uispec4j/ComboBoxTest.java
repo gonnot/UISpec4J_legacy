@@ -164,7 +164,7 @@ public class ComboBoxTest extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("expected:<[error]> but was:<[<no item>]>", e.getMessage());
+      Assertions.assertEquals("expected: <[error]> but was: <[<no item>]>", e.getMessage());
     }
   }
 

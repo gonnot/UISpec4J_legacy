@@ -120,7 +120,7 @@ public class SliderTest extends UIComponentTestCase {
   private void checkPosition(int intValue, String correctLabel, String wrongLabel) throws Exception {
     Assertions.assertEquals(intValue, jSlider.getValue());
     assertTrue(slider.positionEquals(correctLabel));
-    checkAssertionFails(slider.positionEquals(wrongLabel), "expected:<[" + wrongLabel + "]> but was:<[" + correctLabel + "]>");
+    checkAssertionFails(slider.positionEquals(wrongLabel), "expected: <[" + wrongLabel + "]> but was: <[" + correctLabel + "]>");
   }
 
   private static JSlider createTemperatureSlider() {

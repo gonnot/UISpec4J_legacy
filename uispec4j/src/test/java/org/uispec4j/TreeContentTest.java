@@ -265,7 +265,7 @@ public class TreeContentTest extends TreeTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("expected:<GREEN> but was:<FA0A0A>", e.getMessage());
+      Assertions.assertEquals("expected: <GREEN> but was: <FA0A0A>", e.getMessage());
     }
   }
 

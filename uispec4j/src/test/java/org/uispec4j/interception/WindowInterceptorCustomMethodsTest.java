@@ -35,7 +35,7 @@ public class WindowInterceptorCustomMethodsTest extends WindowInterceptorTestCas
           .processTransientWindow("Expected")
           .run();
       }
-    }, "Invalid window title - expected:<[Expected]> but was:<[Actual]>");
+    }, "Invalid window title - expected: <[Expected]> but was: <[Actual]>");
   }
 
   @Test
@@ -67,7 +67,7 @@ public class WindowInterceptorCustomMethodsTest extends WindowInterceptorTestCas
           }
         })
         .process("error", new ButtonTriggerHandler("Hide")),
-      "Unexpected title - expected:<[error]> but was:<[dialog title]>");
+      "Unexpected title - expected: <[error]> but was: <[dialog title]>");
   }
 
   @Test
@@ -77,7 +77,7 @@ public class WindowInterceptorCustomMethodsTest extends WindowInterceptorTestCas
         .init(getShowFirstDialogTrigger())
         .processWithButtonClick("OK")
         .process("error", new ButtonTriggerHandler("OK")),
-      "Error in handler 'error': Unexpected title - expected:<[error]> but was:<[second dialog]>");
+      "Error in handler 'error': Unexpected title - expected: <[error]> but was: <[second dialog]>");
   }
 
   @Test
@@ -171,7 +171,7 @@ public class WindowInterceptorCustomMethodsTest extends WindowInterceptorTestCas
           .processWithButtonClick("Expected", "OK")
           .run();
       }
-    }, "Invalid window title - expected:<[Expected]> but was:<[Actual]>");
+    }, "Invalid window title - expected: <[Expected]> but was: <[Actual]>");
   }
 
   private static class TransientWindowTrigger implements Trigger {

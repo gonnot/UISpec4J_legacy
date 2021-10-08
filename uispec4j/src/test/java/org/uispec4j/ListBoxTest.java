@@ -451,7 +451,7 @@ public class ListBoxTest extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("Error at index 1 - expected:<BLUE> but was:<FFAFAF>", e.getMessage());
+      Assertions.assertEquals("Error at index 1 - expected: <BLUE> but was: <FFAFAF>", e.getMessage());
     }
 
     assertTrue(listBox.foregroundNear(0, "black"));
