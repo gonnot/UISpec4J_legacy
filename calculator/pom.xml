@@ -23,6 +23,12 @@
       <version>4.13.2</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.uispec4j</groupId>
+      <artifactId>uispec4j</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <!-- Project Information -->
@@ -65,23 +71,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>jdk17</id>
-      <activation>
-        <!-- <jdk>17</jdk> -->
-        <activeByDefault/>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>org.uispec4j</groupId>
-          <artifactId>uispec4j</artifactId>
-          <version>${project.version}</version>
-          <scope>test</scope>
-          <classifier>jdk17</classifier>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
 </project>
