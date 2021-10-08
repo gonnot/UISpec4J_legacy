@@ -31,11 +31,11 @@ public abstract class PanelComponentFinderTestCase extends UnitTestCase {
   private <T extends Component> T createComponent(Class<T> awtComponentclass, String name) throws Exception {
     Component component;
     try {
-      Constructor constructor = awtComponentclass.getConstructor(new Class[]{String.class});
-      component = (Component) constructor.newInstance(new Object[]{name});
+      Constructor<T> constructor = awtComponentclass.getConstructor(String.class);
+      component = constructor.newInstance(name);
     }
     catch (NoSuchMethodException e) {
-      component = (Component) awtComponentclass.newInstance();
+      component = awtComponentclass.getDeclaredConstructor().newInstance();
     }
     component.setName(name);
     return (T)component;

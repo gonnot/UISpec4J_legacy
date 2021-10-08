@@ -41,9 +41,9 @@ public class UISpecToolkit extends ToolkitDelegate {
   }
 
   public boolean isTaskbarSupported() {
-	return false;
+    return false;
   }
-  
+
   /**
    * Sets the <code>awt.toolkit</code> to its initial value.
    * <p>This method will only work properly if the toolkit has not yet been instanciated by Swing.
@@ -137,7 +137,7 @@ public class UISpecToolkit extends ToolkitDelegate {
 
   private static void buildUnderlyingToolkit(String awtToolkit) {
     try {
-      underlyingToolkit = (Toolkit)Class.forName(awtToolkit).newInstance();
+      underlyingToolkit = (Toolkit)Class.forName(awtToolkit).getDeclaredConstructor().newInstance();
     }
     catch (Exception e) {
       throw new AWTError("Unable to load AWT Toolkit: " + awtToolkit + " - "
