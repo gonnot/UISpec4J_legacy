@@ -110,7 +110,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version>
         <configuration>
-          <release>17</release>
+          <source>17</source>
+          <target>17</target>
           <encoding>UTF-8</encoding>
           <showDeprecation>true</showDeprecation>
           <showWarnings>true</showWarnings>
