@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 public class InteractionsBetweenContactTableAndCategoryTreeTest extends AddressBookTestCase {
   @BeforeEach
   final protected void setUp() throws Exception {
-    super.setUp();
+
     createCategory("", "friends");
     createCategory("", "work");
     createCategory("work", "team1");

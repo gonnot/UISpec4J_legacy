@@ -12,7 +12,7 @@ public class ContactRemovalTest extends AddressBookTestCase {
 
   @BeforeEach
   final protected void setUp() throws Exception {
-    super.setUp();
+
     createContact("Smith", "John");
     createContact("Smith", "Maria");
   }

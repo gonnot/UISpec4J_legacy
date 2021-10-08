@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 
 import javax.swing.tree.TreePath;
@@ -27,7 +28,7 @@ public class TreeExpansionTest extends TreeTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals(Tree.badTreePath("unknown"), e.getMessage());
+      Assertions.assertEquals(Tree.badTreePath("unknown"), e.getMessage());
     }
   }
 

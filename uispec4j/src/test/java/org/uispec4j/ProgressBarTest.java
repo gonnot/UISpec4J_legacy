@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.assertion.UISpecAssert;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
@@ -15,14 +16,13 @@ public class ProgressBarTest extends UIComponentTestCase {
 
   @BeforeEach
   final protected void setUp() throws Exception {
-    super.setUp();
     jProgressBar = new JProgressBar();
     jProgressBar.setName("myProgressBar");
     progressBar = (ProgressBar)UIComponentFactory.createUIComponent(jProgressBar);
   }
 
   public void testGetComponentTypeName() throws Exception {
-    assertEquals("progressBar", progressBar.getDescriptionTypeName());
+    Assertions.assertEquals("progressBar", progressBar.getDescriptionTypeName());
   }
 
   public void testGetDescription() throws Exception {
@@ -54,7 +54,7 @@ public class ProgressBarTest extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Unexpected completion rate - expected:<100> but was:<50>", e.getMessage());
+      Assertions.assertEquals("Unexpected completion rate - expected:<100> but was:<50>", e.getMessage());
     }
 
     jProgressBar.setIndeterminate(true);
@@ -63,7 +63,7 @@ public class ProgressBarTest extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Unexpected completion rate - expected:<100> but was:<-1>", e.getMessage());
+      Assertions.assertEquals("Unexpected completion rate - expected:<100> but was:<-1>", e.getMessage());
     }
   }
 
@@ -79,7 +79,7 @@ public class ProgressBarTest extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("The progress bar status is not undeterminate", e.getMessage());
+      Assertions.assertEquals("The progress bar status is not undeterminate", e.getMessage());
     }
   }
 
@@ -125,7 +125,7 @@ public class ProgressBarTest extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("expected:<[unexpected]> but was:<[done]>", e.getMessage());
+      Assertions.assertEquals("expected:<[unexpected]> but was:<[done]>", e.getMessage());
     }
   }
 
@@ -141,7 +141,7 @@ public class ProgressBarTest extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals(errorMessage, e.getMessage());
+      Assertions.assertEquals(errorMessage, e.getMessage());
     }
   }
 

@@ -1,5 +1,6 @@
 package org.uispec4j.extension;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.TestUtils;
 import org.uispec4j.utils.UnitTestCase;
@@ -12,7 +13,6 @@ public class ExtensionGeneratorTest extends UnitTestCase {
 
   @BeforeEach
   final protected void setUp() throws Exception {
-    super.setUp();
     output = new File(findTargetDirectory(), "tmp/extension.jar");
     output.getParentFile().mkdirs();
     output.delete();
@@ -79,8 +79,8 @@ public class ExtensionGeneratorTest extends UnitTestCase {
     if (TestUtils.isMacOsX()) {
       errorOutput = cleanUpOutputForMacOSX(errorOutput);
     }
-    assertEquals("", errorOutput);
-    assertEquals("OK", output.getResult());
+    Assertions.assertEquals("", errorOutput);
+    Assertions.assertEquals("OK", output.getResult());
   }
 
   public String cleanUpOutputForMacOSX(String input) {

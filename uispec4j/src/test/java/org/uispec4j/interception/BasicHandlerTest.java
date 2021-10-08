@@ -1,5 +1,6 @@
 package org.uispec4j.interception;
 
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.Trigger;
 import org.uispec4j.Window;
 
@@ -11,11 +12,11 @@ public class BasicHandlerTest extends InterceptionTestCase {
     WindowInterceptor
       .init(triggerShowDialog())
       .process(BasicHandler.init()
-        .assertTitleEquals("Dialog title")
-        .assertTitleContains("title")
-        .assertContainsText("some text")
-        .clickButton("OK")
-        .triggerButtonClick("Hide"))
+                 .assertTitleEquals("Dialog title")
+                 .assertTitleContains("title")
+                 .assertContainsText("some text")
+                 .clickButton("OK")
+                 .triggerButtonClick("Hide"))
       .run();
     logger.assertEquals("<log>" +
                         "  <click button='OK'/>" +
@@ -28,9 +29,9 @@ public class BasicHandlerTest extends InterceptionTestCase {
       WindowInterceptor
         .init(triggerShowDialog())
         .process(BasicHandler
-        .init()
-        .assertTitleEquals("Error")
-        .triggerButtonClick("Hide")),
+                   .init()
+                   .assertTitleEquals("Error")
+                   .triggerButtonClick("Hide")),
       "Unexpected title - expected:<[Error]> but was:<[Dialog title]>");
   }
 
@@ -39,30 +40,30 @@ public class BasicHandlerTest extends InterceptionTestCase {
       WindowInterceptor
         .init(triggerShowDialog())
         .process(BasicHandler
-        .init()
-        .assertTitleContains("Error")
-        .triggerButtonClick("Hide")),
+                   .init()
+                   .assertTitleContains("Error")
+                   .triggerButtonClick("Hide")),
       "expected to contain:<Error> but was:<Dialog title>");
   }
 
   public void testAssertContainsTextError() throws Exception {
     checkAssertionError(WindowInterceptor
-      .init(triggerShowDialog())
-      .process(BasicHandler
-      .init()
-      .assertContainsText("Error")
-      .triggerButtonClick("Hide")),
-                              "Text not found: Error");
+                          .init(triggerShowDialog())
+                          .process(BasicHandler
+                                     .init()
+                                     .assertContainsText("Error")
+                                     .triggerButtonClick("Hide")),
+                        "Text not found: Error");
   }
 
   public void testClickButtonError() throws Exception {
     checkAssertionError(WindowInterceptor
-      .init(triggerShowDialog())
-      .process(BasicHandler
-      .init()
-      .clickButton("Unknown")
-      .triggerButtonClick("Hide")),
-                              "Component 'Unknown' of type 'button' not found - available names: [Hide,OK]");
+                          .init(triggerShowDialog())
+                          .process(BasicHandler
+                                     .init()
+                                     .clickButton("Unknown")
+                                     .triggerButtonClick("Hide")),
+                        "Component 'Unknown' of type 'button' not found - available names: [Hide,OK]");
   }
 
   public void testJOptionPaneConfirmationReplies() throws Exception {
@@ -76,12 +77,12 @@ public class BasicHandlerTest extends InterceptionTestCase {
     WindowInterceptor
       .init(new Trigger() {
         public void run() throws Exception {
-          assertEquals("result", JOptionPane.showInputDialog("Message"));
+          Assertions.assertEquals("result", JOptionPane.showInputDialog("Message"));
         }
       })
       .process(BasicHandler.init()
-        .setText("result")
-        .triggerButtonClick("OK"))
+                 .setText("result")
+                 .triggerButtonClick("OK"))
       .run();
   }
 
@@ -89,12 +90,12 @@ public class BasicHandlerTest extends InterceptionTestCase {
     WindowInterceptor
       .init(new Trigger() {
         public void run() throws Exception {
-          assertEquals("", JOptionPane.showInputDialog("Message"));
+          Assertions.assertEquals("", JOptionPane.showInputDialog("Message"));
         }
       })
       .process(BasicHandler.init()
-        .setText(null)
-        .triggerButtonClick("OK"))
+                 .setText(null)
+                 .triggerButtonClick("OK"))
       .run();
   }
 
@@ -103,12 +104,12 @@ public class BasicHandlerTest extends InterceptionTestCase {
     WindowInterceptor
       .init(new Trigger() {
         public void run() throws Exception {
-          assertEquals("Result", JOptionPane.showInputDialog("Message"));
+          Assertions.assertEquals("Result", JOptionPane.showInputDialog("Message"));
         }
       })
       .process(BasicHandler.init()
-        .setText("Result")
-        .triggerButtonClick(getLocalLabel("OptionPane.cancelButtonText") ))
+                 .setText("Result")
+                 .triggerButtonClick(getLocalLabel("OptionPane.cancelButtonText")))
       .run();
   }
 
@@ -173,8 +174,8 @@ public class BasicHandlerTest extends InterceptionTestCase {
         }
       })
       .process(BasicHandler.init()
-        .assertContainsText("Confirm?")
-        .triggerButtonClick(getLocalLabel("OptionPane.yesButtonText")))
+                 .assertContainsText("Confirm?")
+                 .triggerButtonClick(getLocalLabel("OptionPane.yesButtonText")))
       .processWithButtonClick("Close")
       .run();
     logger.assertEquals("<log>" +
@@ -188,10 +189,10 @@ public class BasicHandlerTest extends InterceptionTestCase {
     WindowInterceptor
       .init(new Trigger() {
         public void run() throws Exception {
-          assertEquals(value,
-                       JOptionPane.showConfirmDialog(new JFrame(), "msg", "title",
-                                                     optionType,
-                                                     JOptionPane.WARNING_MESSAGE));
+          Assertions.assertEquals(value,
+                                  JOptionPane.showConfirmDialog(new JFrame(), "msg", "title",
+                                                                optionType,
+                                                                JOptionPane.WARNING_MESSAGE));
         }
       })
       .process(BasicHandler.init().triggerButtonClick(button))

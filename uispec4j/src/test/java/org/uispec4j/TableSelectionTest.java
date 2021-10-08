@@ -1,9 +1,10 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.assertion.UISpecAssert;
+import org.uispec4j.utils.ArrayUtils;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.Counter;
-import org.uispec4j.utils.ArrayUtils;
 import org.uispec4j.xml.EventLogger;
 
 import javax.swing.event.ListSelectionEvent;
@@ -40,9 +41,9 @@ public class TableSelectionTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("expected:<[[false,false,false], [false,false,false]]> " +
-                   "but was:<[[false,true,false], [false,false,false]]>",
-                   e.getMessage());
+      Assertions.assertEquals("expected:<[[false,false,false], [false,false,false]]> " +
+                              "but was:<[[false,true,false], [false,false,false]]>",
+                              e.getMessage());
     }
 
     if (!TestUtils.isMacOsX()) {
@@ -101,7 +102,7 @@ public class TableSelectionTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Expected: [0]\nActual:   [0,1]", e.getMessage());
+      Assertions.assertEquals("Expected: [0]\nActual:   [0,1]", e.getMessage());
     }
   }
 
@@ -122,9 +123,9 @@ public class TableSelectionTest extends TableTestCase {
       {true, false, false}
     }));
 
-    assertEquals(0, doubleClickCounter.getCount());
+    Assertions.assertEquals(0, doubleClickCounter.getCount());
     table.doubleClick(0, 1);
-    assertEquals(1, doubleClickCounter.getCount());
+    Assertions.assertEquals(1, doubleClickCounter.getCount());
 
     assertTrue(table.selectionEquals(new boolean[][]{
       {false, true, false},
@@ -163,7 +164,7 @@ public class TableSelectionTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Cell-level selection is not supported on this table", e.getMessage());
+      Assertions.assertEquals("Cell-level selection is not supported on this table", e.getMessage());
     }
   }
 
@@ -175,7 +176,7 @@ public class TableSelectionTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Selection is not empty", e.getMessage());
+      Assertions.assertEquals("Selection is not empty", e.getMessage());
     }
     table.clearSelection();
     table.selectionIsEmpty();
@@ -208,7 +209,7 @@ public class TableSelectionTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Individual cell selection is not allowed on this table", e.getMessage());
+      Assertions.assertEquals("Individual cell selection is not allowed on this table", e.getMessage());
     }
   }
 
@@ -267,7 +268,7 @@ public class TableSelectionTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (IllegalArgumentException e) {
-      assertEquals("Invalid indexes: 1 > 0", e.getMessage());
+      Assertions.assertEquals("Invalid indexes: 1 > 0", e.getMessage());
     }
   }
 
@@ -276,17 +277,17 @@ public class TableSelectionTest extends TableTestCase {
       {"yellow", "blue", "green"},
       {"apple", "lemon", "orange"},
       {"big", "huge", "green"},
-    }, new String[]{"a", "b", "c"}));
+      }, new String[]{"a", "b", "c"}));
     table = new Table(jTable);
 
     table.selectRowsWithText(0, "yellow", "big");
-    ArrayUtils.assertEquals(new int[]{0,2}, jTable.getSelectedRows());
+    ArrayUtils.assertEquals(new int[]{0, 2}, jTable.getSelectedRows());
 
     table.selectRowsWithText(1, "lemon");
     ArrayUtils.assertEquals(new int[]{1}, jTable.getSelectedRows());
 
     table.selectRowsWithText(2, "green");
-    ArrayUtils.assertEquals(new int[]{0,2}, jTable.getSelectedRows());
+    ArrayUtils.assertEquals(new int[]{0, 2}, jTable.getSelectedRows());
 
     table.selectRowsWithText(1);
     ArrayUtils.assertEquals(new int[]{}, jTable.getSelectedRows());
@@ -297,7 +298,7 @@ public class TableSelectionTest extends TableTestCase {
       {"yellow", "blue", "green"},
       {"apple", "lemon", "orange"},
       {"big", "huge", "green"},
-    }, new String[]{"a", "b", "c"}));
+      }, new String[]{"a", "b", "c"}));
     table = new Table(jTable);
 
     try {
@@ -305,7 +306,7 @@ public class TableSelectionTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Text 'unknown' not found in column 0 - actual content: [yellow, apple, big]", e.getMessage());
+      Assertions.assertEquals("Text 'unknown' not found in column 0 - actual content: [yellow, apple, big]", e.getMessage());
     }
   }
 
@@ -335,7 +336,7 @@ public class TableSelectionTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (IllegalArgumentException e) {
-      assertEquals("Invalid block definition - expected top <= bottom and left <= right", e.getMessage());
+      Assertions.assertEquals("Invalid block definition - expected top <= bottom and left <= right", e.getMessage());
     }
   }
 
@@ -346,7 +347,7 @@ public class TableSelectionTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Only row-level selection is allowed on this table", e.getMessage());
+      Assertions.assertEquals("Only row-level selection is allowed on this table", e.getMessage());
     }
   }
 
@@ -361,7 +362,7 @@ public class TableSelectionTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Row 1 is not selected", e.getMessage());
+      Assertions.assertEquals("Row 1 is not selected", e.getMessage());
     }
   }
 

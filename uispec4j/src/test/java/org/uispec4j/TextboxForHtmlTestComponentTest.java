@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.FileTestUtils;
@@ -19,7 +20,7 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
 
   @BeforeEach
   final protected void setUp() throws Exception {
-    super.setUp();
+
     initWithHtmlTextPane();
   }
 
@@ -29,11 +30,11 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
   }
 
   public void testGetComponentTypeName() throws Exception {
-    assertEquals("textBox", UIComponentFactory.createUIComponent(new JTextPane()).getDescriptionTypeName());
+    Assertions.assertEquals("textBox", UIComponentFactory.createUIComponent(new JTextPane()).getDescriptionTypeName());
   }
 
   public void testGetDescription() throws Exception {
-    assertTrue(textBox.getDescription().startsWith("<textBox name='myText' text='&lt;html".replaceAll("'", "\"")));
+    Assertions.assertTrue(textBox.getDescription().startsWith("<textBox name='myText' text='&lt;html".replaceAll("'", "\"")));
   }
 
   public void testFactory() throws Exception {
@@ -118,12 +119,12 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("The component text does not contain 'error' - actual content is:<html>\n" +
-                   "  <head>\n" +
-                   "  </head>\n" +
-                   "  <body>My name is <b>Bond</b></body>\n" +
-                   "</html>\n",
-                   e.getMessage());
+      Assertions.assertEquals("The component text does not contain 'error' - actual content is:<html>\n" +
+                              "  <head>\n" +
+                              "  </head>\n" +
+                              "  <body>My name is <b>Bond</b></body>\n" +
+                              "</html>\n",
+                              e.getMessage());
     }
   }
 
@@ -157,15 +158,15 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Text should be empty but contains: <html>\n" +
-                   "  <head>\n" +
-                   "    \n" +
-                   "  </head>\n" +
-                   "  <body>\n" +
-                   "    a\n" +
-                   "  </body>\n" +
-                   "</html>\n",
-                   e.getMessage());
+      Assertions.assertEquals("Text should be empty but contains: <html>\n" +
+                              "  <head>\n" +
+                              "    \n" +
+                              "  </head>\n" +
+                              "  <body>\n" +
+                              "    a\n" +
+                              "  </body>\n" +
+                              "</html>\n",
+                              e.getMessage());
     }
 
     jTextComponent.setText("<html>\n" +
@@ -346,13 +347,13 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
     editorPane.addHyperlinkListener(listener);
     TextBox textComponent = new TextBox(editorPane);
     textComponent.clickOnHyperlink(link);
-    assertEquals(1, listener.getCallCount());
-    assertEquals(expectedTarget, listener.getLastEvent().getDescription());
+    Assertions.assertEquals(1, listener.getCallCount());
+    Assertions.assertEquals(expectedTarget, listener.getLastEvent().getDescription());
 
     listener.reset();
     textComponent.triggerClickOnHyperlink(link).run();
-    assertEquals(1, listener.getCallCount());
-    assertEquals(expectedTarget, listener.getLastEvent().getDescription());
+    Assertions.assertEquals(1, listener.getCallCount());
+    Assertions.assertEquals(expectedTarget, listener.getLastEvent().getDescription());
   }
 
   private void checkClickOnHyperlinkError(String html, final String link, String errorMessage) throws Exception {

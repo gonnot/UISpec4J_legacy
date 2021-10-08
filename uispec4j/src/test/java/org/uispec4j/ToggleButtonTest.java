@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.xml.XmlAssert;
 
@@ -8,12 +9,12 @@ import javax.swing.*;
 
 public class ToggleButtonTest extends ButtonTestCase {
 
-  private JToggleButton jToggleButton = new JToggleButton();
+  private final JToggleButton jToggleButton = new JToggleButton();
   private ToggleButton toggle;
 
   @BeforeEach
   final protected void setUp() throws Exception {
-    super.setUp();
+
     toggle = new ToggleButton(jToggleButton);
   }
 
@@ -26,7 +27,7 @@ public class ToggleButtonTest extends ButtonTestCase {
   }
 
   public void testGetComponentTypeName() throws Exception {
-    assertEquals("toggleButton", toggle.getDescriptionTypeName());
+    Assertions.assertEquals("toggleButton", toggle.getDescriptionTypeName());
   }
 
   public void testGetDescription() throws Exception {

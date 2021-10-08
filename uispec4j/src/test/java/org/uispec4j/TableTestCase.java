@@ -15,7 +15,7 @@ public abstract class TableTestCase extends UnitTestCase {
 
   @BeforeEach
   final protected void setUp() throws Exception {
-    super.setUp();
+
     init(new JTable(new MyModel()));
   }
 

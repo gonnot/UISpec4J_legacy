@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.utils.UIComponentFactory;
 import org.uispec4j.xml.XmlAssert;
@@ -12,7 +13,6 @@ public class RadioButtonTest extends ButtonTestCase {
 
   @BeforeEach
   final protected void setUp() throws Exception {
-    super.setUp();
     jRadioButton = new JRadioButton("myRadioButton");
     radioButton = (RadioButton)UIComponentFactory.createUIComponent(jRadioButton);
   }
@@ -26,7 +26,7 @@ public class RadioButtonTest extends ButtonTestCase {
   }
 
   public void testGetComponentTypeName() throws Exception {
-    assertEquals("radioButton", radioButton.getDescriptionTypeName());
+    Assertions.assertEquals("radioButton", radioButton.getDescriptionTypeName());
   }
 
   public void testGetDescription() throws Exception {
@@ -48,10 +48,10 @@ public class RadioButtonTest extends ButtonTestCase {
   public void testActivate() throws Exception {
     assertFalse(radioButton.isSelected());
     radioButton.click();
-    assertTrue(jRadioButton.isSelected());
+    Assertions.assertTrue(jRadioButton.isSelected());
     assertTrue(radioButton.isSelected());
     radioButton.click();
     assertFalse(radioButton.isSelected());
-    assertFalse(jRadioButton.isSelected());
+    Assertions.assertFalse(jRadioButton.isSelected());
   }
 }

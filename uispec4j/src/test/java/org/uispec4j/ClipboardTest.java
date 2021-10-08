@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.utils.UnitTestCase;
 
 import java.awt.*;
@@ -28,8 +29,8 @@ public class ClipboardTest extends UnitTestCase {
                                public void check(Object content) throws Exception {
                                  InputStream stream = (InputStream)content;
                                  BufferedReader data = new BufferedReader(new InputStreamReader(stream));
-                                 assertEquals(CONTENT_STRING, data.readLine());
-                                 assertEquals(-1, data.read());
+                                 Assertions.assertEquals(CONTENT_STRING, data.readLine());
+                                 Assertions.assertEquals(-1, data.read());
                                  data.close();
                                }
                              });
@@ -41,7 +42,7 @@ public class ClipboardTest extends UnitTestCase {
                              new ContentChecker() {
                                public void check(Object content) throws Exception {
                                  CharBuffer buffer = (CharBuffer)content;
-                                 assertEquals(CONTENT_STRING, buffer.toString());
+                                 Assertions.assertEquals(CONTENT_STRING, buffer.toString());
                                }
                              });
   }
@@ -54,8 +55,8 @@ public class ClipboardTest extends UnitTestCase {
                                  Reader reader = (Reader)content;
                                  char[] chars = new char[CONTENT_STRING.length()];
                                  reader.read(chars);
-                                 assertEquals(CONTENT_STRING, new String(chars));
-                                 assertEquals(-1, reader.read());
+                                 Assertions.assertEquals(CONTENT_STRING, new String(chars));
+                                 Assertions.assertEquals(-1, reader.read());
                                  reader.close();
                                }
                              });
@@ -67,7 +68,7 @@ public class ClipboardTest extends UnitTestCase {
                              new ContentChecker() {
                                public void check(Object content) throws Exception {
                                  ByteBuffer buffer = (ByteBuffer)content;
-                                 assertEquals(CONTENT_STRING, new String(buffer.array()));
+                                 Assertions.assertEquals(CONTENT_STRING, new String(buffer.array()));
                                }
                              });
   }
@@ -80,13 +81,13 @@ public class ClipboardTest extends UnitTestCase {
     Clipboard.putText(type, charset, transferType, CONTENT_STRING);
     Transferable transferable = getSystemClipboard().getContents(null);
     DataFlavor[] flavors = transferable.getTransferDataFlavors();
-    assertEquals(1, flavors.length);
+    Assertions.assertEquals(1, flavors.length);
     DataFlavor flavor = flavors[0];
     if (!flavor.isMimeTypeEqual(expectedMimeType)) {
-      assertEquals(expectedMimeType, flavor.getMimeType());
+      Assertions.assertEquals(expectedMimeType, flavor.getMimeType());
     }
     Object content = transferable.getTransferData(flavor);
-    assertTrue(transferType.getDataClass().isInstance(content));
+    Assertions.assertTrue(transferType.getDataClass().isInstance(content));
     contentChecker.check(content);
   }
 
@@ -96,7 +97,7 @@ public class ClipboardTest extends UnitTestCase {
 
   private void checkSimplePutText(String data) throws Exception {
     Clipboard.putText(data);
-    assertEquals(data, Clipboard.getContentAsText());
+    Assertions.assertEquals(data, Clipboard.getContentAsText());
   }
 
   private java.awt.datatransfer.Clipboard getSystemClipboard() {

@@ -1,5 +1,6 @@
 package org.uispec4j.xml;
 
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.UnitTestCase;
 
@@ -113,7 +114,7 @@ public class XmlAssertTest extends UnitTestCase {
 
   private void checkXml(String xmlA, String xmlB, boolean isEquivalent, boolean isEqual) throws Exception {
     if (isEqual) {
-      assertTrue(isEquivalent);
+      Assertions.assertTrue(isEquivalent);
       XmlAssert.assertEquivalent(xmlA, xmlB);
       XmlAssert.assertEquals(xmlA, xmlB);
     }

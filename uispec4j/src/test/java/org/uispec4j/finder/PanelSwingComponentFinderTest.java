@@ -1,5 +1,6 @@
 package org.uispec4j.finder;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.ComponentAmbiguityException;
 import org.uispec4j.ItemNotFoundException;
@@ -8,15 +9,17 @@ import org.uispec4j.TestUtils;
 import javax.swing.*;
 import java.awt.*;
 
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 public class PanelSwingComponentFinderTest extends PanelComponentFinderTestCase {
   private JButton button1;
   private JButton button2;
 
   @BeforeEach
   final protected void setUp() throws Exception {
-    super.setUp();
-    button1 = (JButton)addComponent(JButton.class, "button1");
-    button2 = (JButton)addComponent(JButton.class, "button2");
+
+    button1 = addComponent(JButton.class, "button1");
+    button2 = addComponent(JButton.class, "button2");
     button2.setEnabled(false);
   }
 
@@ -35,7 +38,7 @@ public class PanelSwingComponentFinderTest extends PanelComponentFinderTestCase 
       });
     }
     catch (ItemNotFoundException e) {
-      assertEquals("No component found", e.getMessage());
+      Assertions.assertEquals("No component found", e.getMessage());
     }
 
     try {
@@ -46,9 +49,9 @@ public class PanelSwingComponentFinderTest extends PanelComponentFinderTestCase 
       });
     }
     catch (ComponentAmbiguityException e) {
-      assertEquals(Messages.computeAmbiguityMessage(new Component[]{button1, button2},
-                                                    null, null),
-                   e.getMessage());
+      Assertions.assertEquals(Messages.computeAmbiguityMessage(new Component[]{button1, button2},
+                                                               null, null),
+                              e.getMessage());
     }
   }
 

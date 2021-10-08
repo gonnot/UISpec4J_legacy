@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.utils.Functor;
 import org.uispec4j.utils.UIComponentFactory;
@@ -12,7 +13,7 @@ public class TextBoxForLabelTest extends TextBoxComponentTestCase {
 
   @BeforeEach
   final protected void setUp() throws Exception {
-    super.setUp();
+
     jLabel = new JLabel("some text");
     jLabel.setName("myLabel");
     textBox = new TextBox(jLabel);
@@ -24,7 +25,7 @@ public class TextBoxForLabelTest extends TextBoxComponentTestCase {
   }
 
   public void testGetComponentTypeName() throws Exception {
-    assertEquals("textBox", UIComponentFactory.createUIComponent(new JLabel()).getDescriptionTypeName());
+    Assertions.assertEquals("textBox", UIComponentFactory.createUIComponent(new JLabel()).getDescriptionTypeName());
   }
 
   public void testGetDescription() throws Exception {
@@ -80,7 +81,7 @@ public class TextBoxForLabelTest extends TextBoxComponentTestCase {
         textBox.setText("text");
       }
     }, "The text box is not editable");
-    assertEquals("some text", textBox.getText());
+    Assertions.assertEquals("some text", textBox.getText());
   }
 
   public void testInsertTextIsNotSupported() throws Exception {
@@ -89,7 +90,7 @@ public class TextBoxForLabelTest extends TextBoxComponentTestCase {
         textBox.insertText("text", 0);
       }
     }, "The text box is not editable");
-    assertEquals("some text", textBox.getText());
+    Assertions.assertEquals("some text", textBox.getText());
   }
 
   public void testAppendTextIsNotSupported() throws Exception {
@@ -98,7 +99,7 @@ public class TextBoxForLabelTest extends TextBoxComponentTestCase {
         textBox.appendText("text");
       }
     }, "The text box is not editable");
-    assertEquals("some text", textBox.getText());
+    Assertions.assertEquals("some text", textBox.getText());
   }
 
   public void testClearIsNotSupported() throws Exception {
@@ -107,13 +108,13 @@ public class TextBoxForLabelTest extends TextBoxComponentTestCase {
         textBox.clear();
       }
     }, "The text box is not editable");
-    assertEquals("some text", textBox.getText());
+    Assertions.assertEquals("some text", textBox.getText());
   }
 
   public void testGetText() throws Exception {
-    assertEquals("some text", textBox.getText());
+    Assertions.assertEquals("some text", textBox.getText());
     jLabel.setText("new text");
-    assertEquals("new text", textBox.getText());
+    Assertions.assertEquals("new text", textBox.getText());
   }
 
   public void testClickOnHyperlinkIsNotSupported() throws Exception {

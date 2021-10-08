@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.utils.ArrayUtils;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.Functor;
@@ -15,7 +16,7 @@ public class TableHeaderTest extends TableTestCase {
     JTableHeader tableHeader = jTable.getTableHeader();
     tableHeader.setVisible(false);
     jTable.setTableHeader(null);
-    assertEquals(1, table.getHeader().findColumnIndex("1"));
+    Assertions.assertEquals(1, table.getHeader().findColumnIndex("1"));
   }
 
   public void testContent() throws Exception {
@@ -27,7 +28,7 @@ public class TableHeaderTest extends TableTestCase {
     catch (AssertionError e) {
       Pattern pattern = Pattern.compile("expected:<.*> but was:<.*0,1,2.*>");
       if (!pattern.matcher(e.getMessage()).matches()) {
-        fail("Unexpected message: " + e.getMessage());
+        Assertions.fail("Unexpected message: " + e.getMessage());
       }
     }
   }
@@ -72,7 +73,7 @@ public class TableHeaderTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("The table contains an header", e.getMessage());
+      Assertions.assertEquals("The table contains an header", e.getMessage());
     }
   }
 
@@ -156,7 +157,7 @@ public class TableHeaderTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Unexpected color at column 1 - expected:<BLACK> but was:<FF0000>", e.getMessage());
+      Assertions.assertEquals("Unexpected color at column 1 - expected:<BLACK> but was:<FF0000>", e.getMessage());
     }
   }
 
@@ -166,16 +167,16 @@ public class TableHeaderTest extends TableTestCase {
   }
 
   public void testFindColumnIndex() throws Exception {
-    assertEquals(0, table.getHeader().findColumnIndex("0"));
-    assertEquals(1, table.getHeader().findColumnIndex("1"));
-    assertEquals(2, table.getHeader().findColumnIndex("2"));
+    Assertions.assertEquals(0, table.getHeader().findColumnIndex("0"));
+    Assertions.assertEquals(1, table.getHeader().findColumnIndex("1"));
+    Assertions.assertEquals(2, table.getHeader().findColumnIndex("2"));
 
     try {
       table.getHeader().findColumnIndex("unknown");
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Column 'unknown' not found - actual names: [0, 1, 2]", e.getMessage());
+      Assertions.assertEquals("Column 'unknown' not found - actual names: [0, 1, 2]", e.getMessage());
     }
   }
 
@@ -185,7 +186,7 @@ public class TableHeaderTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("The table contains no header", e.getMessage());
+      Assertions.assertEquals("The table contains no header", e.getMessage());
     }
   }
 }

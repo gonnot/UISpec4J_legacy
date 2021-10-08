@@ -1,5 +1,6 @@
 package org.uispec4j.utils;
 
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.Key;
 import org.uispec4j.UIComponent;
 import org.uispec4j.assertion.Assertion;
@@ -12,7 +13,7 @@ public class UIComponentFactoryTest extends UnitTestCase {
   public void testInitWithDummyComponent() throws Exception {
     UIComponentFactory.register(ComponentWithSwingClassesField.class);
     UIComponent uiComponent = UIComponentFactory.createUIComponent(new JCountingButton(""));
-    assertEquals(ComponentWithSwingClassesField.class, uiComponent.getClass());
+    Assertions.assertEquals(ComponentWithSwingClassesField.class, uiComponent.getClass());
   }
 
   public void testInitErrorForClassWithoutSwingClassesField() throws Exception {
@@ -70,10 +71,10 @@ public class UIComponentFactoryTest extends UnitTestCase {
   private void checkInitError(Class uiClass, String message) {
     try {
       UIComponentFactory.register(uiClass);
-      fail();
+      Assertions.fail();
     }
     catch (RuntimeException e) {
-      assertEquals(message, e.getMessage());
+      Assertions.assertEquals(message, e.getMessage());
     }
   }
 
@@ -110,7 +111,7 @@ public class UIComponentFactoryTest extends UnitTestCase {
 
   private static class ComponentWithPrivateTypeNameField extends DummyUIComponent {
     public static Class[] SWING_CLASSES = {org.uispec4j.AbstractButton.class};
-    private static String TYPE_NAME = "Type";
+    private static final String TYPE_NAME = "Type";
   }
 
   private static class ComponentWithoutUnexpectedTypeNameClass extends DummyUIComponent {

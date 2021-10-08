@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.xml.XmlAssert;
@@ -15,12 +16,12 @@ public abstract class SpinnerTestCase extends UIComponentTestCase {
   protected abstract Spinner createSpinner(JSpinner jSpinner);
 
   @BeforeEach
-  final protected void setUp() throws Exception {
+  final protected void spinnerSetUp() throws Exception {
     init();
   }
 
   public final void testGetComponentTypeName() throws Exception {
-    assertEquals("spinner", spinner.getDescriptionTypeName());
+    Assertions.assertEquals("spinner", spinner.getDescriptionTypeName());
   }
 
   public final void testGetDescription() throws Exception {
@@ -41,7 +42,7 @@ public abstract class SpinnerTestCase extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("No previous value from the start", e.getMessage());
+      Assertions.assertEquals("No previous value from the start", e.getMessage());
     }
   }
 
@@ -51,7 +52,7 @@ public abstract class SpinnerTestCase extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("No previous value from the end", e.getMessage());
+      Assertions.assertEquals("No previous value from the end", e.getMessage());
     }
   }
 

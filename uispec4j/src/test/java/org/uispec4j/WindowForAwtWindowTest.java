@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.xml.XmlAssert;
 
@@ -9,7 +10,7 @@ import java.awt.*;
 public class WindowForAwtWindowTest extends WindowTestCase {
   public void test() throws Exception {
     Window window = createWindow();
-    assertEquals("", window.getTitle());
+    Assertions.assertEquals("", window.getTitle());
   }
 
   public void testWindowManagesMenuBars() throws Exception {
@@ -19,12 +20,12 @@ public class WindowForAwtWindowTest extends WindowTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("This component has no menu bar", e.getMessage());
+      Assertions.assertEquals("This component has no menu bar", e.getMessage());
     }
   }
 
   public void testGetTitle() throws Exception {
-    assertEquals("", createWindow().getTitle());
+    Assertions.assertEquals("", createWindow().getTitle());
   }
 
   public void testAssertTitleEquals() throws Exception {

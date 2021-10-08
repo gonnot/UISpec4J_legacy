@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.utils.ArrayUtils;
 import org.uispec4j.utils.Functor;
@@ -12,18 +13,18 @@ import java.util.List;
 
 public class DesktopTest extends UIComponentTestCase {
 
-  private JDesktopPane jDesktopPane = new JDesktopPane();
+  private final JDesktopPane jDesktopPane = new JDesktopPane();
   private Desktop desktop;
 
   @BeforeEach
   final protected void setUp() throws Exception {
-    super.setUp();
+
     jDesktopPane.setName("myDesktop");
     desktop = new Desktop(jDesktopPane);
   }
 
   public void testGetComponentTypeName() throws Exception {
-    assertEquals("desktop", desktop.getDescriptionTypeName());
+    Assertions.assertEquals("desktop", desktop.getDescriptionTypeName());
   }
 
   public void testGetDescription() throws Exception {
@@ -39,7 +40,7 @@ public class DesktopTest extends UIComponentTestCase {
   }
 
   public void testGetWindows() throws Exception {
-    assertEquals(0, desktop.getWindows().length);
+    Assertions.assertEquals(0, desktop.getWindows().length);
 
     jDesktopPane.add(new JInternalFrame("frame1"));
     jDesktopPane.add(new JInternalFrame("frame2"));
@@ -63,8 +64,8 @@ public class DesktopTest extends UIComponentTestCase {
     JInternalFrame internalFrame = new JInternalFrame("frame1");
     jDesktopPane.add(internalFrame);
     Window window = desktop.getWindow("frame1");
-    assertEquals("frame1", window.getTitle());
-    assertSame(internalFrame, window.getAwtComponent());
+    Assertions.assertEquals("frame1", window.getTitle());
+    Assertions.assertSame(internalFrame, window.getAwtComponent());
   }
 
   public void testGetWindowError() throws Exception {
@@ -86,7 +87,7 @@ public class DesktopTest extends UIComponentTestCase {
     };
     thread.start();
     Window window = desktop.getWindow("frame1");
-    assertSame(internalFrame, window.getAwtComponent());
+    Assertions.assertSame(internalFrame, window.getAwtComponent());
   }
 
   public void testGetWindowWithTitleAmbiguityError() throws Exception {

@@ -1,5 +1,6 @@
 package org.uispec4j.interception;
 
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.Utils;
 
@@ -9,7 +10,7 @@ public class WindowInterceptionTest extends InterceptionTestCase {
 
   public void testShowingAnUnexpectedWindow() throws Exception {
     JFrame frame = new JFrame();
-    String frameTitle = "frame(" + getName() + ")";
+    String frameTitle = "frame(" + getClass().getSimpleName() + ")";
     frame.setTitle(frameTitle);
     frame.getContentPane().add(new JButton("OK"));
     try {
@@ -17,11 +18,11 @@ public class WindowInterceptionTest extends InterceptionTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (Error e) {
-      assertEquals("Unexpected window shown - this window should be handled with WindowInterceptor. " +
-                   "Window contents:" +
-                   "<window title=\"" + frameTitle + "\">" +
-                   "<button label=\"OK\"/></window>",
-                   e.getMessage().replaceAll(Utils.LINE_SEPARATOR, ""));
+      Assertions.assertEquals("Unexpected window shown - this window should be handled with WindowInterceptor. " +
+                              "Window contents:" +
+                              "<window title=\"" + frameTitle + "\">" +
+                              "<button label=\"OK\"/></window>",
+                              e.getMessage().replaceAll(Utils.LINE_SEPARATOR, ""));
     }
   }
 }

@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 
 import javax.swing.*;
@@ -25,7 +26,7 @@ public class WindowForFrameTest extends WindowTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("This component has no menu bar", e.getMessage());
+      Assertions.assertEquals("This component has no menu bar", e.getMessage());
     }
   }
 

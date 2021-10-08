@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.interception.WindowInterceptor;
 import org.uispec4j.utils.UnitTestCase;
 import org.uispec4j.utils.Utils;
@@ -7,6 +8,9 @@ import org.uispec4j.xml.EventLogger;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.uispec4j.assertion.UISpecAssert.fail;
 
 public class UISpecTestCaseTest extends UnitTestCase {
 
@@ -19,7 +23,7 @@ public class UISpecTestCaseTest extends UnitTestCase {
   }
 
   public static class MyAdapter extends EventLogger implements UISpecAdapter {
-    private JFrame frame;
+    private final JFrame frame;
 
     public MyAdapter(JFrame frame) {
       this.frame = frame;
@@ -38,33 +42,33 @@ public class UISpecTestCaseTest extends UnitTestCase {
   public void testPropertyDefined() throws Exception {
     System.setProperty(UISpecTestCase.ADAPTER_CLASS_PROPERTY, MyAdapter.class.getName());
     MyTestCase testCase = new MyTestCase();
-    testCase.setUp();
+    testCase.uispec4JSetUp();
     assertTrue(testCase.getMainWindow().titleEquals("title"));
   }
 
   public void testGetMainWindowFailsIfThePropertyWasNotDefined() throws Exception {
     System.getProperties().remove(UISpecTestCase.ADAPTER_CLASS_PROPERTY);
     MyTestCase testCase = new MyTestCase();
-    testCase.setUp();
+    testCase.uispec4JSetUp();
     try {
       testCase.getMainWindow();
       fail();
     }
     catch (UISpecTestCase.AdapterNotFoundException e) {
-      assertEquals(UISpecTestCase.PROPERTY_NOT_DEFINED, e.getMessage());
+      Assertions.assertEquals(UISpecTestCase.PROPERTY_NOT_DEFINED, e.getMessage());
     }
   }
 
   public void testGetMainWindowFailsIfThePropertyWasInitializedWithAWrongValue() throws Exception {
     System.setProperty(UISpecTestCase.ADAPTER_CLASS_PROPERTY, "unknown");
     MyTestCase testCase = new MyTestCase();
-    testCase.setUp();
+    testCase.uispec4JSetUp();
     try {
       testCase.getMainWindow();
       fail();
     }
     catch (UISpecTestCase.AdapterNotFoundException e) {
-      assertEquals("Adapter class 'unknown' not found", e.getMessage());
+      Assertions.assertEquals("Adapter class 'unknown' not found", e.getMessage());
     }
   }
 
@@ -74,7 +78,7 @@ public class UISpecTestCaseTest extends UnitTestCase {
 
     MyTestCase testCase = new MyTestCase();
     testCase.setAdapter(adapter1);
-    testCase.setUp();
+    testCase.uispec4JSetUp();
     assertTrue(testCase.getMainWindow().titleEquals("title"));
     adapter1.assertEquals("<log>" +
                           "  <getMainWindow/>" +
@@ -102,10 +106,10 @@ public class UISpecTestCaseTest extends UnitTestCase {
 
     MyExceptionTestCase exceptionTestCase = new MyExceptionTestCase(frame, exception);
     exceptionTestCase.setAdapter(new MyAdapter(frame));
-    exceptionTestCase.setUp();
+    exceptionTestCase.uispec4JSetUp();
     exceptionTestCase.test();
     try {
-      exceptionTestCase.tearDown();
+      exceptionTestCase.uispec4JTearDown();
       fail();
     }
     catch (Exception e) {

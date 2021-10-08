@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.Counter;
 
@@ -23,11 +24,11 @@ public class TreeClickingTest extends TreeTestCase {
       }
     });
     clicker.click("child1");
-    assertEquals(1, counter.getCount());
+    Assertions.assertEquals(1, counter.getCount());
     clicker.click("child2");
-    assertEquals(2, counter.getCount());
+    Assertions.assertEquals(2, counter.getCount());
     clicker.click("child1/child1_1");
-    assertEquals(3, counter.getCount());
+    Assertions.assertEquals(3, counter.getCount());
   }
 
   public void testClickFailsWhenAppliedOnNonExistingPath() throws Exception {
@@ -47,16 +48,16 @@ public class TreeClickingTest extends TreeTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals(Tree.badTreePath("child3"), e.getMessage());
+      Assertions.assertEquals(Tree.badTreePath("child3"), e.getMessage());
     }
     try {
       clicker.rightClick("child3");
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals(Tree.badTreePath("child3"), e.getMessage());
+      Assertions.assertEquals(Tree.badTreePath("child3"), e.getMessage());
     }
-    assertEquals(0, counter.getCount());
+    Assertions.assertEquals(0, counter.getCount());
   }
 
   public void testRightClickBehaviour() throws Exception {
@@ -70,27 +71,27 @@ public class TreeClickingTest extends TreeTestCase {
       public void mousePressed(MouseEvent e) {
         counter.increment();
         int modifiers = e.getModifiers();
-        assertTrue((modifiers & MouseEvent.BUTTON3_MASK) != 0);
+        Assertions.assertTrue((modifiers & MouseEvent.BUTTON3_MASK) != 0);
       }
     });
     tree.select("child1");
     tree.addToSelection("child2");
     clicker.rightClick("child1");
     assertTrue(tree.selectionEquals(new String[]{"child1"}));
-    assertEquals(1, counter.getCount());
+    Assertions.assertEquals(1, counter.getCount());
 
     tree.addToSelection("child2");
     clicker.rightClickInSelection();
     assertTrue(tree.selectionEquals(new String[]{"child1", "child2"}));
-    assertEquals(2, counter.getCount());
+    Assertions.assertEquals(2, counter.getCount());
 
     clicker.rightClick("child1/child1_1");
     assertTrue(tree.selectionEquals("child1/child1_1"));
-    assertEquals(3, counter.getCount());
+    Assertions.assertEquals(3, counter.getCount());
 
     clicker.rightClickInSelection();
     assertTrue(tree.selectionEquals("child1/child1_1"));
-    assertEquals(4, counter.getCount());
+    Assertions.assertEquals(4, counter.getCount());
   }
 
   public void testRightClickInSelectionNeedsASelection() throws Exception {
@@ -104,7 +105,7 @@ public class TreeClickingTest extends TreeTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("There is no current selection", e.getMessage());
+      Assertions.assertEquals("There is no current selection", e.getMessage());
     }
   }
 
@@ -118,20 +119,20 @@ public class TreeClickingTest extends TreeTestCase {
     jTree.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
         counter.increment();
-        assertEquals(2, e.getClickCount());
+        Assertions.assertEquals(2, e.getClickCount());
         int modifiers = e.getModifiers();
-        assertTrue((modifiers & MouseEvent.BUTTON1_MASK) != 0);
+        Assertions.assertTrue((modifiers & MouseEvent.BUTTON1_MASK) != 0);
       }
     });
     tree.select("child1");
     tree.addToSelection("child2");
     clicker.doubleClick("child1");
     assertTrue(tree.selectionEquals(new String[]{"child1"}));
-    assertEquals(1, counter.getCount());
+    Assertions.assertEquals(1, counter.getCount());
 
     clicker.doubleClick("child1/child1_1");
     assertTrue(tree.selectionEquals("child1/child1_1"));
-    assertEquals(2, counter.getCount());
+    Assertions.assertEquals(2, counter.getCount());
   }
 
   private interface Clicker {

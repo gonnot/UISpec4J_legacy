@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.utils.DummyTreeCellRenderer;
 import org.uispec4j.utils.UnitTestCase;
@@ -27,7 +28,6 @@ public abstract class TreeTestCase extends UnitTestCase {
 
   @BeforeEach
   final protected void setUp() throws Exception {
-    super.setUp();
     rootNode = new DefaultMutableTreeNode(root);
     child1Node = new DefaultMutableTreeNode(child1);
     child1_1Node = new DefaultMutableTreeNode(child1_1);
@@ -47,11 +47,7 @@ public abstract class TreeTestCase extends UnitTestCase {
   }
 
   protected void assertNoSelection(JTree jTree) {
-    if (isJavaVersionAtLeast("1.7")) {
-      assertEquals(0, jTree.getSelectionRows().length);
-      return;
-    }
-    assertNull(jTree.getSelectionRows());
+    Assertions.assertEquals(0, jTree.getSelectionRows().length);
   }
 
   protected static class DummyTreeCellValueConverter extends EventLogger implements TreeCellValueConverter {

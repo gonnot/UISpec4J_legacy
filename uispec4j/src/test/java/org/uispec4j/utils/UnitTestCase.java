@@ -1,8 +1,6 @@
 package org.uispec4j.utils;
 
-import java.util.Arrays;
-import java.util.List;
-
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.UISpec4J;
 import org.uispec4j.assertion.Assertion;
@@ -15,7 +13,7 @@ public abstract class UnitTestCase {
   }
 
   @BeforeEach
-  final protected void setUp() throws Exception {
+  final protected void unitTestCaseSetUp() {
     UISpec4J.setWindowInterceptionTimeLimit(100);
     UISpec4J.setAssertionTimeLimit(30);
   }
@@ -46,7 +44,7 @@ public abstract class UnitTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals(expectedMessage, e.getMessage());
+      Assertions.assertEquals(expectedMessage, e.getMessage());
     }
   }
 
@@ -56,7 +54,7 @@ public abstract class UnitTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (Exception e) {
-      assertEquals(expectedMessage, e.getMessage());
+      Assertions.assertEquals(expectedMessage, e.getMessage());
     }
   }
 
@@ -66,7 +64,7 @@ public abstract class UnitTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (InterceptionError e) {
-      assertEquals(expectedMessage, e.getMessage());
+      Assertions.assertEquals(expectedMessage, e.getMessage());
     }
   }
 
@@ -76,7 +74,7 @@ public abstract class UnitTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (Throwable e) {
-      assertEquals(expectedMessage, e.getMessage());
+      Assertions.assertEquals(expectedMessage, e.getMessage());
     }
   }
 
@@ -85,15 +83,7 @@ public abstract class UnitTestCase {
       functor.run();
       throw new AssertionFailureNotDetectedError();
     }
-    catch (AssertionError e) {
+    catch (AssertionError | InterceptionError ignored) {
     }
-    catch (InterceptionError e) {
-    }
-  }
-
-  protected boolean isJavaVersionAtLeast(String javaVersion) {
-    String currentJavaVersion = System.getProperty("java.specification.version");
-    List<String> javaVersions = Arrays.asList("1.6", "1.7", "1.8", "9", "10");
-    return javaVersions.indexOf(javaVersion) <= javaVersions.indexOf(currentJavaVersion);
   }
 }

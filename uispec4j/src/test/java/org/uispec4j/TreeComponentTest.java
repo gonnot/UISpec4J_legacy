@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.utils.UIComponentFactory;
 import org.uispec4j.xml.XmlAssert;
 
@@ -7,7 +8,7 @@ import javax.swing.*;
 
 public class TreeComponentTest extends UIComponentTestCase {
   public void testGetComponentTypeName() throws Exception {
-    assertEquals("tree", UIComponentFactory.createUIComponent(new JTree()).getDescriptionTypeName());
+    Assertions.assertEquals("tree", UIComponentFactory.createUIComponent(new JTree()).getDescriptionTypeName());
   }
 
   public void testGetDescription() throws Exception {

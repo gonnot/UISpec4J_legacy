@@ -1,8 +1,10 @@
 package org.uispec4j;
 
-import static org.uispec4j.DummySpinner.listModel;
+import org.junit.jupiter.api.Assertions;
 
 import javax.swing.*;
+
+import static org.uispec4j.DummySpinner.listModel;
 
 public class SpinnerTest extends SpinnerTestCase {
 
@@ -39,10 +41,10 @@ public class SpinnerTest extends SpinnerTestCase {
   public void testSettingAValueNotInTheSequenceFails() throws Exception {
     try {
       spinner.setValue("4");
-      fail();
+      Assertions.fail();
     }
     catch (ItemNotFoundException e) {
-      assertEquals("'4' not found", e.getMessage());
+      Assertions.assertEquals("'4' not found", e.getMessage());
     }
   }
 

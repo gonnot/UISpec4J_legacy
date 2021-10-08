@@ -1,16 +1,19 @@
 package org.uispec4j;
 
-import static org.uispec4j.DummySpinner.*;
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.finder.ComponentMatcher;
 import org.uispec4j.utils.UIComponentFactory;
 import org.uispec4j.xml.XmlAssert;
 
 import javax.swing.*;
 
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.uispec4j.DummySpinner.*;
+
 public class PanelTest extends UIComponentTestCase {
 
   public void testGetComponentTypeName() throws Exception {
-    assertEquals("panel", UIComponentFactory.createUIComponent(new JPanel()).getDescriptionTypeName());
+    Assertions.assertEquals("panel", UIComponentFactory.createUIComponent(new JPanel()).getDescriptionTypeName());
   }
 
   public void testGetDescription() throws Exception {
@@ -112,10 +115,10 @@ public class PanelTest extends UIComponentTestCase {
     Panel panel = new Panel(jPanel);
     try {
       getter.get(panel);
-      fail();
+      Assertions.fail();
     }
     catch (ItemNotFoundException e) {
-      assertEquals("No component found", e.getMessage());
+      Assertions.assertEquals("No component found", e.getMessage());
     }
 
     JSpinner jSpinner = new JSpinner(model);

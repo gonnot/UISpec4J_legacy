@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.UIComponentFactory;
@@ -15,7 +16,7 @@ public class MenuBarTest extends UIComponentTestCase {
 
   @BeforeEach
   final protected void setUp() throws Exception {
-    super.setUp();
+
     jMenuBar = new JMenuBar();
     jFileMenu = new JMenu("File");
     jFileMenu.setName("fileMenu");
@@ -28,7 +29,7 @@ public class MenuBarTest extends UIComponentTestCase {
   }
 
   public void testGetComponentTypeName() throws Exception {
-    assertEquals("menuBar", menuBar.getDescriptionTypeName());
+    Assertions.assertEquals("menuBar", menuBar.getDescriptionTypeName());
   }
 
   public void testGetDescription() throws Exception {
@@ -60,7 +61,7 @@ public class MenuBarTest extends UIComponentTestCase {
   }
 
   public void testGetMenu() throws Exception {
-    assertSame(jFileMenu, menuBar.getMenu("File").getAwtComponent());
-    assertSame(jEditMenu, menuBar.getMenu("Edit").getAwtComponent());
+    Assertions.assertSame(jFileMenu, menuBar.getMenu("File").getAwtComponent());
+    Assertions.assertSame(jEditMenu, menuBar.getMenu("Edit").getAwtComponent());
   }
 }

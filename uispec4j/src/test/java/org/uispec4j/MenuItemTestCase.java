@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.interception.WindowHandler;
 import org.uispec4j.interception.WindowInterceptor;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
@@ -13,7 +14,7 @@ public abstract class MenuItemTestCase extends UIComponentTestCase {
 
   public void testGetComponentTypeName() throws Exception {
     MenuItem item = getBuilder("menuTest").getMenuItem();
-    assertEquals("menu", item.getDescriptionTypeName());
+    Assertions.assertEquals("menu", item.getDescriptionTypeName());
   }
 
   public void testGetDescription() throws Exception {
@@ -55,7 +56,7 @@ public abstract class MenuItemTestCase extends UIComponentTestCase {
                                   "  <separator/>" +
                                   "  <menu name='item2'/>" +
                                   "</menu>"));
-    assertTrue(item.contentEquals(new String[]{"item1", "item2"}));
+    assertTrue(item.contentEquals("item1", "item2"));
   }
 
   public void testCheckMenuOnMenuItemWithNoError() throws Exception {
@@ -71,9 +72,9 @@ public abstract class MenuItemTestCase extends UIComponentTestCase {
     MenuBuilder builder = getBuilder("root");
     builder.add("one two three...");
     MenuItem item = builder.getMenuItem();
-    assertNotNull(item.getSubMenu("one two three..."));
-    assertNotNull(item.getSubMenu("one"));
-    assertNotNull(item.getSubMenu("two"));
+    Assertions.assertNotNull(item.getSubMenu("one two three..."));
+    Assertions.assertNotNull(item.getSubMenu("one"));
+    Assertions.assertNotNull(item.getSubMenu("two"));
   }
 
   public void testClickFailsIfTheMenuItemIsNotEnabled() throws Exception {
@@ -83,7 +84,7 @@ public abstract class MenuItemTestCase extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("The menu item is not enabled, it cannot be activated", e.getMessage());
+      Assertions.assertEquals("The menu item is not enabled, it cannot be activated", e.getMessage());
     }
   }
 
@@ -94,7 +95,7 @@ public abstract class MenuItemTestCase extends UIComponentTestCase {
         .add("item2")
         .add("item3")
         .getMenuItem();
-    assertTrue(item.contentEquals(new String[]{"item1", "item2", "item3"}));
+    assertTrue(item.contentEquals("item1", "item2", "item3"));
   }
 
   public void testActivateSimulatesAClickOnTheMenuItem() throws Exception {
@@ -131,8 +132,8 @@ public abstract class MenuItemTestCase extends UIComponentTestCase {
 
   private void checkGetSubmenuError(String[] menus, String searchedItem, String expectedMessage) {
     MenuBuilder builder = getBuilder("");
-    for (int i = 0; i < menus.length; i++) {
-      builder.add(menus[i]);
+    for (String menu : menus) {
+      builder.add(menu);
     }
     MenuItem item = builder.getMenuItem();
     try {
@@ -140,8 +141,7 @@ public abstract class MenuItemTestCase extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals(expectedMessage,
-                   e.getMessage());
+      Assertions.assertEquals(expectedMessage, e.getMessage());
     }
   }
 

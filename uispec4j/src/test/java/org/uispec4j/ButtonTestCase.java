@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.assertion.Assertion;
 import org.uispec4j.assertion.UISpecAssert;
 import org.uispec4j.interception.toolkit.Empty;
@@ -69,7 +70,7 @@ public abstract class ButtonTestCase extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("The button is not enabled, it cannot be activated", e.getMessage());
+      Assertions.assertEquals("The button is not enabled, it cannot be activated", e.getMessage());
     }
   }
 
@@ -77,14 +78,14 @@ public abstract class ButtonTestCase extends UIComponentTestCase {
     DummyActionListener listener = new DummyActionListener();
     getSwingButton().addActionListener(listener);
     getButton().click();
-    assertEquals(1, listener.getCallCount());
+    Assertions.assertEquals(1, listener.getCallCount());
   }
 
   public void testTriggerClick() throws Exception {
     DummyActionListener listener = new DummyActionListener();
     getSwingButton().addActionListener(listener);
     getButton().triggerClick().run();
-    assertEquals(1, listener.getCallCount());
+    Assertions.assertEquals(1, listener.getCallCount());
   }
 
   public void testClickTakesLessTimeThanWithDefaultSwingCalls() throws Exception {
@@ -118,8 +119,8 @@ public abstract class ButtonTestCase extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("The button is not visible, it cannot be activated", e.getMessage());
+      Assertions.assertEquals("The button is not visible, it cannot be activated", e.getMessage());
     }
-    assertEquals(0, listener.getCallCount());
+    Assertions.assertEquals(0, listener.getCallCount());
   }
 }

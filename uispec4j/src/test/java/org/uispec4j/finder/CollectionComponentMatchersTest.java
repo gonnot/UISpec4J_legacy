@@ -2,10 +2,11 @@ package org.uispec4j.finder;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.TestUtils;
-import static org.uispec4j.finder.ComponentMatchers.*;
 
 import javax.swing.*;
 import java.awt.*;
+
+import static org.uispec4j.finder.ComponentMatchers.*;
 
 public class CollectionComponentMatchersTest extends PanelComponentFinderTestCase {
   private JButton component1;
@@ -15,7 +16,7 @@ public class CollectionComponentMatchersTest extends PanelComponentFinderTestCas
 
   @BeforeEach
   final protected void setUp() throws Exception {
-    super.setUp();
+
     component1 = addComponent(JButton.class, "some text");
     component2 = addComponent(JButton.class, "other text");
     component3 = addComponent(JButton.class, "nothing");

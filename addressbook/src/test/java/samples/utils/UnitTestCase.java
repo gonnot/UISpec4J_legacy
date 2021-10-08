@@ -1,8 +1,8 @@
 package samples.utils;
 
-import junit.framework.AssertionFailedError;
-
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.opentest4j.AssertionFailedError;
 import org.uispec4j.UISpec4J;
 import org.uispec4j.assertion.Assertion;
 import org.uispec4j.assertion.UISpecAssert;
@@ -45,7 +45,7 @@ public abstract class UnitTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionFailedError e) {
-      assertEquals(expectedMessage, e.getMessage());
+      Assertions.assertEquals(expectedMessage, e.getMessage());
     }
   }
 
@@ -55,7 +55,7 @@ public abstract class UnitTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (Exception e) {
-      assertEquals(expectedMessage, e.getMessage());
+      Assertions.assertEquals(expectedMessage, e.getMessage());
     }
   }
 
@@ -65,7 +65,7 @@ public abstract class UnitTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (InterceptionError e) {
-      assertEquals(expectedMessage, e.getMessage());
+      Assertions.assertEquals(expectedMessage, e.getMessage());
     }
   }
 
@@ -75,7 +75,7 @@ public abstract class UnitTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (Throwable e) {
-      assertEquals(expectedMessage, e.getMessage());
+      Assertions.assertEquals(expectedMessage, e.getMessage());
     }
   }
 

@@ -1,6 +1,7 @@
 package org.uispec4j.interception;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.Button;
 import org.uispec4j.Trigger;
 import org.uispec4j.UISpec4J;
@@ -17,7 +18,6 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
 
   @AfterEach
   final protected void tearDown() throws Exception {
-    super.tearDown();
     if (thread != null) {
       thread.join();
       thread = null;
@@ -54,8 +54,8 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
       throw new AssertionFailureNotDetectedError();
     }
     catch (Exception e) {
-      assertEquals("Window 'aFrame' is non-modal, it must be intercepted with WindowInterceptor.run(Trigger)",
-                   e.getCause().getMessage());
+      Assertions.assertEquals("Window 'aFrame' is non-modal, it must be intercepted with WindowInterceptor.run(Trigger)",
+                              e.getCause().getMessage());
     }
   }
 
@@ -71,8 +71,8 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Window 'aDialog' is non-modal, it must be intercepted with WindowInterceptor.run(Trigger)",
-                   e.getMessage());
+      Assertions.assertEquals("Window 'aDialog' is non-modal, it must be intercepted with WindowInterceptor.run(Trigger)",
+                              e.getMessage());
     }
   }
 
@@ -82,8 +82,8 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals(ShownInterceptionDetectionHandler.NO_WINDOW_WAS_SHOWN_ERROR_MESSAGE,
-                   e.getMessage());
+      Assertions.assertEquals(ShownInterceptionDetectionHandler.NO_WINDOW_WAS_SHOWN_ERROR_MESSAGE,
+                              e.getMessage());
     }
   }
 
@@ -98,7 +98,7 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
       throw new AssertionFailureNotDetectedError();
     }
     catch (RuntimeException e) {
-      assertSame(exception, e.getCause());
+      Assertions.assertSame(exception, e.getCause());
     }
   }
 
@@ -129,10 +129,10 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
           dialog3.setVisible(true);
         }
       });
-      fail();
+      Assertions.fail();
     }
     catch (Exception e) {
-      assertSame(exception, e.getCause());
+      Assertions.assertSame(exception, e.getCause());
     }
   }
 
@@ -151,10 +151,10 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
     Utils.sleep(1);
     try {
       UISpecDisplay.instance().rethrowIfNeeded();
-      fail();
+      Assertions.fail();
     }
     catch (Exception e) {
-      assertSame(exception, e.getCause());
+      Assertions.assertSame(exception, e.getCause());
     }
   }
 
@@ -194,7 +194,7 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
   private void showModalDialogInThread(int waitWindowTimeLimit, final int waitTimeInThread) {
     final JDialog dialog = new JDialog(new JFrame(), "dialogShownInThread", true);
     UISpec4J.setWindowInterceptionTimeLimit(waitWindowTimeLimit);
-    assertNotNull(WindowInterceptor.getModalDialog(new Trigger() {
+    Assertions.assertNotNull(WindowInterceptor.getModalDialog(new Trigger() {
       public void run() {
         logger.log("triggerRun");
         thread = new Thread(new Runnable() {
@@ -203,7 +203,7 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
             dialog.setVisible(true);
           }
         });
-        thread.setName(thread.getName() + "(" + getName() + ")");
+        thread.setName(thread.getName() + "(" + getClass().getSimpleName() + ")");
         thread.start();
       }
     }));

@@ -1,10 +1,13 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class TableContentTest extends TableTestCase {
   public void testAssertContentEquals() throws Exception {
@@ -32,7 +35,7 @@ public class TableContentTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Expected: empty table but was:[[a,\ttrue,\t3]\n [c,\tfalse,\t4]]", e.getMessage());
+      Assertions.assertEquals("Expected: empty table but was:[[a,\ttrue,\t3]\n [c,\tfalse,\t4]]", e.getMessage());
     }
   }
 
@@ -65,7 +68,6 @@ public class TableContentTest extends TableTestCase {
     catch (AssertionError e) {
     }
   }
-
 
   public void testContentEqualsUsesTheModelWhenAnUnknownRendererComponentIsUsed() throws Exception {
     installJPanelRenderer();
@@ -239,7 +241,7 @@ public class TableContentTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertTrue(e.getMessage().startsWith("Error at (1, 1)"));
+      Assertions.assertTrue(e.getMessage().startsWith("Error at (1, 1)"));
     }
   }
 
@@ -250,11 +252,11 @@ public class TableContentTest extends TableTestCase {
         new Object[][]{
           {"a", "3"},
           {"a", "3"},
-        }));
+          }));
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Expected array should have 3 elements for each row - invalid row 0: [a,3]", e.getMessage());
+      Assertions.assertEquals("Expected array should have 3 elements for each row - invalid row 0: [a,3]", e.getMessage());
     }
   }
 
@@ -268,7 +270,7 @@ public class TableContentTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Column 'unknown' not found - actual names: [0, 1, 2]", e.getMessage());
+      Assertions.assertEquals("Column 'unknown' not found - actual names: [0, 1, 2]", e.getMessage());
     }
   }
 
@@ -284,7 +286,7 @@ public class TableContentTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertTrue(e.getMessage().startsWith("Expected 3 rows but found 2"));
+      Assertions.assertTrue(e.getMessage().startsWith("Expected 3 rows but found 2"));
     }
   }
 
@@ -299,7 +301,7 @@ public class TableContentTest extends TableTestCase {
       fail();
     }
     catch (AssertionError e) {
-      assertEquals("Error at (0,0) - expected:<[invalidValue]> but was:<[a]>", e.getMessage());
+      Assertions.assertEquals("Error at (0,0) - expected:<[invalidValue]> but was:<[a]>", e.getMessage());
     }
   }
 
@@ -319,7 +321,7 @@ public class TableContentTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("expected:<[c,true,4]> but was:<c,false,4>", e.getMessage());
+      Assertions.assertEquals("expected:<[c,true,4]> but was:<c,false,4>", e.getMessage());
     }
 
     try {
@@ -327,7 +329,7 @@ public class TableContentTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Row index should be positive", e.getMessage());
+      Assertions.assertEquals("Row index should be positive", e.getMessage());
     }
 
     try {
@@ -335,7 +337,7 @@ public class TableContentTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Table contains only 2 rows, unable to access row 2", e.getMessage());
+      Assertions.assertEquals("Table contains only 2 rows, unable to access row 2", e.getMessage());
     }
   }
 
@@ -354,9 +356,9 @@ public class TableContentTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Unexpected content at row 0\n" +
-                   "Expected: [a,xxxxxx]\n" +
-                   "Actual:   [a,3]", e.getMessage());
+      Assertions.assertEquals("Unexpected content at row 0\n" +
+                              "Expected: [a,xxxxxx]\n" +
+                              "Actual:   [a,3]", e.getMessage());
     }
   }
 
@@ -366,7 +368,7 @@ public class TableContentTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Expected array should have 3 elements for each row - invalid row 0: [a,3]", e.getMessage());
+      Assertions.assertEquals("Expected array should have 3 elements for each row - invalid row 0: [a,3]", e.getMessage());
     }
   }
 
@@ -376,7 +378,7 @@ public class TableContentTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Column 'unknown' not found - actual names: [0, 1, 2]", e.getMessage());
+      Assertions.assertEquals("Column 'unknown' not found - actual names: [0, 1, 2]", e.getMessage());
     }
   }
 
@@ -386,7 +388,7 @@ public class TableContentTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Table contains only 2 rows, unable to access row 3", e.getMessage());
+      Assertions.assertEquals("Table contains only 2 rows, unable to access row 3", e.getMessage());
     }
   }
 
@@ -402,7 +404,7 @@ public class TableContentTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("expected:<[[true,true]]> but was:<[true,false]>", e.getMessage());
+      Assertions.assertEquals("expected:<[[true,true]]> but was:<[true,false]>", e.getMessage());
     }
 
     try {
@@ -410,7 +412,7 @@ public class TableContentTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Column index should be positive", e.getMessage());
+      Assertions.assertEquals("Column index should be positive", e.getMessage());
     }
 
     try {
@@ -418,14 +420,14 @@ public class TableContentTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Table contains only 3 columns, unable to access column 3", e.getMessage());
+      Assertions.assertEquals("Table contains only 3 columns, unable to access column 3", e.getMessage());
     }
   }
 
   public void testGetRowAndColumnCount() throws Exception {
-    assertEquals(2, table.getRowCount());
+    Assertions.assertEquals(2, table.getRowCount());
     assertTrue(table.rowCountEquals(2));
-    assertEquals(3, table.getColumnCount());
+    Assertions.assertEquals(3, table.getColumnCount());
     assertTrue(table.columnCountEquals(3));
   }
 
@@ -435,7 +437,7 @@ public class TableContentTest extends TableTestCase {
       fail();
     }
     catch (AssertionError e) {
-      assertEquals("Unexpected number of rows - expected:<9999> but was:<2>", e.getMessage());
+      Assertions.assertEquals("Unexpected number of rows - expected:<9999> but was:<2>", e.getMessage());
     }
   }
 
@@ -445,18 +447,18 @@ public class TableContentTest extends TableTestCase {
       fail();
     }
     catch (AssertionError e) {
-      assertEquals("Unexpected number of columns - expected:<9999> but was:<3>", e.getMessage());
+      Assertions.assertEquals("Unexpected number of columns - expected:<9999> but was:<3>", e.getMessage());
     }
   }
 
   public void testGetContentAt() throws Exception {
-    assertEquals("a", table.getContentAt(0, 0));
-    assertEquals(Boolean.TRUE, table.getContentAt(0, 1));
-    assertEquals("c", table.getContentAt(1, 0));
-    assertEquals(Boolean.FALSE, table.getContentAt(1, 1));
+    Assertions.assertEquals("a", table.getContentAt(0, 0));
+    Assertions.assertEquals(Boolean.TRUE, table.getContentAt(0, 1));
+    Assertions.assertEquals("c", table.getContentAt(1, 0));
+    Assertions.assertEquals(Boolean.FALSE, table.getContentAt(1, 1));
 
     jTable.getModel().setValueAt(null, 0, 0);
-    assertEquals("", table.getContentAt(0, 0));
+    Assertions.assertEquals("", table.getContentAt(0, 0));
   }
 
   public void testGetContentAtWorksWhenTheRendererIsUnusable() throws Exception {
@@ -468,30 +470,30 @@ public class TableContentTest extends TableTestCase {
         return new JPanel();
       }
     });
-    assertEquals("a", table.getContentAt(0, 0));
+    Assertions.assertEquals("a", table.getContentAt(0, 0));
   }
 
   public void testGetContentAtWithConverter() throws Exception {
-    assertEquals("-a-", table.getContentAt(0, 0, new DummyTableCellValueConverter()));
+    Assertions.assertEquals("-a-", table.getContentAt(0, 0, new DummyTableCellValueConverter()));
 
-    assertEquals(3, table.getContentAt(0, 2, ModelTableCellValueConverter.INSTANCE));
+    Assertions.assertEquals(3, table.getContentAt(0, 2, ModelTableCellValueConverter.INSTANCE));
   }
 
   public void testGetEditorComponentAt() throws Exception {
     Component firstCellComponent = table.getSwingEditorComponentAt(0, 0);
-    assertTrue(firstCellComponent instanceof JTextField);
+    Assertions.assertTrue(firstCellComponent instanceof JTextField);
 
     Component secondCellComponent = table.getSwingEditorComponentAt(0, 1);
-    assertTrue(secondCellComponent instanceof JCheckBox);
+    Assertions.assertTrue(secondCellComponent instanceof JCheckBox);
 
     Component thirdCellComponent = table.getSwingEditorComponentAt(0, 2);
-    assertTrue(thirdCellComponent instanceof JComboBox);
+    Assertions.assertTrue(thirdCellComponent instanceof JComboBox);
   }
 
   public void testToString() throws Exception {
-    assertEquals("[[a,\ttrue,\t3]\n" +
-                 " [c,\tfalse,\t4]]",
-                 table.toString());
+    Assertions.assertEquals("[[a,\ttrue,\t3]\n" +
+                            " [c,\tfalse,\t4]]",
+                            table.toString());
   }
 
   public void testCellForegroundAndBackground() throws Exception {
@@ -509,7 +511,7 @@ public class TableContentTest extends TableTestCase {
         return component;
       }
     });
-    
+
     assertTrue(table.foregroundEquals(new String[][]{
       {"black", "red", "black"},
       {"black", "blue", "black"}
@@ -517,7 +519,7 @@ public class TableContentTest extends TableTestCase {
 
     assertTrue(table.foregroundNear(0, 0, "black"));
     assertTrue(table.foregroundNear(0, 0, "010101"));
-    
+
     assertTrue(table.backgroundNear(0, 0, "white"));
     assertTrue(table.backgroundNear(0, 0, "FEFEFE"));
 
@@ -543,7 +545,7 @@ public class TableContentTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("expected:<GREEN> but was:<0000FF>", e.getMessage());
+      Assertions.assertEquals("expected:<GREEN> but was:<0000FF>", e.getMessage());
     }
   }
 
@@ -573,7 +575,7 @@ public class TableContentTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Error at (0, 1) - expected:<GREEN> but was:<0000FF>", e.getMessage());
+      Assertions.assertEquals("Error at (0, 1) - expected:<GREEN> but was:<0000FF>", e.getMessage());
     }
   }
 
@@ -679,22 +681,22 @@ public class TableContentTest extends TableTestCase {
   }
 
   public void testRowIndex() throws Exception {
-    assertEquals(0, table.getRowIndex(0, "a"));
-    assertEquals(1, table.getRowIndex(0, "c"));
-    assertEquals(-1, table.getRowIndex(0, "d"));
+    Assertions.assertEquals(0, table.getRowIndex(0, "a"));
+    Assertions.assertEquals(1, table.getRowIndex(0, "c"));
+    Assertions.assertEquals(-1, table.getRowIndex(0, "d"));
   }
 
   public void testRowIndexWithConverter() throws Exception {
     table.setCellValueConverter(2, new DummyTableCellValueConverter());
-    assertEquals(0, table.getRowIndex(2, "-3-"));
-    assertEquals(1, table.getRowIndex(2, "-4-"));
-    assertEquals(-1, table.getRowIndex(2, "-5-"));
+    Assertions.assertEquals(0, table.getRowIndex(2, "-3-"));
+    Assertions.assertEquals(1, table.getRowIndex(2, "-4-"));
+    Assertions.assertEquals(-1, table.getRowIndex(2, "-5-"));
   }
 
   public void testRowIndicesWithoutConverter() throws Exception {
     int[] indices = table.getRowIndices(0, "a");
-    assertEquals(1, indices.length);
-    assertEquals(0, indices[0]);
+    Assertions.assertEquals(1, indices.length);
+    Assertions.assertEquals(0, indices[0]);
   }
 
   public void testRowIndicesWithConverter() throws Exception {
@@ -704,20 +706,20 @@ public class TableContentTest extends TableTestCase {
       }
     });
     int[] indices = table.getRowIndices(2, "same");
-    assertEquals(2, indices.length);
-    assertEquals(0, indices[0]);
-    assertEquals(1, indices[1]);
+    Assertions.assertEquals(2, indices.length);
+    Assertions.assertEquals(0, indices[0]);
+    Assertions.assertEquals(1, indices[1]);
   }
 
   public void testFindColumnIndex() throws Exception {
-    assertEquals(1, table.getColumnIndex("1"));
+    Assertions.assertEquals(1, table.getColumnIndex("1"));
 
     try {
       table.getColumnIndex("unknown");
       fail();
     }
     catch (AssertionError e) {
-      assertEquals("Column 'unknown' not found - actual names: [0, 1, 2]", e.getMessage());
+      Assertions.assertEquals("Column 'unknown' not found - actual names: [0, 1, 2]", e.getMessage());
     }
   }
 

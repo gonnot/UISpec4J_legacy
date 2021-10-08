@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.utils.ColorUtils;
 import org.uispec4j.utils.UnitTestCase;
 import org.uispec4j.xml.XmlAssert;
@@ -85,11 +86,11 @@ public class AbstractUIComponentTest extends UnitTestCase {
     middlePanel.add(jLabel);
     TextBox label = new TextBox(jLabel);
 
-    assertSame(middlePanel, label.getContainer().getAwtComponent());
+    Assertions.assertSame(middlePanel, label.getContainer().getAwtComponent());
 
-    assertSame(rootPanel, label.getContainer("rootPanel").getAwtComponent());
-    assertNull(label.getContainer("unknown"));
+    Assertions.assertSame(rootPanel, label.getContainer("rootPanel").getAwtComponent());
+    Assertions.assertNull(label.getContainer("unknown"));
 
-    assertNull(new Panel(rootPanel).getContainer());
+    Assertions.assertNull(new Panel(rootPanel).getContainer());
   }
 }

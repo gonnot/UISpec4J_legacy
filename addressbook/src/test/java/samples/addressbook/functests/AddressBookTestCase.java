@@ -20,8 +20,8 @@ public abstract class AddressBookTestCase extends UISpecTestCase {
   protected Button applyButton;
 
   @BeforeEach
-  final protected void setUp() throws Exception {
-    super.setUp();
+  final protected void addressBookSetUp() {
+
     setAdapter(new MainClassAdapter(Main.class));
 
     Window window = getMainWindow();

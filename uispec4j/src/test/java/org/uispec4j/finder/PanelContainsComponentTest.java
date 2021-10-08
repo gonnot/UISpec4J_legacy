@@ -19,8 +19,8 @@ public class PanelContainsComponentTest extends PanelComponentFinderTestCase {
 
   @BeforeEach
   final protected void setUp() throws Exception {
-    super.setUp();
-    button = (JButton)addComponent(JButton.class, "button1");
+
+    button = addComponent(JButton.class, "button1");
   }
 
   public void testContainsComponentByClass() throws Exception {

@@ -1,7 +1,7 @@
 package org.uispec4j.interception;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.Trigger;
 import org.uispec4j.UISpec4J;
 import org.uispec4j.Window;
@@ -19,7 +19,6 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
 
   @AfterEach
   final protected void tearDown() throws Exception {
-    super.tearDown();
     if (thread != null) {
       thread.join();
       thread = null;
@@ -69,7 +68,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
           JDialog dialog = createModalDialog("aDialog");
           dialog.getContentPane().add(textField);
           dialog.setVisible(true);
-          Assert.assertEquals("result", textField.getText());
+          Assertions.assertEquals("result", textField.getText());
           logger.log("done");
         }
       })
@@ -101,7 +100,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
                             }
                           }),
                         ShownInterceptionDetectionHandler.NO_WINDOW_WAS_SHOWN_ERROR_MESSAGE);
-    assertEquals(0, UISpecDisplay.instance().getHandlerCount());
+    Assertions.assertEquals(0, UISpecDisplay.instance().getHandlerCount());
   }
 
   public void testInterceptingAModalDialogWithoutClosingItInTheHandler() throws Exception {
@@ -291,8 +290,8 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
       window.setVisible(true);
     }
     catch (Throwable e) {
-      assertEquals("Dialogs of type '" + window.getClass().getName() + "' are not supported.",
-                   e.getMessage());
+      Assertions.assertEquals("Dialogs of type '" + window.getClass().getName() + "' are not supported.",
+                              e.getMessage());
     }
   }
 
@@ -319,7 +318,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
                           })
                           .process(new WindowHandler() {
                             public Trigger process(Window window) {
-                              fail("This one should not be called");
+                              Assertions.fail("This one should not be called");
                               return Trigger.DO_NOTHING;
                             }
                           }), "Error in handler 'first': " +
@@ -584,8 +583,8 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
   }
 
   private static class ClickButtonTrigger implements Trigger {
-    private Window window;
-    private String buttonName;
+    private final Window window;
+    private final String buttonName;
 
     public ClickButtonTrigger(Window window, String buttonName) {
       this.window = window;
@@ -598,7 +597,7 @@ public class WindowInterceptorForDialogSequenceTest extends WindowInterceptorTes
   }
 
   private static class ButtonClickHandler extends WindowHandler {
-    private String buttonLabel;
+    private final String buttonLabel;
 
     public ButtonClickHandler(String buttonLabel) {
       this.buttonLabel = buttonLabel;

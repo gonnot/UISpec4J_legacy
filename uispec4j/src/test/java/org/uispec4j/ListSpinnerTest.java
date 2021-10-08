@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 
 import javax.swing.*;
@@ -9,7 +10,7 @@ public class ListSpinnerTest extends SpinnerTestCase {
 
   @BeforeEach
   final protected void setUp() throws Exception {
-    super.setUp();
+
     listSpinner = (ListSpinner)spinner;
   }
 
@@ -30,15 +31,13 @@ public class ListSpinnerTest extends SpinnerTestCase {
     assertFalse(listSpinner.contentEquals("2", "3", "1"));
   }
 
-  ;
-
   public void testUsingListSpinnerWithOtherModelThanSpinnerListModelThrowsAnException() throws Exception {
     try {
       new ListSpinner(new JSpinner());
-      fail();
+      Assertions.fail();
     }
     catch (ItemNotFoundException e) {
-      assertEquals("Expected JSpinner using a SpinnerListModel", e.getMessage());
+      Assertions.assertEquals("Expected JSpinner using a SpinnerListModel", e.getMessage());
     }
   }
 }

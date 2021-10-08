@@ -1,5 +1,6 @@
 package org.uispec4j.finder;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.Button;
 import org.uispec4j.*;
@@ -18,12 +19,12 @@ public class PanelUIComponentFinderTest extends PanelComponentFinderTestCase {
 
   @BeforeEach
   final protected void setUp() throws Exception {
-    super.setUp();
+
     button = addComponent(JButton.class, "button1");
   }
 
   public void testFindUIComponentByClass() throws Exception {
-    assertNull(panel.findUIComponent(TextBox.class));
+    Assertions.assertNull(panel.findUIComponent(TextBox.class));
 
     Button uispecButton = panel.findUIComponent(Button.class);
     TestUtils.assertUIComponentRefersTo(this.button, uispecButton);
@@ -31,33 +32,33 @@ public class PanelUIComponentFinderTest extends PanelComponentFinderTestCase {
     addComponent(JButton.class, "button2");
     try {
       panel.findUIComponent(Button.class);
-      fail();
+      Assertions.fail();
     }
     catch (ComponentAmbiguityException e) {
-      assertEquals(Messages.computeAmbiguityMessage(new String[]{"button1", "button2"}, Button.TYPE_NAME, null),
-                   e.getMessage());
+      Assertions.assertEquals(Messages.computeAmbiguityMessage(new String[]{"button1", "button2"}, Button.TYPE_NAME, null),
+                              e.getMessage());
     }
   }
 
   public void testFindUIComponentByName() throws Exception {
-    assertNull(panel.findUIComponent(Button.class, "unknown"));
-    assertNull(panel.findUIComponent(TextBox.class, "button"));
+    Assertions.assertNull(panel.findUIComponent(Button.class, "unknown"));
+    Assertions.assertNull(panel.findUIComponent(TextBox.class, "button"));
     TestUtils.assertUIComponentRefersTo(button, panel.findUIComponent(Button.class, "button1"));
     TestUtils.assertUIComponentRefersTo(button, panel.findUIComponent(Button.class, "button"));
 
     addComponent(JButton.class, "button2");
     try {
       panel.findUIComponent(Button.class, "button");
-      fail();
+      Assertions.fail();
     }
     catch (ComponentAmbiguityException e) {
-      assertEquals(Messages.computeAmbiguityMessage(new String[]{"button1", "button2"}, Button.TYPE_NAME, "button"),
-                   e.getMessage());
+      Assertions.assertEquals(Messages.computeAmbiguityMessage(new String[]{"button1", "button2"}, Button.TYPE_NAME, "button"),
+                              e.getMessage());
     }
   }
 
   public void testFindUIComponentWithCustomComponentMatcher() throws Exception {
-    assertNull(panel.findUIComponent(CUSTOM_MATCHER));
+    Assertions.assertNull(panel.findUIComponent(CUSTOM_MATCHER));
 
     button.setName("custom button");
     TestUtils.assertUIComponentRefersTo(button, panel.findUIComponent(CUSTOM_MATCHER));
@@ -70,9 +71,9 @@ public class PanelUIComponentFinderTest extends PanelComponentFinderTestCase {
       panel.findUIComponent(CUSTOM_MATCHER);
     }
     catch (ComponentAmbiguityException e) {
-      assertEquals(Messages.computeAmbiguityMessage(new Component[]{button, textField},
-                                                    null, null),
-                   e.getMessage());
+      Assertions.assertEquals(Messages.computeAmbiguityMessage(new Component[]{button, textField},
+                                                               null, null),
+                              e.getMessage());
     }
   }
 

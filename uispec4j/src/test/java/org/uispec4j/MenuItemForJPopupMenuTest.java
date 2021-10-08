@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.UIComponentFactory;
 import org.uispec4j.xml.EventLogger;
@@ -23,8 +24,8 @@ public class MenuItemForJPopupMenuTest extends MenuItemTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("This operation is not supported. You must first select a sub menu among: [a,b,c]",
-                   e.getMessage());
+      Assertions.assertEquals("This operation is not supported. You must first select a sub menu among: [a,b,c]",
+                              e.getMessage());
     }
   }
 
@@ -44,7 +45,7 @@ public class MenuItemForJPopupMenuTest extends MenuItemTestCase {
   }
 
   public static class JPopupMenuBuilder implements MenuBuilder {
-    private JPopupMenu jPopupMenu;
+    private final JPopupMenu jPopupMenu;
 
     public JPopupMenuBuilder(String text) {
       this(new JPopupMenu(text));

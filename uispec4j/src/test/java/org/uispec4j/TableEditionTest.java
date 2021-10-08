@@ -1,9 +1,12 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.assertion.Assertion;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 
 import javax.swing.*;
+
+import static org.uispec4j.assertion.UISpecAssert.fail;
 
 public class TableEditionTest extends TableTestCase {
   public void testEditCellForString() throws Exception {
@@ -38,7 +41,7 @@ public class TableEditionTest extends TableTestCase {
       fail();
     }
     catch (RuntimeException e) {
-      assertEquals("Cell (1, 0) is not editable", e.getMessage());
+      Assertions.assertEquals("Cell (1, 0) is not editable", e.getMessage());
     }
 
     try {
@@ -46,7 +49,7 @@ public class TableEditionTest extends TableTestCase {
       fail();
     }
     catch (Exception e) {
-      assertEquals("Unexpected editor at (1, 1): javax.swing.JCheckBox", e.getMessage());
+      Assertions.assertEquals("Unexpected editor at (1, 1): javax.swing.JCheckBox", e.getMessage());
     }
   }
 
@@ -69,10 +72,10 @@ public class TableEditionTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Error at row 0:\n" +
-                   "Expected: [false,false,false]\n" +
-                   "Actual:   [true,false,true]",
-                   e.getMessage());
+      Assertions.assertEquals("Error at row 0:\n" +
+                              "Expected: [false,false,false]\n" +
+                              "Actual:   [true,false,true]",
+                              e.getMessage());
     }
   }
 
@@ -115,7 +118,7 @@ public class TableEditionTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Cell at row 0 is not editable", e.getMessage());
+      Assertions.assertEquals("Cell at row 0 is not editable", e.getMessage());
     }
   }
 
@@ -134,7 +137,7 @@ public class TableEditionTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Cell at row 0 is not editable", e.getMessage());
+      Assertions.assertEquals("Cell at row 0 is not editable", e.getMessage());
     }
 
     try {
@@ -142,7 +145,7 @@ public class TableEditionTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Column 'unknown' not found - actual names: [0, 1, 2]", e.getMessage());
+      Assertions.assertEquals("Column 'unknown' not found - actual names: [0, 1, 2]", e.getMessage());
     }
   }
 
@@ -186,7 +189,7 @@ public class TableEditionTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Cell (0,0) is not editable", e.getMessage());
+      Assertions.assertEquals("Cell (0,0) is not editable", e.getMessage());
     }
   }
 }

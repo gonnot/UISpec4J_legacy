@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 
 import javax.swing.*;
@@ -16,11 +17,11 @@ public class PasswordFieldTest extends UIComponentTestCase {
   }
 
   public void testGetComponentTypeName() throws Exception {
-    assertEquals("passwordField", passwordField.getDescriptionTypeName());
+    Assertions.assertEquals("passwordField", passwordField.getDescriptionTypeName());
   }
 
   public void testGetDescription() throws Exception {
-    assertEquals("<passwordField/>", passwordField.getDescription());
+    Assertions.assertEquals("<passwordField/>", passwordField.getDescription());
   }
 
   public void testFactory() throws Exception {
@@ -39,6 +40,6 @@ public class PasswordFieldTest extends UIComponentTestCase {
 
   public void testEnterPassword() throws Exception {
     passwordField.setPassword("pwd");
-    assertEquals("pwd", new String(jPasswordField.getPassword()));
+    Assertions.assertEquals("pwd", new String(jPasswordField.getPassword()));
   }
 }

@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.assertion.UISpecAssert;
 import org.uispec4j.interception.WindowInterceptor;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
@@ -20,7 +21,7 @@ public abstract class WindowTestCase extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError failure) {
-      assertEquals("Unexpected title - expected:<[you]> but was:<[me]>", failure.getMessage());
+      Assertions.assertEquals("Unexpected title - expected:<[you]> but was:<[me]>", failure.getMessage());
     }
   }
 
@@ -35,12 +36,12 @@ public abstract class WindowTestCase extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError failure) {
-      assertEquals("expected to contain:<us> but was:<me and you>", failure.getMessage());
+      Assertions.assertEquals("expected to contain:<us> but was:<me and you>", failure.getMessage());
     }
   }
 
   public void testGetTitle() throws Exception {
-    assertEquals("me", createWindowWithTitle("me").getTitle());
+    Assertions.assertEquals("me", createWindowWithTitle("me").getTitle());
   }
 
   public void testGetDescription() throws Exception {
@@ -70,7 +71,7 @@ public abstract class WindowTestCase extends UIComponentTestCase {
 
     TextBox uiComp = window.getTextBox("myText");
 
-    assertSame(textField, uiComp.getAwtComponent());
+    Assertions.assertSame(textField, uiComp.getAwtComponent());
   }
 
   public void testWindowManagesMenuBars() throws Exception {
@@ -99,14 +100,14 @@ public abstract class WindowTestCase extends UIComponentTestCase {
   }
 
   public void testGetComponentTypeName() {
-    assertEquals("window", createWindow().getDescriptionTypeName());
+    Assertions.assertEquals("window", createWindow().getDescriptionTypeName());
   }
 
   public void testFactory() {
     Component component = createWindow().getAwtComponent();
     UIComponent uiComponent = UIComponentFactory.createUIComponent(component);
-    assertNotNull(uiComponent);
-    assertTrue(Window.class.isInstance(uiComponent));
+    Assertions.assertNotNull(uiComponent);
+    Assertions.assertTrue(uiComponent instanceof Window);
   }
 
   public void testWindowClosed() throws Exception {

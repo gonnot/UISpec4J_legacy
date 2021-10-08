@@ -1,10 +1,11 @@
 package org.uispec4j.finder;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.Button;
-import org.uispec4j.*;
 import org.uispec4j.Desktop;
 import org.uispec4j.Panel;
+import org.uispec4j.*;
 import org.uispec4j.extension.CustomCountingButton;
 import org.uispec4j.extension.JCountingButton;
 import org.uispec4j.utils.ComponentUtils;
@@ -38,7 +39,6 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
 
   @BeforeEach
   final protected void setUp() throws Exception {
-    super.setUp();
     componentAccessors = createAccessors(panel);
   }
 
@@ -47,11 +47,11 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     Component component = createComponentWithText(JCountingButton.class, name);
     jPanel.add(component);
 
-    assertTrue(panel.findUIComponent(CustomCountingButton.class, "hello") instanceof CustomCountingButton);
+    Assertions.assertTrue(panel.findUIComponent(CustomCountingButton.class, "hello") instanceof CustomCountingButton);
   }
 
   public void testGetComponentTypeName() {
-    assertEquals("panel", UIComponentFactory.createUIComponent(new JPanel()).getDescriptionTypeName());
+    Assertions.assertEquals("panel", UIComponentFactory.createUIComponent(new JPanel()).getDescriptionTypeName());
   }
 
   public void testGetComponentWithText() throws Exception {
@@ -103,7 +103,7 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     JPasswordField jPasswordField = new JPasswordField();
     jPanel.add(jPasswordField);
     PasswordField passwordField = panel.getPasswordField();
-    assertSame(jPasswordField, passwordField.getAwtComponent());
+    Assertions.assertSame(jPasswordField, passwordField.getAwtComponent());
   }
 
   public void testSearchTraversalByClassExploresInDepthAllSubComponents() throws Exception {
@@ -118,11 +118,11 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     TypedComponentAccessor labelAccessor = getAccessor(TextBox.TYPE_NAME);
     try {
       labelAccessor.getComponent();
-      fail();
+      Assertions.fail();
     }
     catch (Exception e) {
-      assertEquals(Messages.computeAmbiguityMessage(new String[]{"world", "hello"}, TextBox.TYPE_NAME, null),
-                   e.getMessage());
+      Assertions.assertEquals(Messages.computeAmbiguityMessage(new String[]{"world", "hello"}, TextBox.TYPE_NAME, null),
+                              e.getMessage());
     }
 
     TestUtils.assertUIComponentRefersTo(textField, labelAccessor.getComponent("world"));
@@ -142,11 +142,11 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     TypedComponentAccessor labelAccessor = getAccessor(TextBox.TYPE_NAME);
     try {
       labelAccessor.getComponent("hello");
-      fail();
+      Assertions.fail();
     }
     catch (Exception e) {
-      assertEquals(Messages.computeAmbiguityMessage(new String[]{"Hello Regis", "Hello Marc"}, TextBox.TYPE_NAME, "hello"),
-                   e.getMessage());
+      Assertions.assertEquals(Messages.computeAmbiguityMessage(new String[]{"Hello Regis", "Hello Marc"}, TextBox.TYPE_NAME, "hello"),
+                              e.getMessage());
     }
     TestUtils.assertUIComponentRefersTo(innerLabel, labelAccessor.getComponent("Hello marc"));
     TestUtils.assertUIComponentRefersTo(label, labelAccessor.getComponent("Hello regis"));
@@ -156,7 +156,7 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     TypedComponentAccessor checkBoxAccessor = getAccessor(CheckBox.TYPE_NAME);
     try {
       checkBoxAccessor.getComponent("toto");
-      fail("Should not have found ay item");
+      Assertions.fail("Should not have found ay item");
     }
     catch (ItemNotFoundException e) {
     }
@@ -209,12 +209,12 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     }
 
     Panel mainPanel = new Panel(main);
-    assertNotNull(mainPanel.getTextBox("label5"));
-    assertNotNull(mainPanel.getButton("button7"));
-    assertNotNull(mainPanel.getTable("table6"));
-    assertNotNull(mainPanel.getTree("tree5"));
-    assertNotNull(mainPanel.getCheckBox("checkBox3.4"));
-    assertNotNull(mainPanel.getRadioButton("radio2.3"));
+    Assertions.assertNotNull(mainPanel.getTextBox("label5"));
+    Assertions.assertNotNull(mainPanel.getButton("button7"));
+    Assertions.assertNotNull(mainPanel.getTable("table6"));
+    Assertions.assertNotNull(mainPanel.getTree("tree5"));
+    Assertions.assertNotNull(mainPanel.getCheckBox("checkBox3.4"));
+    Assertions.assertNotNull(mainPanel.getRadioButton("radio2.3"));
   }
 
   public void testComponentNameAmbiguityException() throws Exception {
@@ -258,11 +258,11 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     panel = new Panel(jPanel);
     try {
       panel.getTextBox();
-      fail();
+      Assertions.fail();
     }
     catch (ComponentAmbiguityException e) {
-      assertEquals(Messages.computeAmbiguityMessage(new String[]{"myText1", "myText2"}, TextBox.TYPE_NAME, null),
-                   e.getMessage());
+      Assertions.assertEquals(Messages.computeAmbiguityMessage(new String[]{"myText1", "myText2"}, TextBox.TYPE_NAME, null),
+                              e.getMessage());
     }
   }
 
@@ -355,8 +355,8 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
 
     cardLayout.show(cardPanel, "first");
     ListBox list1Checker = panelWithCardLayoutChecker.getListBox();
-    assertNotNull(list1Checker);
-    assertNotNull(panelWithCardLayoutChecker.getButton("myButton"));
+    Assertions.assertNotNull(list1Checker);
+    Assertions.assertNotNull(panelWithCardLayoutChecker.getButton("myButton"));
     XmlAssert.assertEquivalent("<panel name='panelWithCardLayout'>" +
                                "  <listBox/>" +
                                "  <button label='myButton'/>" +
@@ -366,11 +366,11 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     cardLayout.show(cardPanel, "second");
     try {
       panelWithCardLayoutChecker.getListBox();
-      fail();
+      Assertions.fail();
     }
     catch (ItemNotFoundException e) {
     }
-    assertNotNull(panelWithCardLayoutChecker.getButton("myButton"));
+    Assertions.assertNotNull(panelWithCardLayoutChecker.getButton("myButton"));
     XmlAssert.assertEquivalent("<panel name='panelWithCardLayout'>" +
                                "  <button label='myButton'/>" +
                                "</panel>",
@@ -393,8 +393,8 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
       message.append((displayedName == null) ? component.getName() : displayedName);
       message.append((i < components.length - 1) ? ',' : ']');
     }
-    assertEquals("Several components are of type 'button' in this panel: [apply, don't apply]",
-                 message.toString());
+    Assertions.assertEquals("Several components are of type 'button' in this panel: [apply, don't apply]",
+                            message.toString());
   }
 
   public void testGetInputTextBoxExcludesJLabels() throws Exception {
@@ -421,7 +421,7 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     jPanel.add(textField);
     innerPanel.setName("innerPanel");
     jPanel.add(innerPanel);
-    assertNotNull(panel.getPanel("inner"));
+    Assertions.assertNotNull(panel.getPanel("inner"));
   }
 
   private void addComponentToPanelWithName(Component component, String name) {
@@ -437,21 +437,21 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
   private void checkComponentNotFound(String uiComponentType) throws Exception {
     try {
       getAccessor(uiComponentType).getComponent();
-      fail();
+      Assertions.fail();
     }
     catch (ItemNotFoundException e) {
-      assertEquals(Messages.computeNotFoundMessage(uiComponentType, null, null),
-                   e.getMessage());
+      Assertions.assertEquals(Messages.computeNotFoundMessage(uiComponentType, null, null),
+                              e.getMessage());
     }
 
     String componentName = "unknown";
     try {
       getAccessor(uiComponentType).getComponent(componentName);
-      fail();
+      Assertions.fail();
     }
     catch (ItemNotFoundException e) {
-      assertEquals(Messages.computeNotFoundMessage(uiComponentType, componentName, null),
-                   e.getMessage());
+      Assertions.assertEquals(Messages.computeNotFoundMessage(uiComponentType, componentName, null),
+                              e.getMessage());
     }
 
     try {
@@ -460,11 +460,11 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
           return false;
         }
       });
-      fail();
+      Assertions.fail();
     }
     catch (ItemNotFoundException e) {
-      assertEquals(Messages.computeNotFoundMessage(null, null, null),
-                   e.getMessage());
+      Assertions.assertEquals(Messages.computeNotFoundMessage(null, null, null),
+                              e.getMessage());
     }
   }
 
@@ -474,22 +474,22 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     addComponentToPanelWithName((Component)actualComponentType.newInstance(), componentName);
     try {
       getAccessor(uiComponentType).getComponent(componentName);
-      fail();
+      Assertions.fail();
     }
     catch (ItemNotFoundException e) {
-      assertEquals(Messages.computeNotFoundMessage(uiComponentType, componentName, null),
-                   e.getMessage());
+      Assertions.assertEquals(Messages.computeNotFoundMessage(uiComponentType, componentName, null),
+                              e.getMessage());
     }
   }
 
   private void checkComponentNameAmbiguity(String componentName, String uiComponentType, String[] candidates) throws Exception {
     try {
       getAccessor(uiComponentType).getComponent(componentName);
-      fail();
+      Assertions.fail();
     }
     catch (ComponentAmbiguityException e) {
-      assertEquals(Messages.computeAmbiguityMessage(candidates, uiComponentType, componentName),
-                   e.getMessage());
+      Assertions.assertEquals(Messages.computeAmbiguityMessage(candidates, uiComponentType, componentName),
+                              e.getMessage());
     }
   }
 
@@ -501,7 +501,7 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     addComponentToPanelWithName(component2, componentName + "2");
     try {
       getAccessor(uiComponentType).getComponent();
-      fail();
+      Assertions.fail();
     }
     catch (ComponentAmbiguityException e) {
       Component[] components = new Component[]{component1, component2};
@@ -511,8 +511,8 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
         String displayedName = ComponentUtils.getDisplayedName(component);
         names[i] = (displayedName == null || displayedName.length() == 0) ? component.getName() : displayedName;
       }
-      assertEquals(Messages.computeAmbiguityMessage(names, uiComponentType, null),
-                   e.getMessage());
+      Assertions.assertEquals(Messages.computeAmbiguityMessage(names, uiComponentType, null),
+                              e.getMessage());
     }
   }
 
@@ -559,7 +559,7 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     TestUtils.assertUIComponentRefersTo(expectedComponent, accessor.getComponent(shortName.toLowerCase()));
     try {
       accessor.getComponent("toto");
-      fail();
+      Assertions.fail();
     }
     catch (Throwable e) {
       // OK

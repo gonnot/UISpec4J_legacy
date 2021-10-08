@@ -1,5 +1,6 @@
 package samples.addressbook.model;
 
+import org.junit.jupiter.api.Assertions;
 import samples.addressbook.model.events.DummyBookListener;
 import samples.addressbook.model.events.DummyCategoryListener;
 import samples.addressbook.model.events.DummyContactListener;
@@ -11,8 +12,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 public class AddressBookTest extends UnitTestCase {
-  private AddressBook book = new AddressBook();
+  private final AddressBook book = new AddressBook();
 
   public void testCreatingAndChangingAContactDispatchesEvents() throws Exception {
     DummyContactListener listener = DummyContactListener.register(book);
@@ -30,7 +33,7 @@ public class AddressBookTest extends UnitTestCase {
       listener.assertEquals("<log>" +
                             "  <change field='" + field + "' value='" + value + "'/>" +
                             "</log>");
-      assertEquals(value, contact.getValue(field));
+      Assertions.assertEquals(value, contact.getValue(field));
     }
   }
 
@@ -72,8 +75,8 @@ public class AddressBookTest extends UnitTestCase {
   public void testCreatingCategories() throws Exception {
     Category root = book.getRootCategory();
     assertNull(root.getParent());
-    assertEquals("All", root.getName());
-    assertEquals("All", root.getPath());
+    Assertions.assertEquals("All", root.getName());
+    Assertions.assertEquals("All", root.getPath());
 
     DummyCategoryListener listener = DummyCategoryListener.register(book);
 
@@ -88,8 +91,8 @@ public class AddressBookTest extends UnitTestCase {
     Category cat1 = book.createCategory(root, "Cat1");
     Category cat11 = book.createCategory(cat1, "Cat11");
 
-    assertEquals("All/Cat1", cat1.getPath());
-    assertEquals("All/Cat1/Cat11", cat11.getPath());
+    Assertions.assertEquals("All/Cat1", cat1.getPath());
+    Assertions.assertEquals("All/Cat1/Cat11", cat11.getPath());
   }
 
   private Category createAndCheckCategory(Category parent,
@@ -98,12 +101,12 @@ public class AddressBookTest extends UnitTestCase {
                                           String[] newChildrenList,
                                           DummyCategoryListener listener) throws NameAlreadyInUseException {
     Category category = book.createCategory(parent, name);
-    assertSame(parent, category.getParent());
-    assertTrue(parent.isSameOrAncestorOf(category));
-    assertTrue(book.getRootCategory().isSameOrAncestorOf(category));
-    assertEquals(name, category.getName());
+    Assertions.assertSame(parent, category.getParent());
+    Assertions.assertTrue(parent.isSameOrAncestorOf(category));
+    Assertions.assertTrue(book.getRootCategory().isSameOrAncestorOf(category));
+    Assertions.assertEquals(name, category.getName());
     ArrayUtils.assertEquals(newChildrenList, getChildrenCategories(parent));
-    assertEquals(path, category.getPath());
+    Assertions.assertEquals(path, category.getPath());
     listener.assertEquals("<log>" +
                           "  <create category='" + path + "'/>" +
                           "</log>");
@@ -115,7 +118,7 @@ public class AddressBookTest extends UnitTestCase {
     book.createCategory(root, "1");
     try {
       book.createCategory(root, "1");
-      fail();
+      Assertions.fail();
     }
     catch (NameAlreadyInUseException e) {
     }
@@ -242,7 +245,7 @@ public class AddressBookTest extends UnitTestCase {
   private String[] getChildrenCategories(Category category) {
     List names = new ArrayList();
     List children = category.getChildren();
-    for (Iterator iterator = children.iterator(); iterator.hasNext();) {
+    for (Iterator iterator = children.iterator(); iterator.hasNext(); ) {
       Category child = (Category)iterator.next();
       names.add(child.getName());
     }

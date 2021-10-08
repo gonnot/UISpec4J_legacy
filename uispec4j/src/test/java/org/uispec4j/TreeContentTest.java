@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.DummyTreeCellRenderer;
 import org.uispec4j.utils.Functor;
@@ -107,7 +108,7 @@ public class TreeContentTest extends TreeTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Could not find element 'child1/unknown'", e.getMessage());
+      Assertions.assertEquals("Could not find element 'child1/unknown'", e.getMessage());
     }
   }
 
@@ -160,19 +161,19 @@ public class TreeContentTest extends TreeTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (IllegalArgumentException e) {
-      assertEquals("Separator must not be empty", e.getMessage());
+      Assertions.assertEquals("Separator must not be empty", e.getMessage());
     }
     try {
       Tree.setDefaultSeparator("");
       throw new AssertionFailureNotDetectedError();
     }
     catch (IllegalArgumentException e) {
-      assertEquals("Separator must not be empty", e.getMessage());
+      Assertions.assertEquals("Separator must not be empty", e.getMessage());
     }
 
     System.setProperty(Tree.SEPARATOR_PROPERTY, "");
     Tree tree = new Tree(jTree);
-    assertEquals("/", tree.getSeparator());
+    Assertions.assertEquals("/", tree.getSeparator());
     System.getProperties().remove(Tree.SEPARATOR_PROPERTY);
   }
 
@@ -182,14 +183,14 @@ public class TreeContentTest extends TreeTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (IllegalArgumentException e) {
-      assertEquals("Separator must not be null", e.getMessage());
+      Assertions.assertEquals("Separator must not be null", e.getMessage());
     }
     try {
       Tree.setDefaultSeparator(null);
       throw new AssertionFailureNotDetectedError();
     }
     catch (IllegalArgumentException e) {
-      assertEquals("Separator must not be null", e.getMessage());
+      Assertions.assertEquals("Separator must not be null", e.getMessage());
     }
   }
 
@@ -228,8 +229,8 @@ public class TreeContentTest extends TreeTestCase {
   }
 
   public void testGetChildCount() throws Exception {
-    assertEquals(2, tree.getChildCount(""));
-    assertEquals(1, tree.getChildCount("child1"));
+    Assertions.assertEquals(2, tree.getChildCount(""));
+    Assertions.assertEquals(1, tree.getChildCount("child1"));
   }
 
   public void testCheckForegroundColor() throws Exception {
@@ -241,16 +242,16 @@ public class TreeContentTest extends TreeTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("expected:<GREEN> but was:<FA0A0A>", e.getMessage());
+      Assertions.assertEquals("expected:<GREEN> but was:<FA0A0A>", e.getMessage());
     }
   }
 
   public void testToString() throws Exception {
-    assertEquals("root\n" +
-                 "  child1\n" +
-                 "    child1_1\n" +
-                 "  child2\n",
-                 tree.toString());
+    Assertions.assertEquals("root\n" +
+                            "  child1\n" +
+                            "    child1_1\n" +
+                            "  child2\n",
+                            tree.toString());
   }
 
   private void checkContainmentError(String expectedTree) {
@@ -264,7 +265,7 @@ public class TreeContentTest extends TreeTestCase {
     }
     catch (AssertionError e) {
       if (message != null) {
-        assertEquals(message, e.getMessage());
+        Assertions.assertEquals(message, e.getMessage());
       }
     }
   }

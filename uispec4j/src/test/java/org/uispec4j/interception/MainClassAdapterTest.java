@@ -1,5 +1,6 @@
 package org.uispec4j.interception;
 
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.TextBox;
 import org.uispec4j.Window;
 
@@ -20,13 +21,13 @@ public class MainClassAdapterTest extends InterceptionTestCase {
     MainClassAdapter adapter = new MainClassAdapter(MyClass.class, "a", "b");
     Window window1 = adapter.getMainWindow();
     Window window2 = adapter.getMainWindow();
-    assertSame(window1, window2);
-    assertEquals(1, MyClass.callCount);
+    Assertions.assertSame(window1, window2);
+    Assertions.assertEquals(1, MyClass.callCount);
 
     adapter.reset();
     Window window3 = adapter.getMainWindow();
-    assertNotSame(window1, window3);
-    assertEquals(2, MyClass.callCount);
+    Assertions.assertNotSame(window1, window3);
+    Assertions.assertEquals(2, MyClass.callCount);
   }
 
   public void testNoMain() throws Exception {
@@ -34,8 +35,8 @@ public class MainClassAdapterTest extends InterceptionTestCase {
       new MainClassAdapter(MainClassAdapterTest.class, "a", "b");
     }
     catch (RuntimeException e) {
-      assertEquals("Class org.uispec4j.interception.MainClassAdapterTest has no method: public static void main(String[])",
-                   e.getMessage());
+      Assertions.assertEquals("Class org.uispec4j.interception.MainClassAdapterTest has no method: public static void main(String[])",
+                              e.getMessage());
     }
   }
 

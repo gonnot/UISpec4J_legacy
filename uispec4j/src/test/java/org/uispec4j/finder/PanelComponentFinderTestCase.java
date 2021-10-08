@@ -16,8 +16,7 @@ public abstract class PanelComponentFinderTestCase extends UnitTestCase {
   protected List components = new ArrayList();
 
   @BeforeEach
-  final protected void setUp() throws Exception {
-    super.setUp();
+  final protected void finderSetUp() {
     jPanel = new JPanel();
     jPanel.setName("myPanel");
     panel = new Panel(jPanel);

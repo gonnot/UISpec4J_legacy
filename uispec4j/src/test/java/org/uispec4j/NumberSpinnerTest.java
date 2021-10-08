@@ -1,17 +1,18 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 
-import static org.uispec4j.DummySpinner.listModel;
-
 import javax.swing.*;
+
+import static org.uispec4j.DummySpinner.listModel;
 
 public class NumberSpinnerTest extends SpinnerTestCase {
   private NumberSpinner numberSpinner;
 
   @BeforeEach
   final protected void setUp() throws Exception {
-    super.setUp();
+
     numberSpinner = (NumberSpinner)spinner;
   }
 
@@ -43,10 +44,10 @@ public class NumberSpinnerTest extends SpinnerTestCase {
   public void testUsingNumberSpinnerWithOtherModelThanSpinnerNumberModelThrowsAnException() throws Exception {
     try {
       new NumberSpinner(new JSpinner(listModel()));
-      fail();
+      Assertions.fail();
     }
     catch (ItemNotFoundException e) {
-      assertEquals("Expected JSpinner using a SpinnerNumberModel", e.getMessage());
+      Assertions.assertEquals("Expected JSpinner using a SpinnerNumberModel", e.getMessage());
     }
   }
 

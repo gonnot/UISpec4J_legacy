@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.utils.UIComponentFactory;
 import org.uispec4j.xml.XmlAssert;
@@ -12,7 +13,6 @@ public class CheckBoxTest extends ButtonTestCase {
 
   @BeforeEach
   final protected void setUp() throws Exception {
-    super.setUp();
     jCheckBox = new JCheckBox();
     jCheckBox.setName("myCheckBox");
     this.checkBox = (CheckBox)UIComponentFactory.createUIComponent(jCheckBox);
@@ -27,7 +27,7 @@ public class CheckBoxTest extends ButtonTestCase {
   }
 
   public void testGetComponentTypeName() throws Exception {
-    assertEquals("checkBox", checkBox.getDescriptionTypeName());
+    Assertions.assertEquals("checkBox", checkBox.getDescriptionTypeName());
   }
 
   public void testGetDescription() throws Exception {

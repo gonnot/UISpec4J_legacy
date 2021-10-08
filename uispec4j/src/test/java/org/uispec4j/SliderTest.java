@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.assertion.Assertion;
 import org.uispec4j.utils.Functor;
 import org.uispec4j.xml.XmlAssert;
@@ -8,11 +9,11 @@ import javax.swing.*;
 import java.util.Hashtable;
 
 public class SliderTest extends UIComponentTestCase {
-  private JSlider jSlider = createTemperatureSlider();
-  private Slider slider = new Slider(jSlider);
+  private final JSlider jSlider = createTemperatureSlider();
+  private final Slider slider = new Slider(jSlider);
 
   public void testGetComponentTypeName() throws Exception {
-    assertEquals("slider", slider.getDescriptionTypeName());
+    Assertions.assertEquals("slider", slider.getDescriptionTypeName());
   }
 
   public void testGetDescription() throws Exception {
@@ -83,13 +84,13 @@ public class SliderTest extends UIComponentTestCase {
 
   public void testSettingARelativePosition() throws Exception {
     slider.setRelativePosition(50);
-    assertEquals(15, jSlider.getValue());
+    Assertions.assertEquals(15, jSlider.getValue());
 
     slider.setRelativePosition(0);
-    assertEquals(-10, jSlider.getValue());
+    Assertions.assertEquals(-10, jSlider.getValue());
 
     slider.setRelativePosition(100);
-    assertEquals(40, jSlider.getValue());
+    Assertions.assertEquals(40, jSlider.getValue());
 
     checkAssertionError(
       new Functor() {
@@ -109,7 +110,7 @@ public class SliderTest extends UIComponentTestCase {
   }
 
   private void checkPosition(int intValue, String correctLabel, String wrongLabel) throws Exception {
-    assertEquals(intValue, jSlider.getValue());
+    Assertions.assertEquals(intValue, jSlider.getValue());
     assertTrue(slider.positionEquals(correctLabel));
     checkAssertionFails(slider.positionEquals(wrongLabel), "expected:<[" + wrongLabel + "]> but was:<[" + correctLabel + "]>");
   }
