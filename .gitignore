@@ -3,7 +3,7 @@ tmp/
 .settings/
 .classpath
 .project
-*.ipr
+.idea/
 *.iml
 *.iws
 *~
