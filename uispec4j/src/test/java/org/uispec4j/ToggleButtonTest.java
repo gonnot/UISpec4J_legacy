@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.xml.XmlAssert;
 
 import javax.swing.AbstractButton;
@@ -10,7 +11,8 @@ public class ToggleButtonTest extends ButtonTestCase {
   private JToggleButton jToggleButton = new JToggleButton();
   private ToggleButton toggle;
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     super.setUp();
     toggle = new ToggleButton(jToggleButton);
   }

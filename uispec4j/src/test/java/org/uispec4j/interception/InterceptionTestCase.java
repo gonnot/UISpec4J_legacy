@@ -1,5 +1,7 @@
 package org.uispec4j.interception;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.UISpec4J;
 import org.uispec4j.interception.toolkit.UISpecDisplay;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
@@ -21,14 +23,16 @@ import java.awt.event.ActionListener;
 public abstract class InterceptionTestCase extends UnitTestCase {
   protected EventLogger logger;
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     super.setUp();
     UISpecDisplay.instance().reset();
     logger = new EventLogger();
     UISpec4J.setWindowInterceptionTimeLimit(300);
   }
 
-  protected void tearDown() throws Exception {
+  @AfterEach
+  final protected void tearDown() throws Exception {
     super.tearDown();
     assertEquals(0, UISpecDisplay.instance().getHandlerCount());
     UISpecDisplay.instance().rethrowIfNeeded();
@@ -39,7 +43,7 @@ public abstract class InterceptionTestCase extends UnitTestCase {
   }
 
   protected static void checkAssertionError(WindowInterceptor interceptor,
-                                                  String errorMessage) {
+                                            String errorMessage) {
     try {
       interceptor.run();
       throw new AssertionFailureNotDetectedError();
@@ -104,6 +108,6 @@ public abstract class InterceptionTestCase extends UnitTestCase {
   }
 
   protected String getLocalLabel(String resource) {
-    return (String) UIManager.get(resource);
+    return (String)UIManager.get(resource);
   }
 }

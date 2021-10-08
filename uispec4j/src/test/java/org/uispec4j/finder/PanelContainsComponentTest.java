@@ -1,5 +1,6 @@
 package org.uispec4j.finder;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.Button;
 import org.uispec4j.TextBox;
 
@@ -16,9 +17,10 @@ public class PanelContainsComponentTest extends PanelComponentFinderTestCase {
     }
   };
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     super.setUp();
-    button = (JButton) addComponent(JButton.class, "button1");
+    button = (JButton)addComponent(JButton.class, "button1");
   }
 
   public void testContainsComponentByClass() throws Exception {

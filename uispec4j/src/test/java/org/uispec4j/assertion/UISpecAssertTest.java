@@ -1,5 +1,6 @@
 package org.uispec4j.assertion;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.UISpec4J;
 import org.uispec4j.utils.Chrono;
 import org.uispec4j.utils.Functor;
@@ -8,7 +9,8 @@ import org.uispec4j.utils.Utils;
 
 public class UISpecAssertTest extends UnitTestCase {
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     UISpec4J.setAssertionTimeLimit(UISpec4J.DEFAULT_ASSERTION_TIME_LIMIT);
   }
 

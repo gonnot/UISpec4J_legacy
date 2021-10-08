@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.utils.UIComponentFactory;
 import org.uispec4j.xml.XmlAssert;
 
@@ -9,7 +10,8 @@ public class TableComponentTest extends UIComponentTestCase {
   private Table table;
   private JTable jTable;
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     super.setUp();
     init(new JTable(new String[][]{}, new String[]{}));
   }

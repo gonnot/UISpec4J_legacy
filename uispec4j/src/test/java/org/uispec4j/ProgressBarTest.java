@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.assertion.UISpecAssert;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.UIComponentFactory;
@@ -12,7 +13,8 @@ public class ProgressBarTest extends UIComponentTestCase {
   private ProgressBar progressBar;
   private JProgressBar jProgressBar;
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     super.setUp();
     jProgressBar = new JProgressBar();
     jProgressBar.setName("myProgressBar");

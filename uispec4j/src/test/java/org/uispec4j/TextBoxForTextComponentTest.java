@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.DummyActionListener;
 import org.uispec4j.utils.Functor;
@@ -17,7 +18,8 @@ import java.awt.event.FocusEvent;
 public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
   private JTextComponent jTextComponent;
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     super.setUp();
     init(new JTextArea());
   }
@@ -290,7 +292,7 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
     textBox.setText("text", false);
     assertEquals(0, actionListener.getCallCount());
     UISpecAssert.assertTrue(textBox.textEquals("text"));
-    
+
     textBox.setText("another text", true);
     assertEquals(1, actionListener.getCallCount());
     UISpecAssert.assertTrue(textBox.textEquals("another text"));

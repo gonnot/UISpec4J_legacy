@@ -1,11 +1,11 @@
 package org.uispec4j;
 
-import junit.framework.TestCase;
+
 import org.uispec4j.assertion.UISpecAssert;
 
 import javax.swing.*;
 
-public class AbstractSwingUIComponentTest extends TestCase {
+public class AbstractSwingUIComponentTest{
 
   public void testTooltips() throws Exception {
     DummySwingUIComponent component = new DummySwingUIComponent("label");

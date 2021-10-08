@@ -1,5 +1,6 @@
 package org.uispec4j.finder;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.TestUtils;
 import static org.uispec4j.finder.ComponentMatchers.*;
 
@@ -12,7 +13,8 @@ public class CollectionComponentMatchersTest extends PanelComponentFinderTestCas
   private JButton component3;
   private JTextField component4;
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     super.setUp();
     component1 = addComponent(JButton.class, "some text");
     component2 = addComponent(JButton.class, "other text");

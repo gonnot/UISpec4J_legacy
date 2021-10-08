@@ -1,5 +1,6 @@
 package org.uispec4j.finder;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.ComponentAmbiguityException;
 import org.uispec4j.ItemNotFoundException;
 import org.uispec4j.TestUtils;
@@ -11,7 +12,8 @@ public class PanelSwingComponentFinderTest extends PanelComponentFinderTestCase 
   private JButton button1;
   private JButton button2;
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     super.setUp();
     button1 = (JButton)addComponent(JButton.class, "button1");
     button2 = (JButton)addComponent(JButton.class, "button2");

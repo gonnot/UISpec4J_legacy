@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.ColorUtils;
 import org.uispec4j.utils.UIComponentFactory;
@@ -12,7 +13,8 @@ public class TabGroupTest extends UIComponentTestCase {
   private TabGroup tabGroup;
   private JTabbedPane jTabbedPane;
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     super.setUp();
     jTabbedPane = new JTabbedPane();
     jTabbedPane.setName("myTabbedPane");

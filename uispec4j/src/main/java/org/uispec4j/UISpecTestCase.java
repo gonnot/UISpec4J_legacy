@@ -1,6 +1,7 @@
 package org.uispec4j;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.assertion.Assertion;
 import org.uispec4j.assertion.UISpecAssert;
 import org.uispec4j.interception.toolkit.UISpecDisplay;
@@ -17,7 +18,7 @@ import org.uispec4j.interception.toolkit.UISpecDisplay;
  * uispec4j.adapter=samples.addressbook.test.Adapter
  * </code></pre>
  */
-public abstract class UISpecTestCase extends TestCase {
+public abstract class UISpecTestCase {
 
   static final String ADAPTER_CLASS_PROPERTY = "uispec4j.adapter";
   static final String PROPERTY_NOT_DEFINED;
@@ -31,13 +32,6 @@ public abstract class UISpecTestCase extends TestCase {
     UISpec4J.init();
   }
 
-  protected UISpecTestCase() {
-  }
-
-  protected UISpecTestCase(String testName) {
-    super(testName);
-  }
-
   public void setAdapter(UISpecAdapter adapter) {
     this.adapter = adapter;
   }
@@ -46,19 +40,19 @@ public abstract class UISpecTestCase extends TestCase {
    * Initializes the resources needed by the test case.<br>
    * NB: If you provide your own implementation, do not forget to call this one first.
    */
-  protected void setUp() throws Exception {
-    super.setUp();
+  @BeforeEach
+  final protected void uispec4JSetUp() {
     UISpecDisplay.instance().reset();
   }
 
   /**
    * Checks whether an unexpected exception had occurred, and releases the test resources.
    */
-  protected void tearDown() throws Exception {
+  @AfterEach
+  final protected void uispec4JTearDown() {
     adapter = null;
     UISpecDisplay.instance().rethrowIfNeeded();
     UISpecDisplay.instance().reset();
-    super.tearDown();
   }
 
   private void retrieveAdapter() throws AdapterNotFoundException {

@@ -1,10 +1,10 @@
 package org.uispec4j.utils;
 
-import junit.framework.TestCase;
+
 
 import java.io.File;
 
-public class FileTestUtilsTest extends TestCase {
+public class FileTestUtilsTest{
   public void testDumpStringToFile() throws Exception {
     String content = "hello world" + Utils.LINE_SEPARATOR + "this a new line!";
     String filename = "example.txt";

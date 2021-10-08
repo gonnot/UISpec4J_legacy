@@ -1,5 +1,6 @@
 package org.uispec4j.finder;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.ComponentAmbiguityException;
 import org.uispec4j.ItemNotFoundException;
 import org.uispec4j.TestUtils;
@@ -13,7 +14,8 @@ public class ComponentMatchersTest extends PanelComponentFinderTestCase {
   private JTextField textField;
   private Component otherButton;
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     super.setUp();
     button1 = addComponent(JButton.class, "displayed1");
     button1.setName("inner1");

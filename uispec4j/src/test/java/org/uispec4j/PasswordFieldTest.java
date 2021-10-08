@@ -1,5 +1,7 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.BeforeEach;
+
 import javax.swing.*;
 
 public class PasswordFieldTest extends UIComponentTestCase {
@@ -7,7 +9,8 @@ public class PasswordFieldTest extends UIComponentTestCase {
   private PasswordField passwordField;
   private JPasswordField jPasswordField;
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     jPasswordField = new JPasswordField();
     passwordField = new PasswordField(jPasswordField);
   }

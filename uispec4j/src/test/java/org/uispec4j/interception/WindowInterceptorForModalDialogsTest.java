@@ -1,5 +1,6 @@
 package org.uispec4j.interception;
 
+import org.junit.jupiter.api.AfterEach;
 import org.uispec4j.Button;
 import org.uispec4j.Trigger;
 import org.uispec4j.UISpec4J;
@@ -14,7 +15,8 @@ import javax.swing.*;
 public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestCase {
   private Thread thread;
 
-  protected void tearDown() throws Exception {
+  @AfterEach
+  final protected void tearDown() throws Exception {
     super.tearDown();
     if (thread != null) {
       thread.join();

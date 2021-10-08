@@ -1,10 +1,10 @@
 package org.uispec4j;
 
-import junit.framework.TestCase;
+
 
 import javax.swing.*;
 
-public class MouseTest extends TestCase {
+public class MouseTest{
   TextBox textBox = new TextBox(new JLabel());
   final MouseLogger logger = new MouseLogger(textBox);
 

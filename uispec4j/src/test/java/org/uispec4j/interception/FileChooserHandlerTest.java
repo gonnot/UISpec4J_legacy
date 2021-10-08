@@ -1,5 +1,6 @@
 package org.uispec4j.interception;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.Trigger;
 import org.uispec4j.utils.ArrayUtils;
 import org.uispec4j.utils.Utils;
@@ -10,7 +11,7 @@ import java.io.File;
 
 public class FileChooserHandlerTest extends InterceptionTestCase {
   private JFileChooser chooser = new JFileChooser();
-  private int result= JFileChooser.ERROR_OPTION;
+  private int result = JFileChooser.ERROR_OPTION;
   private Trigger SHOW_OPEN_DIALOG_TRIGGER = new Trigger() {
     public void run() throws Exception {
       JFrame frame = new JFrame();
@@ -32,7 +33,8 @@ public class FileChooserHandlerTest extends InterceptionTestCase {
   private File javaHome = new File(System.getProperty("java.home"));
   private File userHome = new File(System.getProperty("user.home"));
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     super.setUp();
     chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
   }
@@ -89,8 +91,8 @@ public class FileChooserHandlerTest extends InterceptionTestCase {
     WindowInterceptor
       .init(SHOW_OPEN_DIALOG_TRIGGER)
       .process(FileChooserHandler.init()
-        .assertCurrentDirEquals(javaHome)
-        .select(javaHome))
+                 .assertCurrentDirEquals(javaHome)
+                 .select(javaHome))
       .run();
   }
 
@@ -106,14 +108,14 @@ public class FileChooserHandlerTest extends InterceptionTestCase {
     WindowInterceptor
       .init(SHOW_OPEN_DIALOG_TRIGGER)
       .process(FileChooserHandler.init()
-        .assertCurrentFileNameEquals("aFile.txt")
-        .select(javaHome))
+                 .assertCurrentFileNameEquals("aFile.txt")
+                 .select(javaHome))
       .run();
   }
 
   public void testAssertCurrentFileNameEqualsError() throws Exception {
     chooser.setSelectedFile(new File(javaHome, "aFile.txt"));
-    checkError(SHOW_OPEN_DIALOG_TRIGGER, 
+    checkError(SHOW_OPEN_DIALOG_TRIGGER,
                FileChooserHandler.init().assertCurrentFileNameEquals("toto.exe"),
                new File(javaHome, "aFile.txt"),
                "Unexpected file name - expected:<[toto.exe]> but was:<[aFile.txt]>");
@@ -201,14 +203,14 @@ public class FileChooserHandlerTest extends InterceptionTestCase {
 
   private void checkUnexpectedWindowShown(final Window window, String title) {
     checkAssertionError(WindowInterceptor
-      .init(new Trigger() {
-        public void run() throws Exception {
-          window.setVisible(true);
-        }
-      })
-      .process(FileChooserHandler.init().select(javaHome)),
-                              "The shown window is not a file chooser - window content:" + Utils.LINE_SEPARATOR +
-                              "<window title=\"" + title + "\"/>");
+                          .init(new Trigger() {
+                            public void run() throws Exception {
+                              window.setVisible(true);
+                            }
+                          })
+                          .process(FileChooserHandler.init().select(javaHome)),
+                        "The shown window is not a file chooser - window content:" + Utils.LINE_SEPARATOR +
+                        "<window title=\"" + title + "\"/>");
   }
 
   private void checkOk(Trigger trigger, FileChooserHandler handler) {
@@ -223,9 +225,9 @@ public class FileChooserHandlerTest extends InterceptionTestCase {
                           File selectedFile,
                           String errorMessage) {
     checkAssertionError(WindowInterceptor
-      .init(trigger)
-      .process(handler.select(selectedFile)),
-                              errorMessage);
+                          .init(trigger)
+                          .process(handler.select(selectedFile)),
+                        errorMessage);
   }
 
   private void checkMultiSelectionEnabled(boolean enabled, String message) {

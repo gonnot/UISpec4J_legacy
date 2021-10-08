@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.utils.UIComponentFactory;
 import org.uispec4j.xml.XmlAssert;
 
@@ -9,7 +10,8 @@ public class CheckBoxTest extends ButtonTestCase {
   private CheckBox checkBox;
   private JCheckBox jCheckBox;
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     super.setUp();
     jCheckBox = new JCheckBox();
     jCheckBox.setName("myCheckBox");

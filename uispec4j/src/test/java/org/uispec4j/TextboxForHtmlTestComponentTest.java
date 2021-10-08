@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.FileTestUtils;
 import org.uispec4j.utils.Functor;
@@ -16,7 +17,8 @@ import java.net.URL;
 public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
   private JTextComponent jTextComponent;
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     super.setUp();
     initWithHtmlTextPane();
   }

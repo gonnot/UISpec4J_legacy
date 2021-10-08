@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.utils.UIComponentFactory;
 import org.uispec4j.xml.XmlAssert;
 
@@ -10,7 +11,8 @@ public class ButtonTest extends ButtonTestCase {
   private JButton jButton = new JButton();
   private Button button;
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     super.setUp();
     button = (Button)UIComponentFactory.createUIComponent(jButton);
   }

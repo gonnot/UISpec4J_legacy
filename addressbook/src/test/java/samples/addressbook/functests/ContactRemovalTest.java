@@ -1,5 +1,6 @@
 package samples.addressbook.functests;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.MenuItem;
 import org.uispec4j.Trigger;
 import org.uispec4j.Window;
@@ -9,7 +10,8 @@ import org.uispec4j.interception.WindowInterceptor;
 
 public class ContactRemovalTest extends AddressBookTestCase {
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     super.setUp();
     createContact("Smith", "John");
     createContact("Smith", "Maria");

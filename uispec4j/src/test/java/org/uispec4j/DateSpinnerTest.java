@@ -1,5 +1,7 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.BeforeEach;
+
 import static org.uispec4j.DummySpinner.*;
 
 import javax.swing.*;
@@ -10,10 +12,11 @@ public class DateSpinnerTest extends SpinnerTestCase {
   private SpinnerDateModel model;
 
   public DateSpinnerTest() throws Exception {
-    model = DummySpinner.dateModel();
+    model = dateModel();
   }
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     super.setUp();
     dateSpinner = (DateSpinner)spinner;
   }

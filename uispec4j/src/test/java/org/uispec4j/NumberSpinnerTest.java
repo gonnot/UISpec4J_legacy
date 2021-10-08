@@ -1,5 +1,7 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.BeforeEach;
+
 import static org.uispec4j.DummySpinner.listModel;
 
 import javax.swing.*;
@@ -7,7 +9,8 @@ import javax.swing.*;
 public class NumberSpinnerTest extends SpinnerTestCase {
   private NumberSpinner numberSpinner;
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     super.setUp();
     numberSpinner = (NumberSpinner)spinner;
   }

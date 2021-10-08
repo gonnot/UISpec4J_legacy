@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.xml.XmlAssert;
 
@@ -13,7 +14,8 @@ public abstract class SpinnerTestCase extends UIComponentTestCase {
 
   protected abstract Spinner createSpinner(JSpinner jSpinner);
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     init();
   }
 

@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.xml.EventLogger;
 import org.uispec4j.xml.XmlAssert;
@@ -11,6 +12,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListBoxTest extends UIComponentTestCase {
   private static final String[] ALL_ITEMS = {"First Item", "Second Item", "Third Item"};
@@ -18,7 +20,8 @@ public class ListBoxTest extends UIComponentTestCase {
   private JList jList;
   private ListBox listBox;
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     super.setUp();
     init(new JList(ALL_ITEMS));
   }
@@ -459,7 +462,7 @@ public class ListBoxTest extends UIComponentTestCase {
   }
 
   private class DummySelectionListener extends MouseAdapter implements ListSelectionListener {
-    private final java.util.List<String> events = new ArrayList<String>();
+    private final List<String> events = new ArrayList<String>();
     private Object selectedValue;
 
     public void valueChanged(ListSelectionEvent e) {

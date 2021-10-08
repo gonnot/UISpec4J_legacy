@@ -1,11 +1,14 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.BeforeEach;
+
 import javax.swing.*;
 
 public class ListSpinnerTest extends SpinnerTestCase {
   private ListSpinner listSpinner;
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     super.setUp();
     listSpinner = (ListSpinner)spinner;
   }
@@ -25,7 +28,9 @@ public class ListSpinnerTest extends SpinnerTestCase {
   public void testContentsEquals() throws Exception {
     assertTrue(listSpinner.contentEquals("1", "2", "3"));
     assertFalse(listSpinner.contentEquals("2", "3", "1"));
-  };
+  }
+
+  ;
 
   public void testUsingListSpinnerWithOtherModelThanSpinnerListModelThrowsAnException() throws Exception {
     try {

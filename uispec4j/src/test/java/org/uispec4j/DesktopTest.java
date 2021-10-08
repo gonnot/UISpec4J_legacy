@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.utils.ArrayUtils;
 import org.uispec4j.utils.Functor;
 import org.uispec4j.utils.Utils;
@@ -14,7 +15,8 @@ public class DesktopTest extends UIComponentTestCase {
   private JDesktopPane jDesktopPane = new JDesktopPane();
   private Desktop desktop;
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     super.setUp();
     jDesktopPane.setName("myDesktop");
     desktop = new Desktop(jDesktopPane);

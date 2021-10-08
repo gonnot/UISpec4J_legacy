@@ -1,5 +1,6 @@
 package org.uispec4j.extension;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.TestUtils;
 import org.uispec4j.utils.UnitTestCase;
 
@@ -9,7 +10,8 @@ import java.io.IOException;
 public class ExtensionGeneratorTest extends UnitTestCase {
   private File output;
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     super.setUp();
     output = new File(findTargetDirectory(), "tmp/extension.jar");
     output.getParentFile().mkdirs();

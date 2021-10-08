@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.Functor;
 
@@ -10,7 +11,8 @@ public class ComboBoxTest extends UIComponentTestCase {
   private ComboBox comboBox;
   private JComboBox jComboBox;
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     super.setUp();
     init(new JComboBox(new String[]{"one", "two", "three"}));
   }
@@ -168,7 +170,6 @@ public class ComboBoxTest extends UIComponentTestCase {
     assertTrue(comboBox.selectionEquals("null text"));
   }
 
-
   public void testClickSelectsTheFirstItem() throws Exception {
     jComboBox.setSelectedIndex(1);
     comboBox.click();
@@ -325,7 +326,7 @@ public class ComboBoxTest extends UIComponentTestCase {
     }
   }
 
-  private static class VerySimpleComboBoxModel extends AbstractListModel implements ComboBoxModel{
+  private static class VerySimpleComboBoxModel extends AbstractListModel implements ComboBoxModel {
     private final String[] content;
     private Object selectedObject = null;
 

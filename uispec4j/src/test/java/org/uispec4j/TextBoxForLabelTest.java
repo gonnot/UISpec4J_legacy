@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.utils.Functor;
 import org.uispec4j.utils.UIComponentFactory;
 import org.uispec4j.xml.XmlAssert;
@@ -9,7 +10,8 @@ import javax.swing.*;
 public class TextBoxForLabelTest extends TextBoxComponentTestCase {
   private JLabel jLabel;
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     super.setUp();
     jLabel = new JLabel("some text");
     jLabel.setName("myLabel");

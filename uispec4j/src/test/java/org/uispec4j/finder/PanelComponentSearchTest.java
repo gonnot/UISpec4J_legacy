@@ -1,7 +1,9 @@
 package org.uispec4j.finder;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.Button;
 import org.uispec4j.*;
+import org.uispec4j.Desktop;
 import org.uispec4j.Panel;
 import org.uispec4j.extension.CustomCountingButton;
 import org.uispec4j.extension.JCountingButton;
@@ -19,22 +21,23 @@ import java.util.Map;
 
 public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
   private static final Class[] COMPONENT_CLASSES = new Class[]{
-      Button.class,
-      CheckBox.class,
-      ComboBox.class,
-      org.uispec4j.Desktop.class,
-      ListBox.class,
-      TabGroup.class,
-      TextBox.class,
-      PasswordField.class,
-      Panel.class,
-      Spinner.class,
-      Slider.class,
-      ProgressBar.class,
-      RadioButton.class};
+    Button.class,
+    CheckBox.class,
+    ComboBox.class,
+    Desktop.class,
+    ListBox.class,
+    TabGroup.class,
+    TextBox.class,
+    PasswordField.class,
+    Panel.class,
+    Spinner.class,
+    Slider.class,
+    ProgressBar.class,
+    RadioButton.class};
   private Map componentAccessors;
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     super.setUp();
     componentAccessors = createAccessors(panel);
   }
@@ -163,7 +166,6 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
     jPanel.add(checkBoxWithInnerName);
     TestUtils.assertUIComponentRefersTo(checkBoxWithInnerName, checkBoxAccessor.getComponent("toto"));
 
-
     JCheckBox checkBoxWithReferencingLabel = new JCheckBox("do not choose me");
     JLabel label = new JLabel("toto");
     label.setLabelFor(checkBoxWithReferencingLabel);
@@ -291,7 +293,7 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
   public void testComponentThatShouldBeUniqueInPanel() throws Exception {
     checkComponentUnicityAmbiguity(JTable.class, Table.TYPE_NAME, "myTable");
     checkComponentUnicityAmbiguity(JList.class, ListBox.TYPE_NAME, "myList");
-    checkComponentUnicityAmbiguity(JDesktopPane.class, org.uispec4j.Desktop.TYPE_NAME, "myDesktop");
+    checkComponentUnicityAmbiguity(JDesktopPane.class, Desktop.TYPE_NAME, "myDesktop");
     checkComponentUnicityAmbiguity(JTextField.class, TextBox.TYPE_NAME, "myText");
     checkComponentUnicityAmbiguity(JTree.class, Tree.TYPE_NAME, "myTree");
   }
@@ -680,7 +682,7 @@ public class PanelComponentSearchTest extends PanelComponentFinderTestCase {
         return panel.getComboBox(componentName);
       }
     });
-    map.put(org.uispec4j.Desktop.TYPE_NAME, new ComponentAccessorAdapter() {
+    map.put(Desktop.TYPE_NAME, new ComponentAccessorAdapter() {
       public UIComponent getComponent() throws Exception {
         return panel.getDesktop();
       }

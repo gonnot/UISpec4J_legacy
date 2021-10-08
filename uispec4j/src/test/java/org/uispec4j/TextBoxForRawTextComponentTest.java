@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.DummyActionListener;
 import org.uispec4j.utils.Functor;
@@ -12,7 +13,8 @@ import javax.swing.text.*;
 public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
   private JTextComponent jTextComponent;
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     super.setUp();
     init(new JTextArea());
   }
