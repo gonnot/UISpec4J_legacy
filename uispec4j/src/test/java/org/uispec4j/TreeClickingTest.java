@@ -118,7 +118,6 @@ public class TreeClickingTest extends TreeTestCase {
     final Counter counter = new Counter();
     jTree.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
-        System.out.println("TreeClickingTest.mouseClicked " + e);
         counter.increment();
         Assertions.assertEquals(2, e.getClickCount());
         int modifiers = e.getModifiers();

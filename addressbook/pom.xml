@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.uispec4j</groupId>
     <artifactId>uispec4j-root</artifactId>
-    <version>17-SNAPSHOT</version>
+    <version>17.0-SNAPSHOT</version>
   </parent>
   <artifactId>addressbook</artifactId>
   <dependencies>
