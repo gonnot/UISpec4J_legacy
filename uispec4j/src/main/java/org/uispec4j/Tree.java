@@ -395,8 +395,8 @@ public class Tree extends AbstractSwingUIComponent {
         for (int i = 0; i < selectionPaths.length; i++) {
           TreePath selectionPath = selectionPaths[i];
           AssertAdapter.assertNotNull("The tree has an unexpectedly null selection path.", selectionPath);
-          TreePath expectedPath = getTreePath(paths[i]);
-          actual[i] = pathToString(expectedPath, separator);
+//          TreePath expectedPath = getTreePath(paths[i]);
+          actual[i] = pathToString(selectionPath, separator);
         }
         Arrays.sort(actual);
         ArrayUtils.assertEquals(expectedPaths, actual);

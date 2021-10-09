@@ -9,7 +9,7 @@ import javax.swing.tree.TreePath;
 public class TreeExpansionTest extends TreeTestCase {
 
   @Test
-  public void testExpandAndCollapsePath() throws Exception {
+  public void testExpandAndCollapsePath() {
     TreePath path = new TreePath(child1Node.getPath());
     jTree.expandPath(path);
     checkExpanded("child1", true);
@@ -18,7 +18,7 @@ public class TreeExpansionTest extends TreeTestCase {
   }
 
   @Test
-  public void testAssertPathExpanded() throws Exception {
+  public void testAssertPathExpanded() {
     tree.expand("child1", true);
     checkExpanded("child1", true);
     tree.expand("child1", false);
@@ -26,7 +26,7 @@ public class TreeExpansionTest extends TreeTestCase {
   }
 
   @Test
-  public void testAssertPathExpandedNeedsAValidPath() throws Exception {
+  public void testAssertPathExpandedNeedsAValidPath() {
     try {
       tree.expand("unknown", true);
       throw new AssertionFailureNotDetectedError();
@@ -42,7 +42,7 @@ public class TreeExpansionTest extends TreeTestCase {
       assertEquals(!expanded, tree.pathIsExpanded(path));
       throw new AssertionFailureNotDetectedError();
     }
-    catch (AssertionError e) {
+    catch (AssertionError ignored) {
     }
   }
 }

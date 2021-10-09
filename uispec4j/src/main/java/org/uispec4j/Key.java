@@ -209,13 +209,13 @@ public final class Key {
    * Constants class for keyboard modifiers such as Control or Shift.
    */
   public static final class Modifier {
-    public static final Modifier CONTROL = new Modifier(InputEvent.CTRL_MASK);
-    public static final Modifier SHIFT = new Modifier(InputEvent.SHIFT_MASK);
-    public static final Modifier ALT = new Modifier(InputEvent.ALT_MASK);
-    public static final Modifier META = new Modifier(InputEvent.META_MASK);
+    public static final Modifier CONTROL = new Modifier(InputEvent.CTRL_DOWN_MASK);
+    public static final Modifier SHIFT = new Modifier(InputEvent.SHIFT_DOWN_MASK);
+    public static final Modifier ALT = new Modifier(InputEvent.ALT_DOWN_MASK);
+    public static final Modifier META = new Modifier(InputEvent.META_DOWN_MASK);
     public static final Modifier NONE = new Modifier(0);
 
-    private int code;
+    private final int code;
 
     private Modifier(int code) {
       this.code = code;

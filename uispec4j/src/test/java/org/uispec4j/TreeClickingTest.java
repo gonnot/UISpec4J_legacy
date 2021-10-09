@@ -105,8 +105,12 @@ public class TreeClickingTest extends TreeTestCase {
   }
 
   @Test
-  public void testDoubleClickBehaviour() throws Exception {
+  public void testDoubleClickBehaviour_direct() throws Exception {
     checkDoubleClickBehaviour(new DirectClicker());
+  }
+
+  @Test
+  public void testDoubleClickBehaviour_trigger() throws Exception {
     checkDoubleClickBehaviour(new TriggerClicker());
   }
 
@@ -114,6 +118,7 @@ public class TreeClickingTest extends TreeTestCase {
     final Counter counter = new Counter();
     jTree.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
+        System.out.println("TreeClickingTest.mouseClicked " + e);
         counter.increment();
         Assertions.assertEquals(2, e.getClickCount());
         int modifiers = e.getModifiers();
