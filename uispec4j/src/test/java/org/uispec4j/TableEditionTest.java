@@ -11,7 +11,7 @@ import static org.uispec4j.assertion.UISpecAssert.fail;
 
 public class TableEditionTest extends TableTestCase {
   @Test
-  public void testEditCellForString() throws Exception {
+  public void testEditCellForString() {
     table.editCell(0, 0, "value", false);
     assertTrue(table.contentEquals(new Object[][]{
       {"a", Boolean.TRUE, "3"},
@@ -25,7 +25,7 @@ public class TableEditionTest extends TableTestCase {
   }
 
   @Test
-  public void testEditCellForComboBox() throws Exception {
+  public void testEditCellForComboBox() {
     table.editCell(0, 2, "5", false);
     assertTrue(table.contentEquals(new Object[][]{
       {"a", Boolean.TRUE, "3"},
@@ -39,7 +39,7 @@ public class TableEditionTest extends TableTestCase {
   }
 
   @Test
-  public void testEditCellErrors() throws Exception {
+  public void testEditCellErrors() {
     try {
       table.editCell(1, 0, "notEditable", true);
       fail();
@@ -58,7 +58,7 @@ public class TableEditionTest extends TableTestCase {
   }
 
   @Test
-  public void testAssertEditable() throws Exception {
+  public void testAssertEditable() {
     jTable.setModel(new MyModel() {
       public boolean isCellEditable(int row, int col) {
         return (row + col) % 2 == 0;
@@ -77,15 +77,16 @@ public class TableEditionTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("Error at row 0:\n" +
-                              "Expected: [false,false,false]\n" +
-                              "Actual:   [true,false,true]",
+      Assertions.assertEquals("""
+                              Error at row 0:
+                              Expected: [false,false,false]
+                              Actual:   [true,false,true]""",
                               e.getMessage());
     }
   }
 
   @Test
-  public void testAssertCellEditable() throws Exception {
+  public void testAssertCellEditable() {
     jTable.setModel(new MyModel() {
       public boolean isCellEditable(int row, int col) {
         return (col == 0) || ((col == 1) && (row == 1));
@@ -110,7 +111,7 @@ public class TableEditionTest extends TableTestCase {
   }
 
   @Test
-  public void testAssertColumnEditableWithColumnIndex() throws Exception {
+  public void testAssertColumnEditableWithColumnIndex() {
     jTable.setModel(new MyModel() {
       public boolean isCellEditable(int row, int col) {
         return (col == 0) || ((col == 1) && (row == 1));
@@ -130,7 +131,7 @@ public class TableEditionTest extends TableTestCase {
   }
 
   @Test
-  public void testAssertColumnEditableWithColumnName() throws Exception {
+  public void testAssertColumnEditableWithColumnName() {
     jTable.setModel(new MyModel() {
       public boolean isCellEditable(int row, int col) {
         return (col == 0) || ((col == 1) && (row == 1));
@@ -158,9 +159,9 @@ public class TableEditionTest extends TableTestCase {
   }
 
   @Test
-  public void testEditingACellWithAComboBox() throws Exception {
+  public void testEditingACellWithAComboBox() {
     String[] choices = new String[]{"a", "b", "c"};
-    jTable.setDefaultEditor(String.class, new DefaultCellEditor(new JComboBox(choices)));
+    jTable.setDefaultEditor(String.class, new DefaultCellEditor(new JComboBox<>(choices)));
     assertTrue(table.contentEquals(new Object[][]{
       {"a", Boolean.TRUE, "3"},
       {"c", Boolean.FALSE, "4"}
@@ -175,7 +176,7 @@ public class TableEditionTest extends TableTestCase {
   }
 
   @Test
-  public void testEditingACellWithATextField() throws Exception {
+  public void testEditingACellWithATextField() {
     jTable.setDefaultEditor(String.class, new DefaultCellEditor(new JTextField()));
     assertTrue(table.contentEquals(new Object[][]{
       {"a", Boolean.TRUE, "3"},
@@ -189,7 +190,7 @@ public class TableEditionTest extends TableTestCase {
   }
 
   @Test
-  public void testEditCellChecksThatTheCellIsEditable() throws Exception {
+  public void testEditCellChecksThatTheCellIsEditable() {
     jTable.setModel(new MyModel() {
       public boolean isCellEditable(int row, int column) {
         return false;
@@ -200,7 +201,7 @@ public class TableEditionTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("Cell (0,0) is not editable", e.getMessage());
+      Assertions.assertEquals("Cell (0,0) is not editable ==> expected: <true> but was: <false>", e.getMessage());
     }
   }
 }

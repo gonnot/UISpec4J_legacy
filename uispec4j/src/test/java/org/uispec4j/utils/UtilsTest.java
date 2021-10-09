@@ -21,20 +21,16 @@ public class UtilsTest extends UnitTestCase {
     final Item motorcycle = new Item("motorcycle");
     final Object[] collection = new Object[]{bike, motorcycle, bag};
 
-    checkAssertionError(new Functor() {
-      public void run() throws Exception {
-        Utils.assertSetEquals(new Object[]{bag, motorcycle}, collection, new ItemStringifier());
-      }
-    }, "2 elements instead of 3\n" +
-       "Expected: [bag,motorcycle],\n" +
-       "but was: [bike,motorcycle,bag]");
-    checkAssertionError(new Functor() {
-      public void run() throws Exception {
-        Utils.assertSetEquals(new Object[]{bag, motorcycle, bag}, collection, new ItemStringifier());
-      }
-    }, "Unexpected element 'bike'\n" +
-       "Expected: [bag,motorcycle,bag],\n" +
-       "but was: [bike,motorcycle,bag]");
+    checkAssertionError(() -> Utils.assertSetEquals(new Object[]{bag, motorcycle}, collection, new ItemStringifier()),
+                        """
+                        2 elements instead of 3
+                        Expected: [bag,motorcycle],
+                        but was: [bike,motorcycle,bag] ==> expected: <true> but was: <false>""");
+    checkAssertionError(() -> Utils.assertSetEquals(new Object[]{bag, motorcycle, bag}, collection, new ItemStringifier()),
+                        """
+                        Unexpected element 'bike'
+                        Expected: [bag,motorcycle,bag],
+                        but was: [bike,motorcycle,bag] ==> expected: <true> but was: <false>""");
     Utils.assertSetEquals(new Object[]{bag, bike, motorcycle}, collection, new ItemStringifier());
     Utils.assertSetEquals(new Object[]{bike, motorcycle, bag}, collection, new ItemStringifier());
   }
@@ -46,27 +42,21 @@ public class UtilsTest extends UnitTestCase {
     final Item motorcycle = new Item("motorcycle");
     final Object[] collection = new Object[]{bike, motorcycle, bag};
 
-    checkAssertionError(new Functor() {
-      public void run() throws Exception {
-        Utils.assertEquals(new Object[]{bag, motorcycle}, collection, new ItemStringifier());
-      }
-    }, "2 elements instead of 3\n" +
-       "Expected: [bag,motorcycle],\n" +
-       "but was: [bike,motorcycle,bag]");
-    checkAssertionError(new Functor() {
-      public void run() throws Exception {
-        Utils.assertEquals(new Object[]{bag, motorcycle, bag}, collection, new ItemStringifier());
-      }
-    }, "Unexpected element 'bike'\n" +
-       "Expected: [bag,motorcycle,bag],\n" +
-       "but was: [bike,motorcycle,bag]");
-    checkAssertionError(new Functor() {
-      public void run() throws Exception {
-        Utils.assertEquals(new Object[]{bag, bike, motorcycle}, collection, new ItemStringifier());
-      }
-    }, "Unexpected order in the collection\n" +
-       "Expected: [bag,bike,motorcycle],\n" +
-       "but was: [bike,motorcycle,bag]");
+    checkAssertionError(() -> Utils.assertEquals(new Object[]{bag, motorcycle}, collection, new ItemStringifier()),
+                        """
+                        2 elements instead of 3
+                        Expected: [bag,motorcycle],
+                        but was: [bike,motorcycle,bag] ==> expected: <true> but was: <false>""");
+    checkAssertionError(() -> Utils.assertEquals(new Object[]{bag, motorcycle, bag}, collection, new ItemStringifier()),
+                        """
+                        Unexpected element 'bike'
+                        Expected: [bag,motorcycle,bag],
+                        but was: [bike,motorcycle,bag] ==> expected: <true> but was: <false>""");
+    checkAssertionError(() -> Utils.assertEquals(new Object[]{bag, bike, motorcycle}, collection, new ItemStringifier()),
+                        """
+                        Unexpected order in the collection
+                        Expected: [bag,bike,motorcycle],
+                        but was: [bike,motorcycle,bag] ==> expected: <true> but was: <false>""");
     Utils.assertEquals(new Object[]{bike, motorcycle, bag}, collection, new ItemStringifier());
   }
 

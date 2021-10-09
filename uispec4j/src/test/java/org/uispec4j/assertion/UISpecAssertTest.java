@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.uispec4j.UISpec4J;
 import org.uispec4j.utils.Chrono;
-import org.uispec4j.utils.Functor;
 import org.uispec4j.utils.UnitTestCase;
 import org.uispec4j.utils.Utils;
 
@@ -18,11 +17,7 @@ public class UISpecAssertTest extends UnitTestCase {
   @Test
   public void testAssertTrue() throws Exception {
     UISpecAssert.assertTrue(DummyAssertion.TRUE);
-    checkAssertionError(new Functor() {
-      public void run() throws Exception {
-        UISpecAssert.assertTrue(DummyAssertion.FALSE);
-      }
-    });
+    checkAssertionError(() -> UISpecAssert.assertTrue(DummyAssertion.FALSE));
   }
 
   @Test
@@ -40,34 +35,18 @@ public class UISpecAssertTest extends UnitTestCase {
     chrono.assertElapsedTimeLessThan(200);
 
     UISpec4J.setAssertionTimeLimit(500);
-    checkAssertionError(new Functor() {
-      public void run() throws Exception {
-        runThreadAndWaitForAssertion(300, 100);
-      }
-    }, "error!");
+    checkAssertionError(() -> runThreadAndWaitForAssertion(300, 100), "error!");
 
     final DummyAssertion assertion = new DummyAssertion("custom message");
 
-    checkAssertionError(new Functor() {
-      public void run() throws Exception {
-        UISpecAssert.waitUntil(assertion, 0);
-      }
-    }, "custom message");
+    checkAssertionError(() -> UISpecAssert.waitUntil(assertion, 0), "custom message");
 
-    checkAssertionError(new Functor() {
-      public void run() throws Exception {
-        UISpecAssert.waitUntil("other message", assertion, 0);
-      }
-    }, "other message");
+    checkAssertionError(() -> UISpecAssert.waitUntil("other message", assertion, 0), "other message");
   }
 
   @Test
   public void testAssertTrueRetriesUpToATimeLimit() throws Exception {
-    checkAssertionError(new Functor() {
-      public void run() throws Exception {
-        runThreadAndCheckAssertion(900, true);
-      }
-    }, "error!");
+    checkAssertionError(() -> runThreadAndCheckAssertion(900, true), "error!");
   }
 
   @Test
@@ -77,18 +56,13 @@ public class UISpecAssertTest extends UnitTestCase {
 
     checkAssertionFails(assertion, "custom message");
 
-    checkAssertionError(new Functor() {
-      public void run() throws Exception {
-        UISpecAssert.assertTrue("other message", assertion);
-      }
-    }, "other message");
+    checkAssertionError(() -> UISpecAssert.assertTrue("other message", assertion), "other message");
 
-    checkAssertionError(new Functor() {
-      public void run() throws Exception {
-        assertion.setError("exception message");
-        UISpecAssert.assertTrue("assertTrue message", assertion);
-      }
-    }, "assertTrue message");
+    checkAssertionError(() -> {
+                          assertion.setError("exception message");
+                          UISpecAssert.assertTrue("assertTrue message", assertion);
+                        },
+                        "assertTrue message");
   }
 
   @Test
@@ -96,27 +70,15 @@ public class UISpecAssertTest extends UnitTestCase {
     UISpec4J.setAssertionTimeLimit(0);
     final DummyAssertion assertion = new DummyAssertion("custom message");
 
-    checkAssertionError(new Functor() {
-      public void run() throws Exception {
-        UISpecAssert.assertFalse(not(assertion));
-      }
-    }, null);
+    checkAssertionError(() -> UISpecAssert.assertFalse(not(assertion)), "");
 
-    checkAssertionError(new Functor() {
-      public void run() throws Exception {
-        UISpecAssert.assertFalse("other message", not(assertion));
-      }
-    }, "other message");
+    checkAssertionError(() -> UISpecAssert.assertFalse("other message", not(assertion)), "other message");
   }
 
   @Test
   public void testAssertFalse() throws Exception {
     UISpecAssert.assertFalse(DummyAssertion.FALSE);
-    checkAssertionError(new Functor() {
-      public void run() throws Exception {
-        UISpecAssert.assertFalse(DummyAssertion.TRUE);
-      }
-    });
+    checkAssertionError(() -> UISpecAssert.assertFalse(DummyAssertion.TRUE));
   }
 
   @Test
@@ -128,27 +90,15 @@ public class UISpecAssertTest extends UnitTestCase {
 
   @Test
   public void testAssertFalseRetriesUpToATimeLimit() throws Exception {
-    checkAssertionError(new Functor() {
-      public void run() throws Exception {
-        runThreadAndCheckAssertion(900, false);
-      }
-    });
+    checkAssertionError(() -> runThreadAndCheckAssertion(900, false));
   }
 
   @Test
   public void testAssertEquals() throws Exception {
     UISpecAssert.assertEquals(false, DummyAssertion.FALSE);
     UISpecAssert.assertEquals(true, DummyAssertion.TRUE);
-    checkAssertionError(new Functor() {
-      public void run() throws Exception {
-        UISpecAssert.assertEquals(true, DummyAssertion.FALSE);
-      }
-    }, DummyAssertion.DEFAULT_ERROR_MSG);
-    checkAssertionError(new Functor() {
-      public void run() throws Exception {
-        UISpecAssert.assertEquals(false, DummyAssertion.TRUE);
-      }
-    });
+    checkAssertionError(() -> UISpecAssert.assertEquals(true, DummyAssertion.FALSE), DummyAssertion.DEFAULT_ERROR_MSG);
+    checkAssertionError(() -> UISpecAssert.assertEquals(false, DummyAssertion.TRUE));
   }
 
   @Test
@@ -156,27 +106,19 @@ public class UISpecAssertTest extends UnitTestCase {
     final String message = "my custom message";
     UISpecAssert.assertEquals(message, false, DummyAssertion.FALSE);
     UISpecAssert.assertEquals(message, true, DummyAssertion.TRUE);
-    checkAssertionError(new Functor() {
-      public void run() throws Exception {
-        UISpecAssert.assertEquals(message, true, DummyAssertion.FALSE);
-      }
-    }, message);
-    checkAssertionError(new Functor() {
-      public void run() throws Exception {
-        UISpecAssert.assertEquals(message, false, DummyAssertion.TRUE);
-      }
-    }, message);
+    checkAssertionError(() -> UISpecAssert.assertEquals(message, true, DummyAssertion.FALSE), message);
+    checkAssertionError(() -> UISpecAssert.assertEquals(message, false, DummyAssertion.TRUE), message);
   }
 
   @Test
-  public void testAssertionNegationOperator() throws Exception {
+  public void testAssertionNegationOperator() {
     UISpecAssert.assertTrue(DummyAssertion.TRUE);
     UISpecAssert.assertFalse(UISpecAssert.not(DummyAssertion.TRUE));
     UISpecAssert.assertTrue(UISpecAssert.not(UISpecAssert.not(DummyAssertion.TRUE)));
   }
 
   @Test
-  public void testAssertionIntersectionOperator() throws Exception {
+  public void testAssertionIntersectionOperator() {
     DummyAssertion assertion = new DummyAssertion(true);
     UISpecAssert.assertTrue(UISpecAssert.and(assertion, DummyAssertion.TRUE));
     UISpecAssert.assertFalse(UISpecAssert.and(assertion, DummyAssertion.FALSE));
@@ -187,7 +129,7 @@ public class UISpecAssertTest extends UnitTestCase {
   }
 
   @Test
-  public void testAssertionUnionOperator() throws Exception {
+  public void testAssertionUnionOperator() {
     DummyAssertion assertion = new DummyAssertion(true);
     UISpecAssert.assertTrue(UISpecAssert.or(assertion, DummyAssertion.TRUE));
     UISpecAssert.assertTrue(UISpecAssert.or(assertion, DummyAssertion.FALSE));
@@ -234,7 +176,7 @@ public class UISpecAssertTest extends UnitTestCase {
 
   private static class DummyThread extends Thread {
     boolean timeoutExpired;
-    private int sleepTime;
+    private final int sleepTime;
 
     public DummyThread(int sleepTime) {
       this.sleepTime = sleepTime;

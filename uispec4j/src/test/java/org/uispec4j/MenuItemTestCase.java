@@ -92,7 +92,7 @@ public abstract class MenuItemTestCase extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("The menu item is not enabled, it cannot be activated", e.getMessage());
+      Assertions.assertEquals("The menu item is not enabled, it cannot be activated ==> expected: <true> but was: <false>", e.getMessage());
     }
   }
 

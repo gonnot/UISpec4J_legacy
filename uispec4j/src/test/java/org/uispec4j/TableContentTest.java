@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class TableContentTest extends TableTestCase {
   @Test
-  public void testAssertContentEquals() throws Exception {
+  public void testAssertContentEquals() {
     assertTrue(table.contentEquals(new Object[][]{
       {"a", Boolean.TRUE, "3"},
       {"c", Boolean.FALSE, "4"}
@@ -20,7 +20,7 @@ public class TableContentTest extends TableTestCase {
   }
 
   @Test
-  public void testAssertContentEqualsFailure() throws Exception {
+  public void testAssertContentEqualsFailure() {
     try {
       assertTrue(table.contentEquals(new Object[][]{
         {"a", Boolean.TRUE, "3"},
@@ -28,12 +28,12 @@ public class TableContentTest extends TableTestCase {
       }));
       throw new AssertionFailureNotDetectedError();
     }
-    catch (AssertionError e) {
+    catch (AssertionError ignored) {
     }
   }
 
   @Test
-  public void testAssertEmptyFailure() throws Exception {
+  public void testAssertEmptyFailure() {
     try {
       assertTrue(table.isEmpty());
       throw new AssertionFailureNotDetectedError();
@@ -44,41 +44,41 @@ public class TableContentTest extends TableTestCase {
   }
 
   @Test
-  public void testBlockEqual() throws Exception {
+  public void testBlockEqual() {
     assertTrue(table.blockEquals(1, 1, 2, 1, new Object[][]{
       {Boolean.FALSE, "4"}
     }));
   }
 
   @Test
-  public void testBlockEqualFailure() throws Exception {
+  public void testBlockEqualFailure() {
     try {
       assertTrue(table.blockEquals(1, 1, 2, 1, new Object[][]{
         {"c", Boolean.FALSE, "4"}
       }));
       throw new AssertionFailureNotDetectedError();
     }
-    catch (AssertionError e) {
+    catch (AssertionError ignored) {
     }
   }
 
   @Test
-  public void testPartialRowEqual() throws Exception {
+  public void testPartialRowEqual() {
     assertTrue(table.rowEquals(1, 1, 2, new Object[]{Boolean.FALSE, "4"}));
   }
 
   @Test
-  public void testPartialRowEqualailure() throws Exception {
+  public void testPartialRowEqualFailure() {
     try {
       assertTrue(table.rowEquals(1, 0, 2, new Object[]{Boolean.FALSE, "4"}));
       throw new AssertionFailureNotDetectedError();
     }
-    catch (AssertionError e) {
+    catch (AssertionError ignored) {
     }
   }
 
   @Test
-  public void testContentEqualsUsesTheModelWhenAnUnknownRendererComponentIsUsed() throws Exception {
+  public void testContentEqualsUsesTheModelWhenAnUnknownRendererComponentIsUsed() {
     installJPanelRenderer();
     assertTrue(table.contentEquals(new Object[][]{
       {"a", "true", "3"},
@@ -91,12 +91,12 @@ public class TableContentTest extends TableTestCase {
       }));
       throw new AssertionFailureNotDetectedError();
     }
-    catch (AssertionError e) {
+    catch (AssertionError ignored) {
     }
   }
 
   @Test
-  public void testContentEqualsWithUnknownRendererComponentAndNullModelValue() throws Exception {
+  public void testContentEqualsWithUnknownRendererComponentAndNullModelValue() {
     installJPanelRenderer();
     jTable.getModel().setValueAt(null, 0, 1);
     assertTrue(table.contentEquals(new Object[][]{
@@ -110,12 +110,12 @@ public class TableContentTest extends TableTestCase {
       }));
       throw new AssertionFailureNotDetectedError();
     }
-    catch (AssertionError e) {
+    catch (AssertionError ignored) {
     }
   }
 
   @Test
-  public void testContentEqualsWhenColumnMoved() throws Exception {
+  public void testContentEqualsWhenColumnMoved() {
     jTable.moveColumn(0, 1);
     assertTrue(table.contentEquals(new Object[][]{
       {Boolean.TRUE, "a", "3"},
@@ -128,19 +128,17 @@ public class TableContentTest extends TableTestCase {
       }));
       throw new AssertionFailureNotDetectedError();
     }
-    catch (AssertionError e) {
+    catch (AssertionError ignored) {
     }
   }
 
   @Test
-  public void testContentEqualsAfterSettingACustomCellValueConverterAsDefault() throws Exception {
-    table.setDefaultCellValueConverter(new TableCellValueConverter() {
-      public Object getValue(int row, int column, Component renderedComponent, Object modelObject) {
-        if ((row == 1) && (column == 1)) {
-          return "toto";
-        }
-        return modelObject.toString();
+  public void testContentEqualsAfterSettingACustomCellValueConverterAsDefault() {
+    table.setDefaultCellValueConverter((row, column, renderedComponent, modelObject) -> {
+      if ((row == 1) && (column == 1)) {
+        return "toto";
       }
+      return modelObject.toString();
     });
     assertTrue(table.contentEquals(new Object[][]{
       {"a", "true", "3"},
@@ -153,17 +151,13 @@ public class TableContentTest extends TableTestCase {
       }));
       throw new AssertionFailureNotDetectedError();
     }
-    catch (AssertionError e) {
+    catch (AssertionError ignored) {
     }
   }
 
   @Test
-  public void testContentEqualsAfterSettingACustomCellValueConverterOnAColumn() throws Exception {
-    table.setCellValueConverter(0, new TableCellValueConverter() {
-      public Object getValue(int row, int column, Component renderedComponent, Object modelObject) {
-        return "custom " + modelObject;
-      }
-    });
+  public void testContentEqualsAfterSettingACustomCellValueConverterOnAColumn() {
+    table.setCellValueConverter(0, (row, column, renderedComponent, modelObject) -> "custom " + modelObject);
     assertTrue(table.contentEquals(new Object[][]{
       {"custom a", Boolean.TRUE, "3"},
       {"custom c", Boolean.FALSE, "4"}
@@ -175,18 +169,14 @@ public class TableContentTest extends TableTestCase {
       }));
       throw new AssertionFailureNotDetectedError();
     }
-    catch (AssertionError e) {
+    catch (AssertionError ignored) {
     }
   }
 
   @Test
-  public void testContentEqualsAfterSettingACustomCellValueConverterOnAColumnThatHasBeenMoved() throws Exception {
+  public void testContentEqualsAfterSettingACustomCellValueConverterOnAColumnThatHasBeenMoved() {
     jTable.moveColumn(0, 1);
-    table.setCellValueConverter(0, new TableCellValueConverter() {
-      public Object getValue(int row, int column, Component renderedComponent, Object modelObject) {
-        return "custom " + modelObject;
-      }
-    });
+    table.setCellValueConverter(0, (row, column, renderedComponent, modelObject) -> "custom " + modelObject);
     assertTrue(table.contentEquals(new Object[][]{
       {"custom true", "a", "3"},
       {"custom false", "c", "4"}
@@ -198,12 +188,12 @@ public class TableContentTest extends TableTestCase {
       }));
       throw new AssertionFailureNotDetectedError();
     }
-    catch (AssertionError e) {
+    catch (AssertionError ignored) {
     }
   }
 
   @Test
-  public void testContentEqualsAfterSettingACustomCellValueConverterThatHandlesSelection() throws Exception {
+  public void testContentEqualsAfterSettingACustomCellValueConverterThatHandlesSelection() {
     jTable.setDefaultRenderer(Boolean.class, new DefaultTableCellRenderer() {
       public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         value = isSelected ? "selected " + value : value;
@@ -223,7 +213,7 @@ public class TableContentTest extends TableTestCase {
   }
 
   @Test
-  public void testCustomContentEquals() throws Exception {
+  public void testCustomContentEquals() {
     assertTrue(table.contentEquals(
       new String[]{"0", "1", "2"},
       new Object[][]{
@@ -247,7 +237,7 @@ public class TableContentTest extends TableTestCase {
   }
 
   @Test
-  public void testCustomContentEqualsErrors() throws Exception {
+  public void testCustomContentEqualsErrors() {
     try {
       assertTrue(table.contentEquals(
         new String[]{"0", "2"},
@@ -263,7 +253,7 @@ public class TableContentTest extends TableTestCase {
   }
 
   @Test
-  public void testCustomContentEqualsChecksTheNumberOfColumns() throws Exception {
+  public void testCustomContentEqualsChecksTheNumberOfColumns() {
     try {
       assertTrue(table.contentEquals(
         new String[]{"0", "2", "1"},
@@ -279,7 +269,7 @@ public class TableContentTest extends TableTestCase {
   }
 
   @Test
-  public void testCustomContentEqualsChecksTheColumnNames() throws Exception {
+  public void testCustomContentEqualsChecksTheColumnNames() {
     try {
       assertTrue(table.contentEquals(
         new String[]{"0", "2", "unknown"},
@@ -294,7 +284,7 @@ public class TableContentTest extends TableTestCase {
   }
 
   @Test
-  public void testCustomContentEqualsChecksTheNumberOfRows() throws Exception {
+  public void testCustomContentEqualsChecksTheNumberOfRows() {
     try {
       assertTrue(table.contentEquals(
         new String[]{"2", "0"},
@@ -311,36 +301,36 @@ public class TableContentTest extends TableTestCase {
   }
 
   @Test
-  public void testCellEquals() throws Exception {
+  public void testCellEquals() {
     assertTrue(table.cellEquals(0, 0, "a"));
     assertTrue(table.cellEquals(1, 1, Boolean.FALSE));
   }
 
   @Test
-  public void testCellEqualsError() throws Exception {
+  public void testCellEqualsError() {
     try {
       assertTrue(table.cellEquals(0, 0, "invalidValue"));
       fail();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("Error at (0,0) - expected: <[invalidValue]> but was: <[a]>", e.getMessage());
+      Assertions.assertEquals("Error at (0,0) - ==> expected: <invalidValue> but was: <a>", e.getMessage());
     }
   }
 
   @Test
-  public void testCellEqualsWithConverter() throws Exception {
+  public void testCellEqualsWithConverter() {
     assertTrue(table.cellEquals(0, 0, "-a-", new DummyTableCellValueConverter()));
     assertTrue(table.cellEquals(1, 1, "-false-", new DummyTableCellValueConverter()));
   }
 
   @Test
-  public void testRowEquals() throws Exception {
+  public void testRowEquals() {
     assertTrue(table.rowEquals(0, new Object[]{"a", Boolean.TRUE, "3"}));
     assertTrue(table.rowEquals(1, new Object[]{"c", Boolean.FALSE, "4"}));
   }
 
   @Test
-  public void testRowEqualsFailures() throws Exception {
+  public void testRowEqualsFailures() {
     try {
       assertTrue(table.rowEquals(1, new Object[]{"c", Boolean.TRUE, "4"}));
       throw new AssertionFailureNotDetectedError();
@@ -367,7 +357,7 @@ public class TableContentTest extends TableTestCase {
   }
 
   @Test
-  public void testCustomRowEquals() throws Exception {
+  public void testCustomRowEquals() {
     assertTrue(table.rowEquals(0, new String[]{"0", "1", "2"}, new Object[]{"a", Boolean.TRUE, "3"}));
     assertTrue(table.rowEquals(1, new String[]{"0", "1", "2"}, new Object[]{"c", Boolean.FALSE, "4"}));
 
@@ -377,20 +367,22 @@ public class TableContentTest extends TableTestCase {
   }
 
   @Test
-  public void testCustomRowEqualsErrors() throws Exception {
+  public void testCustomRowEqualsErrors() {
     try {
       assertTrue(table.rowEquals(0, new String[]{"0", "2"}, new Object[]{"a", "xxxxxx"}));
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("Unexpected content at row 0\n" +
-                              "Expected: [a,xxxxxx]\n" +
-                              "Actual:   [a,3]", e.getMessage());
+      Assertions.assertEquals("""
+                              Unexpected content at row 0
+                              Expected: [a,xxxxxx]
+                              Actual:   [a,3]""",
+                              e.getMessage());
     }
   }
 
   @Test
-  public void testCustomRowEqualsChecksTheNumberOfColumns() throws Exception {
+  public void testCustomRowEqualsChecksTheNumberOfColumns() {
     try {
       assertTrue(table.rowEquals(0, new String[]{"0", "2", "1"}, new Object[]{"a", "3"}));
       throw new AssertionFailureNotDetectedError();
@@ -401,7 +393,7 @@ public class TableContentTest extends TableTestCase {
   }
 
   @Test
-  public void testCustomRowEqualsChecksTheColumnNames() throws Exception {
+  public void testCustomRowEqualsChecksTheColumnNames() {
     try {
       assertTrue(table.rowEquals(0, new String[]{"0", "2", "unknown"}, new Object[]{"a", "3", "x"}));
       throw new AssertionFailureNotDetectedError();
@@ -412,7 +404,7 @@ public class TableContentTest extends TableTestCase {
   }
 
   @Test
-  public void testCustomRowEqualsChecksTheNumberOfRows() throws Exception {
+  public void testCustomRowEqualsChecksTheNumberOfRows() {
     try {
       assertTrue(table.rowEquals(3, new String[]{"2", "0"}, new Object[]{"3", "a"}));
       throw new AssertionFailureNotDetectedError();
@@ -423,20 +415,20 @@ public class TableContentTest extends TableTestCase {
   }
 
   @Test
-  public void testColumnEquals() throws Exception {
+  public void testColumnEquals() {
     assertTrue(table.columnEquals(0, new Object[]{"a", "c"}));
     assertTrue(table.columnEquals(1, new Object[]{Boolean.TRUE, Boolean.FALSE}));
     assertTrue(table.columnEquals(2, new Object[]{"3", "4"}));
   }
 
   @Test
-  public void testColumnEqualsFailures() throws Exception {
+  public void testColumnEqualsFailures() {
     try {
       assertTrue(table.columnEquals(1, new Object[]{Boolean.TRUE, Boolean.TRUE}));
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("expected: <[[true,true]]> but was: <[true,false]>", e.getMessage());
+      Assertions.assertEquals("expected: <[true,true]> but was: <true,false>", e.getMessage());
     }
 
     try {
@@ -457,7 +449,7 @@ public class TableContentTest extends TableTestCase {
   }
 
   @Test
-  public void testGetRowAndColumnCount() throws Exception {
+  public void testGetRowAndColumnCount() {
     Assertions.assertEquals(2, table.getRowCount());
     assertTrue(table.rowCountEquals(2));
     Assertions.assertEquals(3, table.getColumnCount());
@@ -465,29 +457,29 @@ public class TableContentTest extends TableTestCase {
   }
 
   @Test
-  public void testRowCountError() throws Exception {
+  public void testRowCountError() {
     try {
       assertTrue(table.rowCountEquals(9999));
       fail();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("Unexpected number of rows - expected: <9999> but was: <2>", e.getMessage());
+      Assertions.assertEquals("Unexpected number of rows - ==> expected: <9999> but was: <2>", e.getMessage());
     }
   }
 
   @Test
-  public void testColumnCountError() throws Exception {
+  public void testColumnCountError() {
     try {
       assertTrue(table.columnCountEquals(9999));
       fail();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("Unexpected number of columns - expected: <9999> but was: <3>", e.getMessage());
+      Assertions.assertEquals("Unexpected number of columns - ==> expected: <9999> but was: <3>", e.getMessage());
     }
   }
 
   @Test
-  public void testGetContentAt() throws Exception {
+  public void testGetContentAt() {
     Assertions.assertEquals("a", table.getContentAt(0, 0));
     Assertions.assertEquals(Boolean.TRUE, table.getContentAt(0, 1));
     Assertions.assertEquals("c", table.getContentAt(1, 0));
@@ -498,7 +490,7 @@ public class TableContentTest extends TableTestCase {
   }
 
   @Test
-  public void testGetContentAtWorksWhenTheRendererIsUnusable() throws Exception {
+  public void testGetContentAtWorksWhenTheRendererIsUnusable() {
     jTable.setDefaultRenderer(String.class, new DefaultTableCellRenderer() {
       public Component getTableCellRendererComponent(JTable table, Object value,
                                                      boolean isSelected,
@@ -511,14 +503,14 @@ public class TableContentTest extends TableTestCase {
   }
 
   @Test
-  public void testGetContentAtWithConverter() throws Exception {
+  public void testGetContentAtWithConverter() {
     Assertions.assertEquals("-a-", table.getContentAt(0, 0, new DummyTableCellValueConverter()));
 
     Assertions.assertEquals(3, table.getContentAt(0, 2, ModelTableCellValueConverter.INSTANCE));
   }
 
   @Test
-  public void testGetEditorComponentAt() throws Exception {
+  public void testGetEditorComponentAt() {
     Component firstCellComponent = table.getSwingEditorComponentAt(0, 0);
     Assertions.assertTrue(firstCellComponent instanceof JTextField);
 
@@ -530,14 +522,14 @@ public class TableContentTest extends TableTestCase {
   }
 
   @Test
-  public void testToString() throws Exception {
+  public void testToString() {
     Assertions.assertEquals("[[a,\ttrue,\t3]\n" +
                             " [c,\tfalse,\t4]]",
                             table.toString());
   }
 
   @Test
-  public void testCellForegroundAndBackground() throws Exception {
+  public void testCellForegroundAndBackground() {
     jTable.getColumnModel().getColumn(1).setCellRenderer(new DefaultTableCellRenderer() {
       public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -575,12 +567,12 @@ public class TableContentTest extends TableTestCase {
   }
 
   @Test
-  public void testDefaultForeground() throws Exception {
+  public void testDefaultForeground() {
     table.foregroundEquals("black");
   }
 
   @Test
-  public void testBackgrounEqualsWithDefaultValue() throws Exception {
+  public void testBackgroundEqualsWithDefaultValue() {
     jTable.setBackground(Color.BLUE);
     assertTrue(table.backgroundEquals("blue"));
     try {
@@ -593,7 +585,7 @@ public class TableContentTest extends TableTestCase {
   }
 
   @Test
-  public void testBackgroundEquals() throws Exception {
+  public void testBackgroundEquals() {
     jTable.getColumnModel().getColumn(1).setCellRenderer(new DefaultTableCellRenderer() {
       public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -624,7 +616,7 @@ public class TableContentTest extends TableTestCase {
   }
 
   @Test
-  public void testBackgroundEqualsUsesTheSelectionBackgroundColor() throws Exception {
+  public void testBackgroundEqualsUsesTheSelectionBackgroundColor() {
     jTable.setCellSelectionEnabled(true);
     DefaultTableCellRenderer renderer = new DefaultTableCellRenderer() {
       public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -649,28 +641,28 @@ public class TableContentTest extends TableTestCase {
   }
 
   @Test
-  public void testStartsWith() throws Exception {
+  public void testStartsWith() {
     assertTrue(table.startsWith(new Object[][]{
       {"a", Boolean.TRUE, "3"}
     }));
   }
 
   @Test
-  public void testStartsWithFailsBecauseOfWrongData() throws Exception {
+  public void testStartsWithFailsBecauseOfWrongData() {
     assertFalse(table.startsWith(new Object[][]{
       {"Wrong", Boolean.TRUE, "3"}
     }));
   }
 
   @Test
-  public void testStartsWithFailsBecauseTheExpectedFirstLineIsNotTheFirst() throws Exception {
+  public void testStartsWithFailsBecauseTheExpectedFirstLineIsNotTheFirst() {
     assertFalse(table.startsWith(new Object[][]{
       {"c", Boolean.FALSE, "4"}
     }));
   }
 
   @Test
-  public void testStartsWithFailsBecauseTheExpectedContentIsTooLarge() throws Exception {
+  public void testStartsWithFailsBecauseTheExpectedContentIsTooLarge() {
     assertFalse(table.startsWith(new Object[][]{
       {"a", Boolean.TRUE, "3", "5"}
     }));
@@ -682,25 +674,25 @@ public class TableContentTest extends TableTestCase {
       {"a", Boolean.TRUE, "3"},
       {"c", Boolean.FALSE, "4"},
       {"d", Boolean.FALSE, "5"}
-    }), "Table contains only 2 rows whereas 3 rows are expected.");
+    }), "Table contains only 2 rows whereas 3 rows are expected. ==> expected: <true> but was: <false>");
   }
 
   @Test
-  public void testEndsWith() throws Exception {
+  public void testEndsWith() {
     assertTrue(table.endsWith(new Object[][]{
       {"c", Boolean.FALSE, "4"}
     }));
   }
 
   @Test
-  public void testEndsWithFailsBecauseOfWrongData() throws Exception {
+  public void testEndsWithFailsBecauseOfWrongData() {
     assertFalse(table.endsWith(new Object[][]{
       {"Wrong", Boolean.FALSE, "4"}
     }));
   }
 
   @Test
-  public void testEndsWithFailsBecauseTheExpectedFirstLineIsNotTheFirst() throws Exception {
+  public void testEndsWithFailsBecauseTheExpectedFirstLineIsNotTheFirst() {
     assertFalse(table.endsWith(new Object[][]{
       {"a", Boolean.TRUE, "3"}
     }));
@@ -712,11 +704,11 @@ public class TableContentTest extends TableTestCase {
       {"d", Boolean.FALSE, "5"},
       {"a", Boolean.TRUE, "3"},
       {"c", Boolean.FALSE, "4"}
-    }), "Table contains only 2 rows whereas 3 rows are expected.");
+    }), "Table contains only 2 rows whereas 3 rows are expected. ==> expected: <true> but was: <false>");
   }
 
   @Test
-  public void testContainsRow() throws Exception {
+  public void testContainsRow() {
     assertTrue(table.containsRow(new Object[]{
       "a", Boolean.TRUE, "3"
     }));
@@ -737,14 +729,14 @@ public class TableContentTest extends TableTestCase {
   }
 
   @Test
-  public void testRowIndex() throws Exception {
+  public void testRowIndex() {
     Assertions.assertEquals(0, table.getRowIndex(0, "a"));
     Assertions.assertEquals(1, table.getRowIndex(0, "c"));
     Assertions.assertEquals(-1, table.getRowIndex(0, "d"));
   }
 
   @Test
-  public void testRowIndexWithConverter() throws Exception {
+  public void testRowIndexWithConverter() {
     table.setCellValueConverter(2, new DummyTableCellValueConverter());
     Assertions.assertEquals(0, table.getRowIndex(2, "-3-"));
     Assertions.assertEquals(1, table.getRowIndex(2, "-4-"));
@@ -752,19 +744,15 @@ public class TableContentTest extends TableTestCase {
   }
 
   @Test
-  public void testRowIndicesWithoutConverter() throws Exception {
+  public void testRowIndicesWithoutConverter() {
     int[] indices = table.getRowIndices(0, "a");
     Assertions.assertEquals(1, indices.length);
     Assertions.assertEquals(0, indices[0]);
   }
 
   @Test
-  public void testRowIndicesWithConverter() throws Exception {
-    table.setCellValueConverter(2, new TableCellValueConverter() {
-      public Object getValue(int row, int column, Component renderedComponent, Object modelObject) {
-        return "same";
-      }
-    });
+  public void testRowIndicesWithConverter() {
+    table.setCellValueConverter(2, (row, column, renderedComponent, modelObject) -> "same");
     int[] indices = table.getRowIndices(2, "same");
     Assertions.assertEquals(2, indices.length);
     Assertions.assertEquals(0, indices[0]);
@@ -772,7 +760,7 @@ public class TableContentTest extends TableTestCase {
   }
 
   @Test
-  public void testFindColumnIndex() throws Exception {
+  public void testFindColumnIndex() {
     Assertions.assertEquals(1, table.getColumnIndex("1"));
 
     try {
