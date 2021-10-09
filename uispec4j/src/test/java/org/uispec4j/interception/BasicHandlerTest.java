@@ -10,7 +10,7 @@ import javax.swing.*;
 public class BasicHandlerTest extends InterceptionTestCase {
 
   @Test
-  public void testStandardUsage() throws Exception {
+  public void testStandardUsage() {
     WindowInterceptor
       .init(triggerShowDialog())
       .process(BasicHandler.init()
@@ -27,7 +27,7 @@ public class BasicHandlerTest extends InterceptionTestCase {
   }
 
   @Test
-  public void testTitleEqualsError() throws Exception {
+  public void testTitleEqualsError() {
     checkAssertionError(
       WindowInterceptor
         .init(triggerShowDialog())
@@ -35,11 +35,11 @@ public class BasicHandlerTest extends InterceptionTestCase {
                    .init()
                    .assertTitleEquals("Error")
                    .triggerButtonClick("Hide")),
-      "Unexpected title - expected: <[Error]> but was: <[Dialog title]>");
+      "Unexpected title - ==> expected: <Error> but was: <Dialog title>");
   }
 
   @Test
-  public void testTitleContainsError() throws Exception {
+  public void testTitleContainsError() {
     checkAssertionError(
       WindowInterceptor
         .init(triggerShowDialog())
@@ -47,11 +47,11 @@ public class BasicHandlerTest extends InterceptionTestCase {
                    .init()
                    .assertTitleContains("Error")
                    .triggerButtonClick("Hide")),
-      "expected to contain:<Error> but was: <Dialog title>");
+      "expected to contain:<Error> but was: <Dialog title> ==> expected: <true> but was: <false>");
   }
 
   @Test
-  public void testAssertContainsTextError() throws Exception {
+  public void testAssertContainsTextError() {
     checkAssertionError(WindowInterceptor
                           .init(triggerShowDialog())
                           .process(BasicHandler
@@ -62,7 +62,7 @@ public class BasicHandlerTest extends InterceptionTestCase {
   }
 
   @Test
-  public void testClickButtonError() throws Exception {
+  public void testClickButtonError() {
     checkAssertionError(WindowInterceptor
                           .init(triggerShowDialog())
                           .process(BasicHandler
@@ -73,7 +73,7 @@ public class BasicHandlerTest extends InterceptionTestCase {
   }
 
   @Test
-  public void testJOptionPaneConfirmationReplies() throws Exception {
+  public void testJOptionPaneConfirmationReplies() {
     checkSelectedValue(JOptionPane.YES_OPTION, JOptionPane.YES_NO_OPTION, getLocalLabel("OptionPane.yesButtonText"));
     checkSelectedValue(JOptionPane.NO_OPTION, JOptionPane.YES_NO_OPTION, getLocalLabel("OptionPane.noButtonText"));
     checkSelectedValue(JOptionPane.OK_OPTION, JOptionPane.OK_CANCEL_OPTION, getLocalLabel("OptionPane.okButtonText"));
@@ -81,13 +81,9 @@ public class BasicHandlerTest extends InterceptionTestCase {
   }
 
   @Test
-  public void testSetInputInJOptionPane() throws Exception {
+  public void testSetInputInJOptionPane() {
     WindowInterceptor
-      .init(new Trigger() {
-        public void run() throws Exception {
-          Assertions.assertEquals("result", JOptionPane.showInputDialog("Message"));
-        }
-      })
+      .init(() -> Assertions.assertEquals("result", JOptionPane.showInputDialog("Message")))
       .process(BasicHandler.init()
                  .setText("result")
                  .triggerButtonClick("OK"))
@@ -95,13 +91,9 @@ public class BasicHandlerTest extends InterceptionTestCase {
   }
 
   @Test
-  public void testSetInputWithNullValueInJOptionPane() throws Exception {
+  public void testSetInputWithNullValueInJOptionPane() {
     WindowInterceptor
-      .init(new Trigger() {
-        public void run() throws Exception {
-          Assertions.assertEquals("", JOptionPane.showInputDialog("Message"));
-        }
-      })
+      .init(() -> Assertions.assertEquals("", JOptionPane.showInputDialog("Message")))
       .process(BasicHandler.init()
                  .setText(null)
                  .triggerButtonClick("OK"))
@@ -110,13 +102,9 @@ public class BasicHandlerTest extends InterceptionTestCase {
 
   /* This is not a feature, but a known limitation */
   @Test
-  public void testSetInputFollowedByACancelInJOptionPaneReturnsTheInputValue() throws Exception {
+  public void testSetInputFollowedByACancelInJOptionPaneReturnsTheInputValue() {
     WindowInterceptor
-      .init(new Trigger() {
-        public void run() throws Exception {
-          Assertions.assertEquals("Result", JOptionPane.showInputDialog("Message"));
-        }
-      })
+      .init(() -> Assertions.assertEquals("Result", JOptionPane.showInputDialog("Message")))
       .process(BasicHandler.init()
                  .setText("Result")
                  .triggerButtonClick(getLocalLabel("OptionPane.cancelButtonText")))
@@ -124,39 +112,29 @@ public class BasicHandlerTest extends InterceptionTestCase {
   }
 
   @Test
-  public void testInterceptingAJOptionPaneFromInsideATrigger() throws Exception {
+  public void testInterceptingAJOptionPaneFromInsideATrigger() {
     final JFrame frame = new JFrame();
     WindowInterceptor
-      .init(new Trigger() {
-        public void run() throws Exception {
-          WindowInterceptor
-            .init(new Trigger() {
-              public void run() throws Exception {
-                int result = JOptionPane.showConfirmDialog(frame, "OK?",
-                                                           "Title",
-                                                           JOptionPane.OK_CANCEL_OPTION);
-                if (result == JOptionPane.OK_OPTION) {
-                  logger.log("showDialog");
-                  JDialog dialog = new JDialog(frame, "Dialog", true);
-                  dialog.setVisible(true);
-                }
-                else {
-                  throw new Error("unexpected result " + result);
-                }
-              }
-            })
-            .process(BasicHandler.init().triggerButtonClick("OK"))
-            .run();
-        }
-      })
+      .init(() -> WindowInterceptor
+        .init(() -> {
+          int result = JOptionPane.showConfirmDialog(frame, "OK?",
+                                                     "Title",
+                                                     JOptionPane.OK_CANCEL_OPTION);
+          if (result == JOptionPane.OK_OPTION) {
+            logger.log("showDialog");
+            JDialog dialog = new JDialog(frame, "Dialog", true);
+            dialog.setVisible(true);
+          }
+          else {
+            throw new Error("unexpected result " + result);
+          }
+        })
+        .process(BasicHandler.init().triggerButtonClick("OK"))
+        .run())
       .process(new WindowHandler() {
         public Trigger process(final Window window) {
           logger.log("dialogShown").add("title", window.getTitle());
-          return new Trigger() {
-            public void run() throws Exception {
-              window.getAwtContainer().setVisible(false);
-            }
-          };
+          return () -> window.getAwtContainer().setVisible(false);
         }
       })
       .run();
@@ -167,22 +145,20 @@ public class BasicHandlerTest extends InterceptionTestCase {
   }
 
   @Test
-  public void testJOptionPaneInterceptionInAWindowSequence() throws Exception {
+  public void testJOptionPaneInterceptionInAWindowSequence() {
     final JFrame frame = new JFrame();
     WindowInterceptor
-      .init(new Trigger() {
-        public void run() throws Exception {
-          int result = JOptionPane.showConfirmDialog(frame, "Confirm?", "Title", JOptionPane.YES_NO_OPTION);
-          if (result == JOptionPane.YES_OPTION) {
-            logger.log("start");
-            JDialog dialog = new JDialog(frame, "dialog", true);
-            addHideButton(dialog, "Close");
-            dialog.setVisible(true);
-            logger.log("end");
-          }
-          else {
-            throw new Error("Unexpected result " + result);
-          }
+      .init(() -> {
+        int result = JOptionPane.showConfirmDialog(frame, "Confirm?", "Title", JOptionPane.YES_NO_OPTION);
+        if (result == JOptionPane.YES_OPTION) {
+          logger.log("start");
+          JDialog dialog = new JDialog(frame, "dialog", true);
+          addHideButton(dialog, "Close");
+          dialog.setVisible(true);
+          logger.log("end");
+        }
+        else {
+          throw new Error("Unexpected result " + result);
         }
       })
       .process(BasicHandler.init()
@@ -199,28 +175,22 @@ public class BasicHandlerTest extends InterceptionTestCase {
 
   private void checkSelectedValue(final int value, final int optionType, String button) {
     WindowInterceptor
-      .init(new Trigger() {
-        public void run() throws Exception {
-          Assertions.assertEquals(value,
-                                  JOptionPane.showConfirmDialog(new JFrame(), "msg", "title",
-                                                                optionType,
-                                                                JOptionPane.WARNING_MESSAGE));
-        }
-      })
+      .init(() -> Assertions.assertEquals(value,
+                                          JOptionPane.showConfirmDialog(new JFrame(), "msg", "title",
+                                                                        optionType,
+                                                                        JOptionPane.WARNING_MESSAGE)))
       .process(BasicHandler.init().triggerButtonClick(button))
       .run();
   }
 
   private Trigger triggerShowDialog() {
-    return new Trigger() {
-      public void run() throws Exception {
-        JDialog dialog = createModalDialog("aDialog");
-        dialog.setTitle("Dialog title");
-        dialog.getContentPane().add(new JTextArea("some text"));
-        addHideButton(dialog, "Hide");
-        addLoggerButton(dialog, "OK");
-        dialog.setVisible(true);
-      }
+    return () -> {
+      JDialog dialog = createModalDialog("aDialog");
+      dialog.setTitle("Dialog title");
+      dialog.getContentPane().add(new JTextArea("some text"));
+      addHideButton(dialog, "Hide");
+      addLoggerButton(dialog, "OK");
+      dialog.setVisible(true);
     };
   }
 }

@@ -3,7 +3,6 @@ package org.uispec4j.interception;
 import org.junit.jupiter.api.Test;
 import org.uispec4j.Trigger;
 import org.uispec4j.Window;
-import org.uispec4j.utils.Functor;
 import org.uispec4j.utils.Utils;
 
 import javax.swing.*;
@@ -11,7 +10,7 @@ import javax.swing.*;
 public class WindowInterceptorCustomMethodsTest extends WindowInterceptorTestCase {
 
   @Test
-  public void testProcessTransientWindow() throws Exception {
+  public void testProcessTransientWindow() {
     WindowInterceptor
       .init(new TransientWindowTrigger())
       .processTransientWindow("Actual")
@@ -19,7 +18,7 @@ public class WindowInterceptorCustomMethodsTest extends WindowInterceptorTestCas
   }
 
   @Test
-  public void testProcessTransientWindowWithNoTitle() throws Exception {
+  public void testProcessTransientWindowWithNoTitle() {
     WindowInterceptor
       .init(new TransientWindowTrigger())
       .processTransientWindow()
@@ -28,25 +27,20 @@ public class WindowInterceptorCustomMethodsTest extends WindowInterceptorTestCas
 
   @Test
   public void testProcessTransientWindowError() throws Exception {
-    checkInterceptionError(new Functor() {
-      public void run() throws Exception {
-        WindowInterceptor
-          .init(new TransientWindowTrigger())
-          .processTransientWindow("Expected")
-          .run();
-      }
-    }, "Invalid window title - expected: <[Expected]> but was: <[Actual]>");
+    checkInterceptionError(() -> WindowInterceptor
+                             .init(new TransientWindowTrigger())
+                             .processTransientWindow("Expected")
+                             .run(),
+                           "Invalid window title - ==> expected: <Expected> but was: <Actual>");
   }
 
   @Test
-  public void testWindowTitleChecking() throws Exception {
+  public void testWindowTitleChecking() {
     WindowInterceptor
-      .init(new Trigger() {
-        public void run() throws Exception {
-          JDialog dialog = createModalDialog("dialog title");
-          addHideButton(dialog, "Hide");
-          dialog.setVisible(true);
-        }
+      .init(() -> {
+        JDialog dialog = createModalDialog("dialog title");
+        addHideButton(dialog, "Hide");
+        dialog.setVisible(true);
       })
       .process("dialog title", new ButtonTriggerHandler("Hide"))
       .run();
@@ -56,32 +50,30 @@ public class WindowInterceptorCustomMethodsTest extends WindowInterceptorTestCas
   }
 
   @Test
-  public void testWindowTitleError() throws Exception {
+  public void testWindowTitleError() {
     checkAssertionError(
       WindowInterceptor
-        .init(new Trigger() {
-          public void run() throws Exception {
-            JDialog dialog = createModalDialog("dialog title");
-            addHideButton(dialog, "Hide");
-            dialog.setVisible(true);
-          }
+        .init(() -> {
+          JDialog dialog = createModalDialog("dialog title");
+          addHideButton(dialog, "Hide");
+          dialog.setVisible(true);
         })
         .process("error", new ButtonTriggerHandler("Hide")),
-      "Unexpected title - expected: <[error]> but was: <[dialog title]>");
+      "Unexpected title - ==> expected: <error> but was: <dialog title>");
   }
 
   @Test
-  public void testWindowTitleErrorInASequence() throws Exception {
+  public void testWindowTitleErrorInASequence() {
     checkAssertionError(
       WindowInterceptor
         .init(getShowFirstDialogTrigger())
         .processWithButtonClick("OK")
         .process("error", new ButtonTriggerHandler("OK")),
-      "Error in handler 'error': Unexpected title - expected: <[error]> but was: <[second dialog]>");
+      "Error in handler 'error': Unexpected title - ==> expected: <error> but was: <second dialog>");
   }
 
   @Test
-  public void testProcessWithButtonClick() throws Exception {
+  public void testProcessWithButtonClick() {
     WindowInterceptor
       .init(getShowFirstDialogTrigger())
       .processWithButtonClick("OK")
@@ -97,7 +89,7 @@ public class WindowInterceptorCustomMethodsTest extends WindowInterceptorTestCas
   }
 
   @Test
-  public void testProcessSeveralHandlers() throws Exception {
+  public void testProcessSeveralHandlers() {
     WindowInterceptor
       .init(getShowFirstDialogTrigger())
       .process(new WindowHandler[]{
@@ -115,19 +107,19 @@ public class WindowInterceptorCustomMethodsTest extends WindowInterceptorTestCas
   }
 
   private static class ButtonTriggerHandler extends WindowHandler {
-    private String buttonName;
+    private final String buttonName;
 
     public ButtonTriggerHandler(String buttonName) {
       this.buttonName = buttonName;
     }
 
-    public Trigger process(Window window) throws Exception {
+    public Trigger process(Window window) {
       return window.getButton(buttonName).triggerClick();
     }
   }
 
   @Test
-  public void testProcessWithButtonClickWithAnUnknownButtonName() throws Exception {
+  public void testProcessWithButtonClickWithAnUnknownButtonName() {
     checkAssertionError(WindowInterceptor
                           .init(getShowFirstDialogTrigger())
                           .processWithButtonClick("unknown"),
@@ -135,19 +127,13 @@ public class WindowInterceptorCustomMethodsTest extends WindowInterceptorTestCas
   }
 
   @Test
-  public void testProcessWithButtonClickHandlesJOptionPaneDialogs() throws Exception {
+  public void testProcessWithButtonClickHandlesJOptionPaneDialogs() {
     final JFrame frame = new JFrame();
-    WindowInterceptor.run(new Trigger() {
-      public void run() throws Exception {
-        frame.setVisible(true);
-      }
-    });
+    WindowInterceptor.run(() -> frame.setVisible(true));
     WindowInterceptor
-      .init(new Trigger() {
-        public void run() throws Exception {
-          int result = JOptionPane.showConfirmDialog(frame, "msg");
-          logger.log("confirm").add("result", result);
-        }
+      .init(() -> {
+        int result = JOptionPane.showConfirmDialog(frame, "msg");
+        logger.log("confirm").add("result", result);
       })
       .processWithButtonClick(getLocalLabel("OptionPane.yesButtonText"))
       .run();
@@ -171,14 +157,10 @@ public class WindowInterceptorCustomMethodsTest extends WindowInterceptorTestCas
   }
 
   private static class TransientWindowTrigger implements Trigger {
-    public void run() throws Exception {
+    public void run() throws InterruptedException {
       JDialog dialog = new JDialog(new JFrame(), "Actual");
-      Thread thread = new Thread() {
-        public void run() {
-          Utils.sleep(20);
-        }
-      };
-      thread.run();
+      Thread thread = new Thread(() -> Utils.sleep(20));
+      thread.start();
       dialog.setVisible(true);
       thread.join();
     }

@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.Counter;
 
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -20,11 +18,7 @@ public class TreeClickingTest extends TreeTestCase {
 
   private void checkClickOnlyChangesTheSelectionOnce(Clicker clicker) throws Exception {
     final Counter counter = new Counter();
-    jTree.getSelectionModel().addTreeSelectionListener(new TreeSelectionListener() {
-      public void valueChanged(TreeSelectionEvent e) {
-        counter.increment();
-      }
-    });
+    jTree.getSelectionModel().addTreeSelectionListener(e -> counter.increment());
     clicker.click("child1");
     Assertions.assertEquals(1, counter.getCount());
     clicker.click("child2");
@@ -41,11 +35,7 @@ public class TreeClickingTest extends TreeTestCase {
 
   private void checkClickFailsWhenAppliedOnNonExistingPath(Clicker clicker) throws Exception {
     final Counter counter = new Counter();
-    jTree.getSelectionModel().addTreeSelectionListener(new TreeSelectionListener() {
-      public void valueChanged(TreeSelectionEvent e) {
-        counter.increment();
-      }
-    });
+    jTree.getSelectionModel().addTreeSelectionListener(e -> counter.increment());
     try {
       clicker.click("child3");
       throw new AssertionFailureNotDetectedError();
@@ -74,8 +64,8 @@ public class TreeClickingTest extends TreeTestCase {
     jTree.addMouseListener(new MouseAdapter() {
       public void mousePressed(MouseEvent e) {
         counter.increment();
-        int modifiers = e.getModifiers();
-        Assertions.assertTrue((modifiers & MouseEvent.BUTTON3_MASK) != 0);
+        int modifiers = e.getModifiersEx();
+        Assertions.assertTrue((modifiers & MouseEvent.BUTTON3_DOWN_MASK) != 0);
       }
     });
     tree.select("child1");
@@ -110,7 +100,7 @@ public class TreeClickingTest extends TreeTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Assertions.assertEquals("There is no current selection", e.getMessage());
+      Assertions.assertEquals("There is no current selection ==> expected: not <null>", e.getMessage());
     }
   }
 
@@ -160,7 +150,7 @@ public class TreeClickingTest extends TreeTestCase {
       tree.rightClick(path);
     }
 
-    public void rightClickInSelection() throws Exception {
+    public void rightClickInSelection() {
       tree.rightClickInSelection();
     }
 
