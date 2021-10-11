@@ -128,19 +128,19 @@
           <showWarnings>true</showWarnings>
           <compilerArgs>
             <arg>--add-exports</arg>
-            <arg>java.desktop/java.awt.peer=uispec4j</arg>
+            <arg>java.desktop/java.awt.peer=org.uispec4j</arg>
             <arg>--add-exports</arg>
-            <arg>java.desktop/java.awt.dnd.peer=uispec4j</arg>
+            <arg>java.desktop/java.awt.dnd.peer=org.uispec4j</arg>
 
             <arg>--add-exports</arg>
-            <arg>java.desktop/sun.awt=uispec4j</arg>
+            <arg>java.desktop/sun.awt=org.uispec4j</arg>
             <arg>--add-exports</arg>
-            <arg>java.desktop/sun.awt.image=uispec4j</arg>
+            <arg>java.desktop/sun.awt.image=org.uispec4j</arg>
             <arg>--add-exports</arg>
-            <arg>java.desktop/sun.awt.datatransfer=uispec4j</arg>
+            <arg>java.desktop/sun.awt.datatransfer=org.uispec4j</arg>
 
             <arg>--add-exports</arg>
-            <arg>java.desktop/sun.java2d.pipe=uispec4j</arg>
+            <arg>java.desktop/sun.java2d.pipe=org.uispec4j</arg>
           </compilerArgs>
         </configuration>
       </plugin>
@@ -150,10 +150,10 @@
         <version>3.0.0-M5</version>
         <configuration>
           <argLine>
-            --add-opens java.desktop/java.awt=uispec4j
-            --add-exports java.desktop/sun.awt=uispec4j
-            --add-exports java.desktop/java.awt.peer=uispec4j
-            --add-exports java.desktop/sun.lwawt.macosx=uispec4j
+            --add-opens java.desktop/java.awt=org.uispec4j
+            --add-exports java.desktop/sun.awt=org.uispec4j
+            --add-exports java.desktop/java.awt.peer=org.uispec4j
+            --add-exports java.desktop/sun.lwawt.macosx=org.uispec4j
           </argLine>
           <systemProperties>
             <property>

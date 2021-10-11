@@ -1,4 +1,4 @@
-module uispec4j {
+module org.uispec4j {
   requires java.desktop;
   requires org.objectweb.asm;
   requires org.junit.jupiter.api;
