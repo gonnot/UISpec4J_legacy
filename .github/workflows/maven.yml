@@ -20,7 +20,9 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: '17'
-        distribution: 'adopt'
+        distribution: 'temurin'
         cache: maven
-    - name: Build with Maven
-      run: mvn -B install --file pom.xml
+    - name: Run headless test
+      uses: GabrielBB/xvfb-action@v1
+      with:
+        run: mvn -B clean install --file pom.xml
