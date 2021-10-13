@@ -44,6 +44,8 @@ This is still the default Toolkit on Linux for UISpec4J. To make you tests run o
 
 ## Experimental Headless mode
 
+https://github.com/CaciocavalloSilano/caciocavallo
+
 If you build from MASTER you may be able to run your test on a headless machine using 
 [Caciocavallo](http://rkennke.wordpress.com/2012/05/02/caciocavallo-1-1-released/) this is a Toolkit and Graphical 
 engine that do not require a real display. This makes it possible to run your tests in a fully headless environment.
