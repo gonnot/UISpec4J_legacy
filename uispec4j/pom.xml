@@ -229,10 +229,11 @@
     <profile>
       <id>ci-headless</id>
       <dependencies>
+        <!--  https://github.com/CaciocavalloSilano/caciocavallo -->
         <dependency>
-          <groupId>net.java.openjdk.cacio</groupId>
+          <groupId>com.github.caciocavallosilano</groupId>
           <artifactId>cacio-tta</artifactId>
-          <version>1.9</version>
+          <version>1.11</version>
           <scope>test</scope>
         </dependency>
       </dependencies>
@@ -244,8 +245,8 @@
             <configuration>
               <systemPropertyVariables>
                 <java.awt.headless>false</java.awt.headless>
-                <awt.toolkit>net.java.openjdk.cacio.ctc.CTCToolkit</awt.toolkit>
-                <java.awt.graphicsenv>net.java.openjdk.cacio.ctc.CTCGraphicsEnvironment</java.awt.graphicsenv>
+                <awt.toolkit>com.github.caciocavallosilano.cacio.ctc.CTCToolkit</awt.toolkit>
+                <java.awt.graphicsenv>com.github.caciocavallosilano.cacio.ctc.CTCGraphicsEnvironment</java.awt.graphicsenv>
               </systemPropertyVariables>
             </configuration>
           </plugin>
