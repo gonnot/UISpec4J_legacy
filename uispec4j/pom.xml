@@ -182,6 +182,8 @@
             --add-exports java.desktop/sun.awt=org.uispec4j
             --add-exports java.desktop/java.awt.peer=org.uispec4j
             --add-exports java.desktop/sun.lwawt.macosx=org.uispec4j
+            --add-exports java.desktop/sun.awt.windows=org.uispec4j
+            --add-exports java.desktop/sun.awt.X11=org.uispec4j
           </argLine>
           <systemProperties>
             <property>
