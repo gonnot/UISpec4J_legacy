@@ -18,7 +18,6 @@ public class UISpecToolkit extends ToolkitDelegate {
   static final String UNIX_SYSTEM_DEFAULT_VALUE = System.getProperty("awt.toolkit", "sun.awt.X11.XToolkit");
   static final String WINDOWS_SYSTEM_DEFAULT_VALUE = "sun.awt.windows.WToolkit";
   static final String MAC_DEFAULT_VALUE = "sun.lwawt.macosx.LWCToolkit";
-  static final String HEADLESS_TOOLKIT = "com.github.caciocavallosilano.cacio.ctc.CTCToolkit";
 
   private static String awtToolkit;
 
@@ -34,12 +33,11 @@ public class UISpecToolkit extends ToolkitDelegate {
     if (underlyingToolkit != null) {
       return;
     }
-    underlyingToolkit = new com.github.caciocavallosilano.cacio.ctc.CTCToolkit();
-//    awtToolkit = System.getProperty(SYSTEM_PROPERTY);
-//    if (awtToolkit == null) {
-//      setAwtToolkitProperty();
-//    }
-//    buildUnderlyingToolkit(awtToolkit);
+    awtToolkit = System.getProperty(SYSTEM_PROPERTY);
+    if (awtToolkit == null) {
+      setAwtToolkitProperty();
+    }
+    buildUnderlyingToolkit(awtToolkit);
     System.setProperty(SYSTEM_PROPERTY, UISpecToolkit.class.getName());
   }
 

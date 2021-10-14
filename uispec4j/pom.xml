@@ -31,11 +31,6 @@
       <optional>true</optional>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.github.caciocavallosilano</groupId>
-      <artifactId>cacio-tta</artifactId>
-      <version>1.11</version>
-    </dependency>
   </dependencies>
 
   <!-- Project Information -->
@@ -168,10 +163,6 @@
             <arg>--add-exports</arg>
             <arg>java.desktop/sun.awt=org.uispec4j</arg>
             <arg>--add-exports</arg>
-            <arg>java.desktop/sun.awt=ALL-UNNAMED</arg>
-            <arg>--add-exports</arg>
-            <arg>java.desktop/sun.awt=cacio.tta</arg>
-            <arg>--add-exports</arg>
             <arg>java.desktop/sun.awt.image=org.uispec4j</arg>
             <arg>--add-exports</arg>
             <arg>java.desktop/sun.awt.datatransfer=org.uispec4j</arg>
@@ -189,10 +180,10 @@
           <argLine>
             --add-opens java.desktop/java.awt=org.uispec4j
             --add-exports java.desktop/sun.awt=org.uispec4j
-            --add-exports java.desktop/sun.awt=ALL-UNNAMED
             --add-exports java.desktop/java.awt.peer=org.uispec4j
-            --add-exports java.desktop/java.awt.peer=ALL-UNNAMED
-            --add-exports java.base/sun.security.action=ALL-UNNAMED
+            --add-exports java.desktop/sun.lwawt.macosx=org.uispec4j
+            --add-exports java.desktop/sun.awt.windows=org.uispec4j
+            --add-exports java.desktop/sun.awt.X11=org.uispec4j
           </argLine>
           <systemProperties>
             <property>

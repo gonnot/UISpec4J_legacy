@@ -3,7 +3,6 @@ module org.uispec4j {
   requires org.objectweb.asm;
   requires org.junit.jupiter.api;
   requires static org.testng;
-  requires cacio.tta;
 
   opens org.uispec4j;
   opens org.uispec4j.assertion;
