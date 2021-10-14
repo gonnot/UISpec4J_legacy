@@ -48,9 +48,7 @@
             --add-opens java.desktop/java.awt=ALL-UNNAMED
             --add-exports java.desktop/sun.awt=ALL-UNNAMED
             --add-exports java.desktop/java.awt.peer=ALL-UNNAMED
-            --add-exports java.desktop/sun.lwawt.macosx=ALL-UNNAMED
-            --add-exports java.desktop/sun.awt.windows=ALL-UNNAMED
-            --add-exports java.desktop/sun.awt.X11=ALL-UNNAMED
+            --add-exports java.base/sun.security.action=ALL-UNNAMED
           </argLine>
           <systemProperties>
             <property>
