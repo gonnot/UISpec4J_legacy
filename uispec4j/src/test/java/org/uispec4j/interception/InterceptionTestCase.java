@@ -1,5 +1,8 @@
 package org.uispec4j.interception;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.UISpec4J;
 import org.uispec4j.interception.toolkit.UISpecDisplay;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
@@ -7,7 +10,6 @@ import org.uispec4j.utils.UnitTestCase;
 import org.uispec4j.xml.EventLogger;
 
 import javax.swing.*;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -21,16 +23,16 @@ import java.awt.event.ActionListener;
 public abstract class InterceptionTestCase extends UnitTestCase {
   protected EventLogger logger;
 
-  protected void setUp() throws Exception {
-    super.setUp();
+  @BeforeEach
+  final protected void interceptionSetUp() {
     UISpecDisplay.instance().reset();
     logger = new EventLogger();
     UISpec4J.setWindowInterceptionTimeLimit(300);
   }
 
-  protected void tearDown() throws Exception {
-    super.tearDown();
-    assertEquals(0, UISpecDisplay.instance().getHandlerCount());
+  @AfterEach
+  final protected void interceptionTearDown() {
+    Assertions.assertEquals(0, UISpecDisplay.instance().getHandlerCount());
     UISpecDisplay.instance().rethrowIfNeeded();
   }
 
@@ -39,13 +41,13 @@ public abstract class InterceptionTestCase extends UnitTestCase {
   }
 
   protected static void checkAssertionError(WindowInterceptor interceptor,
-                                                  String errorMessage) {
+                                            String errorMessage) {
     try {
       interceptor.run();
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals(errorMessage, e.getMessage());
+      Assertions.assertEquals(errorMessage, e.getMessage());
     }
     catch (InterceptionError e) {
       if (!e.getMessage().equals(errorMessage)) {
@@ -104,6 +106,6 @@ public abstract class InterceptionTestCase extends UnitTestCase {
   }
 
   protected String getLocalLabel(String resource) {
-    return (String) UIManager.get(resource);
+    return (String)UIManager.get(resource);
   }
 }

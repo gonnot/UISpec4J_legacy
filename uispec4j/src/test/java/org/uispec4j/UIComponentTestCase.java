@@ -1,5 +1,7 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.UIComponentFactory;
 import org.uispec4j.utils.UnitTestCase;
 
@@ -8,20 +10,25 @@ import java.awt.*;
 
 public abstract class UIComponentTestCase extends UnitTestCase {
 
+  @Test
   public abstract void testGetComponentTypeName() throws Exception;
 
+  @Test
   public abstract void testGetDescription() throws Exception;
 
+  @Test
   public abstract void testFactory() throws Exception;
 
+  @Test
   public void testGetName() throws Exception {
     UIComponent component = createComponent();
     component.getAwtComponent().setName(null);
-    assertEquals(null, component.getName());
+    Assertions.assertEquals(null, component.getName());
     component.getAwtComponent().setName("name");
-    assertEquals("name", component.getName());
+    Assertions.assertEquals("name", component.getName());
   }
 
+  @Test
   public void testPressingAndReleasingNonPrintableKey() throws Exception {
     UIComponent component = createComponent();
     Component awtComponent = component.getAwtComponent();
@@ -35,6 +42,7 @@ public abstract class UIComponentTestCase extends UnitTestCase {
     keyListener.checkEvents("keyPressed", "keyReleased");
   }
 
+  @Test
   public void testPressingAndReleasingPrintableKey() throws Exception {
     UIComponent component = createComponent();
     Component awtComponent = component.getAwtComponent();
@@ -52,7 +60,7 @@ public abstract class UIComponentTestCase extends UnitTestCase {
 
   public static void checkFactory(JComponent jComponent, Class expectedGuiComponent) {
     UIComponent uiComponent = UIComponentFactory.createUIComponent(jComponent);
-    assertNotNull(uiComponent);
-    assertTrue(expectedGuiComponent.isInstance(uiComponent));
+    Assertions.assertNotNull(uiComponent);
+    Assertions.assertTrue(expectedGuiComponent.isInstance(uiComponent));
   }
 }

@@ -55,13 +55,14 @@ public class Mouse {
   }
 
   private static void doClickInRectangle(Component component, Rectangle rect, boolean useRightClick, Key.Modifier keyModifier, int nbClicks) {
-    int modifiers = useRightClick ? MouseEvent.BUTTON3_MASK : MouseEvent.BUTTON1_MASK;
+    int modifiers = useRightClick ? MouseEvent.BUTTON3_DOWN_MASK : MouseEvent.BUTTON1_DOWN_MASK;
     modifiers |= keyModifier.getCode();
+    int button = useRightClick ? 3 : 1;
     final int x = rect.x + (rect.width / 2);
     final int y = rect.y + (rect.height / 2);
-    component.dispatchEvent(new MouseEvent(component, MouseEvent.MOUSE_PRESSED, 1, modifiers, x, y, nbClicks, false));
-    component.dispatchEvent(new MouseEvent(component, MouseEvent.MOUSE_RELEASED, 1, modifiers, x, y, nbClicks, useRightClick));
-    component.dispatchEvent(new MouseEvent(component, MouseEvent.MOUSE_CLICKED, 1, modifiers, x, y, nbClicks, false));
+    component.dispatchEvent(new MouseEvent(component, MouseEvent.MOUSE_PRESSED, 1, modifiers, x, y, nbClicks, false, button));
+    component.dispatchEvent(new MouseEvent(component, MouseEvent.MOUSE_RELEASED, 1, modifiers, x, y, nbClicks, useRightClick, button));
+    component.dispatchEvent(new MouseEvent(component, MouseEvent.MOUSE_CLICKED, 1, modifiers, x, y, nbClicks, false, button));
   }
 
   public static void pressed(UIComponent component, int x, int y) {
@@ -113,9 +114,10 @@ public class Mouse {
   }
 
   private static void doAction(Component component, boolean useRightClick, Modifier keyModifier, int x, int y, int eventType) {
-    int modifiers = useRightClick ? MouseEvent.BUTTON3_MASK : MouseEvent.BUTTON1_MASK;
+    int button = useRightClick ? 3 : 1;
+    int modifiers = useRightClick ? MouseEvent.BUTTON3_DOWN_MASK : MouseEvent.BUTTON1_DOWN_MASK;
     modifiers |= keyModifier.getCode();
-    component.dispatchEvent(new MouseEvent(component, eventType, 1, modifiers, x, y, 1, false));
+    component.dispatchEvent(new MouseEvent(component, eventType, 1, modifiers, x, y, 1, false, button));
   }
 
   private static void doClick(Component component, int clickCount) {

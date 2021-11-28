@@ -1,24 +1,26 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.uispec4j.assertion.UISpecAssert;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.DummyActionListener;
 import org.uispec4j.utils.Functor;
 import org.uispec4j.utils.UIComponentFactory;
 import org.uispec4j.xml.XmlAssert;
-import org.uispec4j.assertion.UISpecAssert;
 
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.JTextComponent;
-import java.awt.event.FocusListener;
-import java.awt.event.FocusEvent;
 
 public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
   private JTextComponent jTextComponent;
 
-  protected void setUp() throws Exception {
-    super.setUp();
+  @BeforeEach
+  final protected void setUp() throws Exception {
+
     init(new JTextArea());
   }
 
@@ -39,14 +41,17 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
     init(pane);
   }
 
+  @Test
   public void testGetComponentTypeName() throws Exception {
-    assertEquals("textBox", UIComponentFactory.createUIComponent(new JTextField()).getDescriptionTypeName());
+    Assertions.assertEquals("textBox", UIComponentFactory.createUIComponent(new JTextField()).getDescriptionTypeName());
   }
 
+  @Test
   public void testGetDescription() throws Exception {
     XmlAssert.assertEquivalent("<textBox name='myText'/>", textBox.getDescription());
   }
 
+  @Test
   public void testFactory() throws Exception {
     checkFactory(new JTextArea(), TextBox.class);
     checkFactory(new JTextPane(), TextBox.class);
@@ -54,6 +59,7 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
     checkFactory(new JTextField(), TextBox.class);
   }
 
+  @Test
   public void testAssertTextEquals() throws Exception {
     assertTrue(textBox.textEquals(""));
     jTextComponent.setText("some text");
@@ -64,10 +70,11 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("expected:<[error]> but was:<[some text]>", e.getMessage());
+      Assertions.assertEquals("expected: <error> but was: <some text>", e.getMessage());
     }
   }
 
+  @Test
   public void testAssertTextEqualsWithHtml() throws Exception {
     initWithHtmlTextPane();
     String text = "Universal <b>rules</b>:" +
@@ -85,6 +92,7 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
     }
   }
 
+  @Test
   public void testAssertHtmlEquals() throws Exception {
     initWithHtmlTextPane();
     String text = "Universal <b>rules</b>:" +
@@ -105,6 +113,7 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
     }
   }
 
+  @Test
   public void testAssertTextContains() throws Exception {
     jTextComponent.setText("some text");
     assertTrue(textBox.textContains("some"));
@@ -113,11 +122,12 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("The component text does not contain 'error' - actual content is:some text",
-                   e.getMessage());
+      Assertions.assertEquals("The component text does not contain 'error' - actual content is:some text ==> expected: <true> but was: <false>",
+                              e.getMessage());
     }
   }
 
+  @Test
   public void testAssertTextContainsWithHtml() throws Exception {
     initWithHtmlTextPane();
     String text = "My name is <b>Bond</b>";
@@ -128,15 +138,16 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("The component text does not contain 'error' - actual content is:<html>\n" +
-                   "  <head>\n" +
-                   "  </head>\n" +
-                   "  <body>My name is <b>Bond</b></body>\n" +
-                   "</html>\n",
-                   e.getMessage());
+      Assertions.assertEquals("The component text does not contain 'error' - actual content is:<html>\n" +
+                              "  <head>\n" +
+                              "  </head>\n" +
+                              "  <body>My name is <b>Bond</b></body>\n" +
+                              "</html>\n ==> expected: <true> but was: <false>",
+                              e.getMessage());
     }
   }
 
+  @Test
   public void testAssertTextEqualsWithEmptyStringIsTheSameAsAssertTextIsEmpty() throws Exception {
     initWithHtmlTextPane();
     assertTrue(textBox.textEquals(""));
@@ -145,6 +156,7 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
     assertTrue(textBox.textEquals(""));
   }
 
+  @Test
   public void testAssertTextContainsHandlesHtmlLineBreaksAndFormatting() throws Exception {
     initWithHtmlTextPane();
     StringBuffer buffer = new StringBuffer();
@@ -156,6 +168,7 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
     assertTrue(textBox.textContains(text));
   }
 
+  @Test
   public void testAssertTextDoesNotContain() throws Exception {
     jTextComponent.setText("some text");
     assertTrue(textBox.textDoesNotContain("xxx"));
@@ -164,11 +177,12 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("The component text should not contain 'some' - actual content is:some text",
-                   e.getMessage());
+      Assertions.assertEquals("The component text should not contain 'some' - actual content is:some text ==> expected: <true> but was: <false>",
+                              e.getMessage());
     }
   }
 
+  @Test
   public void testAssertTextIsEditable() throws Exception {
     jTextComponent.setEditable(true);
     assertTrue(textBox.isEditable());
@@ -176,6 +190,7 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
     assertFalse(textBox.isEditable());
   }
 
+  @Test
   public void testAssertEmptyWithPlainText() throws Exception {
     jTextComponent.setText("");
     assertTrue(textBox.textIsEmpty());
@@ -185,10 +200,11 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Text should be empty but contains: a", e.getMessage());
+      Assertions.assertEquals("Text should be empty but contains: a ==> expected: <true> but was: <false>", e.getMessage());
     }
   }
 
+  @Test
   public void testAssertEmptyWithHtml() throws Exception {
     initWithHtmlTextPane();
     assertTrue(textBox.textIsEmpty());
@@ -200,15 +216,15 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Text should be empty but contains: <html>\n" +
-                   "  <head>\n" +
-                   "    \n" +
-                   "  </head>\n" +
-                   "  <body>\n" +
-                   "    a\n" +
-                   "  </body>\n" +
-                   "</html>\n",
-                   e.getMessage());
+      Assertions.assertEquals("Text should be empty but contains: <html>\n" +
+                              "  <head>\n" +
+                              "    \n" +
+                              "  </head>\n" +
+                              "  <body>\n" +
+                              "    a\n" +
+                              "  </body>\n" +
+                              "</html>\n",
+                              e.getMessage());
     }
 
     jTextComponent.setText("<html>\n" +
@@ -230,6 +246,7 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
     assertTrue(textBox.textIsEmpty());
   }
 
+  @Test
   public void testAssertEmptyAfterReset() throws Exception {
     initWithHtmlTextPane();
     assertTrue(textBox.textIsEmpty());
@@ -238,11 +255,13 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
     assertTrue(textBox.textIsEmpty());
   }
 
+  @Test
   public void testSetText() throws Exception {
     textBox.setText("new text");
-    assertEquals("new text", jTextComponent.getText());
+    Assertions.assertEquals("new text", jTextComponent.getText());
   }
 
+  @Test
   public void testSetTextChecksThatTheComponentIsEditable() throws Exception {
     textBox.setText("text");
     jTextComponent.setEditable(false);
@@ -251,23 +270,25 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("The text box is not editable", e.getMessage());
+      Assertions.assertEquals("The text box is not editable ==> expected: <true> but was: <false>", e.getMessage());
     }
-    assertEquals("text", jTextComponent.getText());
+    Assertions.assertEquals("text", jTextComponent.getText());
   }
 
+  @Test
   public void testInsertText() throws Exception {
     jTextComponent.setEditable(true);
     textBox.insertText("text", 0);
-    assertEquals("text", textBox.getText());
+    Assertions.assertEquals("text", textBox.getText());
     textBox.insertText("this is some ", 0);
-    assertEquals("this is some text", textBox.getText());
+    Assertions.assertEquals("this is some text", textBox.getText());
     textBox.insertText("interesting ", 13);
-    assertEquals("this is some interesting text", textBox.getText());
+    Assertions.assertEquals("this is some interesting text", textBox.getText());
     textBox.insertText(", isn't it?", textBox.getText().length());
-    assertEquals("this is some interesting text, isn't it?", textBox.getText());
+    Assertions.assertEquals("this is some interesting text, isn't it?", textBox.getText());
   }
 
+  @Test
   public void testInsertTextAtABadPosition() throws Exception {
     textBox.setText("text");
     try {
@@ -275,27 +296,30 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Position should be between 0 and 4", e.getMessage());
+      Assertions.assertEquals("Position should be between 0 and 4", e.getMessage());
     }
   }
 
+  @Test
   public void testInsertTextDoesNotNotifyActionListeners() throws Exception {
     DummyActionListener actionListener = initWithTextFieldAndActionListener();
     textBox.insertText("text", 0);
-    assertEquals(0, actionListener.getCallCount());
+    Assertions.assertEquals(0, actionListener.getCallCount());
   }
 
+  @Test
   public void testSetTextCanNotifyActionListeners() throws Exception {
     DummyActionListener actionListener = initWithTextFieldAndActionListener();
     textBox.setText("text", false);
-    assertEquals(0, actionListener.getCallCount());
+    Assertions.assertEquals(0, actionListener.getCallCount());
     UISpecAssert.assertTrue(textBox.textEquals("text"));
-    
+
     textBox.setText("another text", true);
-    assertEquals(1, actionListener.getCallCount());
+    Assertions.assertEquals(1, actionListener.getCallCount());
     UISpecAssert.assertTrue(textBox.textEquals("another text"));
   }
 
+  @Test
   public void testInsertTextChecksThatTheComponentIsEditable() throws Exception {
     textBox.setText("text");
     jTextComponent.setEditable(false);
@@ -304,38 +328,43 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("The text box is not editable", e.getMessage());
+      Assertions.assertEquals("The text box is not editable ==> expected: <true> but was: <false>", e.getMessage());
     }
-    assertEquals("text", jTextComponent.getText());
+    Assertions.assertEquals("text", jTextComponent.getText());
   }
 
+  @Test
   public void testGetText() throws Exception {
     jTextComponent.setText("some text");
-    assertEquals("some text", textBox.getText());
+    Assertions.assertEquals("some text", textBox.getText());
     textBox.setText("new text");
-    assertEquals("new text", textBox.getText());
+    Assertions.assertEquals("new text", textBox.getText());
     textBox.setText("new <b>text</b>");
-    assertEquals("new <b>text</b>", textBox.getText());
+    Assertions.assertEquals("new <b>text</b>", textBox.getText());
   }
 
+  @Test
   public void testSetTextNotifiesActionListenersForJTextField() throws Exception {
     DummyActionListener actionListener = initWithTextFieldAndActionListener();
     textBox.setText("text");
-    assertEquals(1, actionListener.getCallCount());
+    Assertions.assertEquals(1, actionListener.getCallCount());
   }
 
+  @Test
   public void testClickOnHyperlink() throws Exception {
     checkClickOnHyperlink("<html>blah blah<a href=\"http://www.junit.org\">link text</a>reblah</html>",
                           "link text",
                           "http://www.junit.org");
   }
 
+  @Test
   public void testClickOnHyperlinkAcceptsSubstrings() throws Exception {
     checkClickOnHyperlink("<html>blah blah<a href=\"http://www.junit.org\">link text</a>reblah</html>",
                           "link",
                           "http://www.junit.org");
   }
 
+  @Test
   public void testClickOnHyperLinkAcceptsLineSeparators() throws Exception {
     String link = "link text is very long so it will be on two lines";
     checkClickOnHyperlink("<html>blah blah<a href=\"http://www.junit.org\">" + link + "</a>reblah</html>",
@@ -343,12 +372,14 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
                           "http://www.junit.org");
   }
 
+  @Test
   public void testClickOnHyperlinkIsCaseInsensitive() throws Exception {
     checkClickOnHyperlink("<html>blah blah<a href=\"http://www.junit.org\">link text</a>reblah</html>",
                           "liNk tEXt",
                           "http://www.junit.org");
   }
 
+  @Test
   public void testClickOnHyperlinkGivesPriorityToExactMatches() throws Exception {
     checkClickOnHyperlink("<html>blah blah<a href=\"http://www.junit.org\">a link text</a>reblah" +
                           "blah blah<a href=\"http://www.apache.org\">link text</a>reblah</html>",
@@ -356,6 +387,7 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
                           "http://www.apache.org");
   }
 
+  @Test
   public void testClickOnUnknownHyperlink() throws Exception {
     checkClickOnHyperlinkError("<html>blah blah<a href=\"http://www.junit.org\">a link text</a>reblah" +
                                "blah blah<a href=\"http://www.apache.org\">link text</a>reblah</html>",
@@ -363,6 +395,7 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
                                "Hyperlink 'unknown' not found");
   }
 
+  @Test
   public void testClickOnHyperlinkWithAmbiguity() throws Exception {
     checkClickOnHyperlinkError("<html>blah blah<a href=\"http://www.junit.org\">a link text</a>reblah" +
                                "blah blah<a href=\"http://www.apache.org\">another link text</a>reblah</html>",
@@ -370,6 +403,7 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
                                "Ambiguous command - found several hyperlinks matching 'link text'");
   }
 
+  @Test
   public void testClickOnHyperLinkWithABadTextComponentFails() throws Exception {
     final TextBox textBox = new TextBox(new JTextArea());
 
@@ -399,13 +433,13 @@ public class TextBoxForTextComponentTest extends TextBoxComponentTestCase {
     textPane.addHyperlinkListener(listener);
     TextBox textComponent = new TextBox(textPane);
     textComponent.clickOnHyperlink(link);
-    assertEquals(1, listener.getCallCount());
-    assertEquals(expectedTarget, listener.getLastEvent().getDescription());
+    Assertions.assertEquals(1, listener.getCallCount());
+    Assertions.assertEquals(expectedTarget, listener.getLastEvent().getDescription());
 
     listener.reset();
     textComponent.triggerClickOnHyperlink(link).run();
-    assertEquals(1, listener.getCallCount());
-    assertEquals(expectedTarget, listener.getLastEvent().getDescription());
+    Assertions.assertEquals(1, listener.getCallCount());
+    Assertions.assertEquals(expectedTarget, listener.getLastEvent().getDescription());
   }
 
   private void checkClickOnHyperlinkError(String html, final String link, String errorMessage) throws Exception {

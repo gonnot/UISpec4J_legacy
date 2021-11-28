@@ -1,17 +1,20 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.DummyActionListener;
 
 import javax.swing.*;
-import java.awt.event.FocusListener;
 import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 public abstract class TextBoxComponentTestCase extends UIComponentTestCase {
   TextBox textBox;
 
   protected abstract void createTextBox(String text);
 
+  @Test
   public void testAssertTextContainsWithArray() throws Exception {
     String text = "Universal <b>rules</b>:" +
                   "<ul>" +
@@ -38,6 +41,7 @@ public abstract class TextBoxComponentTestCase extends UIComponentTestCase {
                                  " - actual content is:" + renderedText);
   }
 
+  @Test
   public void testFocusLost() throws Exception {
 
     createTextBox("text");
@@ -54,7 +58,7 @@ public abstract class TextBoxComponentTestCase extends UIComponentTestCase {
     });
 
     textBox.focusLost();
-    assertEquals("focusLost", log.toString());
+    Assertions.assertEquals("focusLost", log.toString());
   }
 
   private void checkAssertTextContainsFails(String[] texts, String error) {
@@ -63,7 +67,7 @@ public abstract class TextBoxComponentTestCase extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals(error, e.getMessage());
+      Assertions.assertEquals(error, e.getMessage());
     }
   }
 

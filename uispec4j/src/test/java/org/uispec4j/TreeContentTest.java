@@ -1,122 +1,146 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.DummyTreeCellRenderer;
-import org.uispec4j.utils.Functor;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 
 public class TreeContentTest extends TreeTestCase {
-  public void testContentCheck() throws Exception {
-    assertTrue(tree.contentEquals("root\n" +
-                                  "  child1\n" +
-                                  "    child1_1\n" +
-                                  "  child2"));
+  @Test
+  public void testContentCheck() {
+    assertTrue(tree.contentEquals("""
+                                  root
+                                    child1
+                                      child1_1
+                                    child2"""));
   }
 
+  @Test
   public void testContentCheckWithEmptyExpectedStringError() {
     checkContainmentError("  ",
-                          "Expected tree description should not be empty");
+                          "Expected tree description should not be empty ==> expected: <true> but was: <false>");
   }
 
-  public void testContentCheckWithErrors() throws Exception {
-    checkContainmentError("root\n" +
-                          "  child1\n" +
-                          "    error\n" +
-                          "  child2");
+  @Test
+  public void testContentCheckWithErrors() {
+    checkContainmentError("""
+                          root
+                            child1
+                              error
+                            child2""");
   }
 
-  public void testExpectedContentStringIsTrimmedInContainmentCheck() throws Exception {
-    assertTrue(tree.contentEquals("   root\n" +
-                                  "  child1\n" +
-                                  "    child1_1\n" +
-                                  "  child2\n"));
-    assertTrue(tree.contentEquals("   root\n" +
-                                  "  child1\n" +
-                                  "    child1_1\n" +
-                                  "  child2\n \t "));
+  @Test
+  public void testExpectedContentStringIsTrimmedInContainmentCheck() {
+    assertTrue(tree.contentEquals("""
+                                     root
+                                    child1
+                                      child1_1
+                                    child2
+                                  """));
+    assertTrue(tree.contentEquals("""
+                                    root
+                                   child1
+                                     child1_1
+                                   child2
+                                  \t\s""".indent(1)));
   }
 
-  public void testContentCheckWithPropertiesSpecification() throws Exception {
+  @Test
+  public void testContentCheckWithPropertiesSpecification() {
     child1_1.setBold(true);
     child1_1.setColor(Color.RED);
     child2.setColor(Color.BLUE);
-    assertTrue(tree.contentEquals("root\n" +
-                                  "  child1\n" +
-                                  "    child1_1 #(bold,color=red)\n" +
-                                  "  child2 #(color=blue)"));
+    assertTrue(tree.contentEquals("""
+                                  root
+                                    child1
+                                      child1_1 #(bold,color=red)
+                                    child2 #(color=blue)"""));
   }
 
-  public void testContentCheckWithMissingBoldnessError() throws Exception {
+  @Test
+  public void testContentCheckWithMissingBoldnessError() {
     if (TestUtils.isMacOsX()) {
       //TODO: to be studied - on MacOS, the font of the renderer component does not accept to turn to bold (JDK issue?)
       return;
     }
     child1.setBold(true);
-    checkContainmentError("root\n" +
-                          "  child1\n" +
-                          "    child1_1\n" +
-                          "  child2");
+    checkContainmentError("""
+                          root
+                            child1
+                              child1_1
+                            child2""");
   }
 
-  public void testContentCheckWithBoldnessError() throws Exception {
+  @Test
+  public void testContentCheckWithBoldnessError() {
     child1.setBold(false);
-    checkContainmentError("root\n" +
-                          "  child1 #(bold)\n" +
-                          "    child1_1\n" +
-                          "  child2");
+    checkContainmentError("""
+                          root
+                            child1 #(bold)
+                              child1_1
+                            child2""");
   }
 
-  public void testContentCheckAcceptsBothNumericAndHumanReadableValues() throws Exception {
+  @Test
+  public void testContentCheckAcceptsBothNumericAndHumanReadableValues() {
     child2.setColor(Color.BLUE);
-    assertTrue(tree.contentEquals("root\n" +
-                                  "  child1\n" +
-                                  "    child1_1\n" +
-                                  "  child2 #(color=blue)"));
-    assertTrue(tree.contentEquals("root\n" +
-                                  "  child1\n" +
-                                  "    child1_1\n" +
-                                  "  child2 #(color=0000ff)"));
+    assertTrue(tree.contentEquals("""
+                                  root
+                                    child1
+                                      child1_1
+                                    child2 #(color=blue)"""));
+    assertTrue(tree.contentEquals("""
+                                  root
+                                    child1
+                                      child1_1
+                                    child2 #(color=0000ff)"""));
   }
 
-  public void testContentCheckWithMissingColorError() throws Exception {
+  @Test
+  public void testContentCheckWithMissingColorError() {
     child1.setColor(Color.BLUE);
-    checkContainmentError("root\n" +
-                          "  child1\n" +
-                          "    child1_1\n" +
-                          "  child2");
+    checkContainmentError("""
+                          root
+                            child1
+                              child1_1
+                            child2""");
   }
 
+  @Test
   public void testCheckContentsWithColorNameError() throws Exception {
     child1_1.setColor(Color.BLUE);
-    checkAssertionError(new Functor() {
-      public void run() throws Exception {
-        assertTrue(tree.contentEquals("root\n" +
-                                      "  child1\n" +
-                                      "    child1_1 #(color=ERROR)\n" +
-                                      "  child2"));
-      }
-    }, "'ERROR' does not seem to be a color");
+    checkAssertionError(() -> assertTrue(tree.contentEquals("""
+                                                            root
+                                                              child1
+                                                                child1_1 #(color=ERROR)
+                                                              child2""")),
+                        "'ERROR' does not seem to be a color");
   }
 
-  public void testAssertContains() throws Exception {
+  @Test
+  public void testAssertContains() {
     assertTrue(tree.contains("child1/child1_1"));
     try {
       assertTrue(tree.contains("child1/unknown"));
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Could not find element 'child1/unknown'", e.getMessage());
+      Assertions.assertEquals("Could not find element 'child1/unknown'", e.getMessage());
     }
   }
 
-  public void testAssertContainsReallyChecksTheWholePath() throws Exception {
+  @Test
+  public void testAssertContainsReallyChecksTheWholePath() {
     child1Node.add(new DefaultMutableTreeNode(new DummyTreeCellRenderer.UserObject("child1_2")));
     assertTrue(tree.contains("child1/child1_2"));
   }
 
-  public void testSeparatorCustomisation() throws Exception {
+  @Test
+  public void testSeparatorCustomisation() {
     DefaultMutableTreeNode child3 =
       new DefaultMutableTreeNode(new DummyTreeCellRenderer.UserObject("child/3"));
     rootNode.add(child3);
@@ -138,7 +162,8 @@ public class TreeContentTest extends TreeTestCase {
     assertTrue(tree.selectionEquals(path));
   }
 
-  public void testSeparatorCanBeSpecifiedAtTreeCreationTime() throws Exception {
+  @Test
+  public void testSeparatorCanBeSpecifiedAtTreeCreationTime() {
     String previousSeparator = Tree.defaultSeparator;
     System.getProperties().remove(Tree.SEPARATOR_PROPERTY);
     Tree.setDefaultSeparator("-*-");
@@ -154,85 +179,96 @@ public class TreeContentTest extends TreeTestCase {
     Tree.setDefaultSeparator(previousSeparator);
   }
 
-  public void testSeparatorCannotBeEmpty() throws Exception {
+  @Test
+  public void testSeparatorCannotBeEmpty() {
     try {
       tree.setSeparator("");
       throw new AssertionFailureNotDetectedError();
     }
     catch (IllegalArgumentException e) {
-      assertEquals("Separator must not be empty", e.getMessage());
+      Assertions.assertEquals("Separator must not be empty", e.getMessage());
     }
     try {
       Tree.setDefaultSeparator("");
       throw new AssertionFailureNotDetectedError();
     }
     catch (IllegalArgumentException e) {
-      assertEquals("Separator must not be empty", e.getMessage());
+      Assertions.assertEquals("Separator must not be empty", e.getMessage());
     }
 
     System.setProperty(Tree.SEPARATOR_PROPERTY, "");
     Tree tree = new Tree(jTree);
-    assertEquals("/", tree.getSeparator());
+    Assertions.assertEquals("/", tree.getSeparator());
     System.getProperties().remove(Tree.SEPARATOR_PROPERTY);
   }
 
-  public void testSeparatorCannotBeNull() throws Exception {
+  @Test
+  public void testSeparatorCannotBeNull() {
     try {
       tree.setSeparator(null);
       throw new AssertionFailureNotDetectedError();
     }
     catch (IllegalArgumentException e) {
-      assertEquals("Separator must not be null", e.getMessage());
+      Assertions.assertEquals("Separator must not be null", e.getMessage());
     }
     try {
       Tree.setDefaultSeparator(null);
       throw new AssertionFailureNotDetectedError();
     }
     catch (IllegalArgumentException e) {
-      assertEquals("Separator must not be null", e.getMessage());
+      Assertions.assertEquals("Separator must not be null", e.getMessage());
     }
   }
 
-  public void testPathDefinitionsGivePriorityToExactNames() throws Exception {
+  @Test
+  public void testPathDefinitionsGivePriorityToExactNames() {
     rootNode.add(new DefaultMutableTreeNode(new DummyTreeCellRenderer.UserObject("child1bis")));
     checkPath("child1/child1_1");
   }
 
-  public void testUsingASpecificConverter() throws Exception {
+  @Test
+  public void testUsingASpecificConverter() {
     tree.setCellValueConverter(new DummyTreeCellValueConverter());
-    assertTrue(tree.contentEquals("_obj:root_\n" +
-                                  "  _obj:child1_\n" +
-                                  "    _obj:child1_1_\n" +
-                                  "  _obj:child2_"));
+    assertTrue(tree.contentEquals("""
+                                  _obj:root_
+                                    _obj:child1_
+                                      _obj:child1_1_
+                                    _obj:child2_"""));
     assertTrue(tree.contains("_obj:child1_/_obj:child1_1_"));
   }
 
-  public void testUsingASpecificConverterForColor() throws Exception {
+  @Test
+  public void testUsingASpecificConverterForColor() {
     DummyTreeCellValueConverter converter = new DummyTreeCellValueConverter();
     converter.setRedFontPattern("child1");
     tree.setCellValueConverter(converter);
-    assertTrue(tree.contentEquals("_obj:root_\n" +
-                                  "  _obj:child1_ #(color=FF0000)\n" +
-                                  "    _obj:child1_1_ #(color=FF0000)\n" +
-                                  "  _obj:child2_"));
+    assertTrue(tree.contentEquals("""
+                                  _obj:root_
+                                    _obj:child1_ #(color=FF0000)
+                                      _obj:child1_1_ #(color=FF0000)
+                                    _obj:child2_"""));
   }
 
-  public void testUsingASpecificConverterForTextStyle() throws Exception {
+  @Test
+  public void testUsingASpecificConverterForTextStyle() {
     DummyTreeCellValueConverter converter = new DummyTreeCellValueConverter();
     converter.setBoldPattern("child");
     tree.setCellValueConverter(converter);
-    assertTrue(tree.contentEquals("_obj:root_\n" +
-                                  "  _obj:child1_ #(bold)\n" +
-                                  "    _obj:child1_1_ #(bold)\n" +
-                                  "  _obj:child2_ #(bold)"));
+    assertTrue(tree.contentEquals("""
+                                  _obj:root_
+                                    _obj:child1_ #(bold)
+                                      _obj:child1_1_ #(bold)
+                                    _obj:child2_ #(bold)"""));
   }
 
-  public void testGetChildCount() throws Exception {
-    assertEquals(2, tree.getChildCount(""));
-    assertEquals(1, tree.getChildCount("child1"));
+  @Test
+  public void testGetChildCount() {
+    Assertions.assertEquals(2, tree.getChildCount(""));
+    Assertions.assertEquals(1, tree.getChildCount("child1"));
   }
 
-  public void testCheckForegroundColor() throws Exception {
+  @Test
+  public void testCheckForegroundColor() {
     assertTrue(tree.foregroundEquals("", "black"));
     child1.setColor(new Color(250, 10, 10));
     assertTrue(tree.foregroundEquals("child1", "red"));
@@ -241,16 +277,19 @@ public class TreeContentTest extends TreeTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("expected:<GREEN> but was:<FA0A0A>", e.getMessage());
+      Assertions.assertEquals("expected: <GREEN> but was: <FA0A0A>", e.getMessage());
     }
   }
 
-  public void testToString() throws Exception {
-    assertEquals("root\n" +
-                 "  child1\n" +
-                 "    child1_1\n" +
-                 "  child2\n",
-                 tree.toString());
+  @Test
+  public void testToString() {
+    Assertions.assertEquals("""
+                            root
+                              child1
+                                child1_1
+                              child2
+                            """,
+                            tree.toString());
   }
 
   private void checkContainmentError(String expectedTree) {
@@ -264,7 +303,7 @@ public class TreeContentTest extends TreeTestCase {
     }
     catch (AssertionError e) {
       if (message != null) {
-        assertEquals(message, e.getMessage());
+        Assertions.assertEquals(message, e.getMessage());
       }
     }
   }

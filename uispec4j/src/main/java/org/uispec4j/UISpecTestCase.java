@@ -1,6 +1,7 @@
 package org.uispec4j;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.assertion.Assertion;
 import org.uispec4j.assertion.UISpecAssert;
 import org.uispec4j.interception.toolkit.UISpecDisplay;
@@ -17,7 +18,7 @@ import org.uispec4j.interception.toolkit.UISpecDisplay;
  * uispec4j.adapter=samples.addressbook.test.Adapter
  * </code></pre>
  */
-public abstract class UISpecTestCase extends TestCase {
+public abstract class UISpecTestCase {
 
   static final String ADAPTER_CLASS_PROPERTY = "uispec4j.adapter";
   static final String PROPERTY_NOT_DEFINED;
@@ -31,13 +32,6 @@ public abstract class UISpecTestCase extends TestCase {
     UISpec4J.init();
   }
 
-  protected UISpecTestCase() {
-  }
-
-  protected UISpecTestCase(String testName) {
-    super(testName);
-  }
-
   public void setAdapter(UISpecAdapter adapter) {
     this.adapter = adapter;
   }
@@ -46,19 +40,19 @@ public abstract class UISpecTestCase extends TestCase {
    * Initializes the resources needed by the test case.<br>
    * NB: If you provide your own implementation, do not forget to call this one first.
    */
-  protected void setUp() throws Exception {
-    super.setUp();
+  @BeforeEach
+  final protected void uispec4JSetUp() {
     UISpecDisplay.instance().reset();
   }
 
   /**
    * Checks whether an unexpected exception had occurred, and releases the test resources.
    */
-  protected void tearDown() throws Exception {
+  @AfterEach
+  final protected void uispec4JTearDown() {
     adapter = null;
     UISpecDisplay.instance().rethrowIfNeeded();
     UISpecDisplay.instance().reset();
-    super.tearDown();
   }
 
   private void retrieveAdapter() throws AdapterNotFoundException {
@@ -67,7 +61,7 @@ public abstract class UISpecTestCase extends TestCase {
       throw new AdapterNotFoundException();
     }
     try {
-      adapter = (UISpecAdapter)Class.forName(adapterClassName).newInstance();
+      adapter = (UISpecAdapter)Class.forName(adapterClassName).getDeclaredConstructor().newInstance();
     }
     catch (Exception e) {
       throw new AdapterNotFoundException(adapterClassName, e);
@@ -97,9 +91,9 @@ public abstract class UISpecTestCase extends TestCase {
   /**
    * Checks the given assertion.
    * If it fails an AssertionError is thrown with the given message.
-   * This method is equivalent to {@link #assertThat(String,Assertion)}.
+   * This method is equivalent to {@link #assertThat(String, Assertion)}.
    *
-   * @see UISpecAssert#assertTrue(String,Assertion)
+   * @see UISpecAssert#assertTrue(String, Assertion)
    */
   public void assertTrue(String message, Assertion assertion) {
     UISpecAssert.assertTrue(message, assertion);
@@ -118,9 +112,9 @@ public abstract class UISpecTestCase extends TestCase {
   /**
    * Checks the given assertion.
    * If it fails an AssertionError is thrown with the given message.
-   * This method is equivalent to {@link #assertTrue(String,Assertion)}.
+   * This method is equivalent to {@link #assertTrue(String, Assertion)}.
    *
-   * @see UISpecAssert#assertTrue(String,Assertion)
+   * @see UISpecAssert#assertTrue(String, Assertion)
    */
   public void assertThat(String message, Assertion assertion) {
     UISpecAssert.assertThat(message, assertion);
@@ -148,7 +142,7 @@ public abstract class UISpecTestCase extends TestCase {
    * Waits for at most 'waitTimeLimit' ms until the assertion is true.
    * If it fails an AssertionError is thrown with the given message.
    *
-   * @see UISpecAssert#waitUntil(String,Assertion,long)
+   * @see UISpecAssert#waitUntil(String, Assertion, long)
    */
   public void waitUntil(String message, Assertion assertion, long waitTimeLimit) {
     UISpecAssert.waitUntil(message, assertion, waitTimeLimit);
@@ -158,7 +152,7 @@ public abstract class UISpecTestCase extends TestCase {
    * Checks that the given assertion fails.
    * If it succeeds an AssertionError is thrown with the given message.
    *
-   * @see UISpecAssert#assertFalse(String,Assertion)
+   * @see UISpecAssert#assertFalse(String, Assertion)
    */
   public void assertFalse(String message, Assertion assertion) {
     UISpecAssert.assertFalse(message, assertion);
@@ -194,7 +188,7 @@ public abstract class UISpecTestCase extends TestCase {
   /**
    * Checks that the given assertion equals the expected parameter.
    *
-   * @see UISpecAssert#assertEquals(boolean,Assertion)
+   * @see UISpecAssert#assertEquals(boolean, Assertion)
    */
   public void assertEquals(boolean expected, Assertion assertion) {
     UISpecAssert.assertEquals(expected, assertion);
@@ -204,7 +198,7 @@ public abstract class UISpecTestCase extends TestCase {
    * Checks that the given assertion equals the expected parameter.
    * If it fails an AssertionError is thrown with the given message.
    *
-   * @see UISpecAssert#assertEquals(String,boolean,Assertion)
+   * @see UISpecAssert#assertEquals(String, boolean, Assertion)
    */
   public void assertEquals(String message, boolean expected, Assertion assertion) {
     UISpecAssert.assertEquals(message, expected, assertion);

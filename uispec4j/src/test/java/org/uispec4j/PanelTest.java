@@ -1,18 +1,24 @@
 package org.uispec4j;
 
-import static org.uispec4j.DummySpinner.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.finder.ComponentMatcher;
 import org.uispec4j.utils.UIComponentFactory;
 import org.uispec4j.xml.XmlAssert;
 
 import javax.swing.*;
 
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.uispec4j.DummySpinner.*;
+
 public class PanelTest extends UIComponentTestCase {
 
+  @Test
   public void testGetComponentTypeName() throws Exception {
-    assertEquals("panel", UIComponentFactory.createUIComponent(new JPanel()).getDescriptionTypeName());
+    Assertions.assertEquals("panel", UIComponentFactory.createUIComponent(new JPanel()).getDescriptionTypeName());
   }
 
+  @Test
   public void testGetDescription() throws Exception {
     JTabbedPane tabbedPane = new JTabbedPane();
     tabbedPane.setName("myTabbedPane");
@@ -34,6 +40,7 @@ public class PanelTest extends UIComponentTestCase {
                                "</panel>", panel.getDescription());
   }
 
+  @Test
   public void testFactory() throws Exception {
     checkFactory(new JPanel(), Panel.class);
   }
@@ -42,6 +49,7 @@ public class PanelTest extends UIComponentTestCase {
     return new Panel(new JPanel());
   }
 
+  @Test
   public void testContainsLabel() throws Exception {
     JPanel jPanel = new JPanel();
     jPanel.add(new JLabel("Some text"));
@@ -51,6 +59,7 @@ public class PanelTest extends UIComponentTestCase {
     assertFalse(panel.containsLabel("unknown"));
   }
 
+  @Test
   public void testGetSpinnerThroughModel() throws Exception {
     checkGetSpinnerByModel(dateModel(), new Getter() {
       public UIComponent get(Panel panel) {
@@ -69,6 +78,7 @@ public class PanelTest extends UIComponentTestCase {
     });
   }
 
+  @Test
   public void testGetSpinnerThroughModelAndComponentName() throws Exception {
     checkGetSpinnerByModel(dateModel(), new Getter() {
       public UIComponent get(Panel panel) {
@@ -87,6 +97,7 @@ public class PanelTest extends UIComponentTestCase {
     });
   }
 
+  @Test
   public void testGetSpinnerThroughModelAndMatcher() throws Exception {
     checkGetSpinnerByModel(dateModel(), new Getter() {
       public UIComponent get(Panel panel) {
@@ -112,10 +123,10 @@ public class PanelTest extends UIComponentTestCase {
     Panel panel = new Panel(jPanel);
     try {
       getter.get(panel);
-      fail();
+      Assertions.fail();
     }
     catch (ItemNotFoundException e) {
-      assertEquals("No component found", e.getMessage());
+      Assertions.assertEquals("No component found", e.getMessage());
     }
 
     JSpinner jSpinner = new JSpinner(model);

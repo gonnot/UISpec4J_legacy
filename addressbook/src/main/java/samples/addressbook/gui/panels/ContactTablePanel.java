@@ -26,10 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContactTablePanel {
-  private JTable table;
-  private ContactTableModel model;
-  private JButton createNewContactButton;
-  private JPopupMenu tablePopupMenu;
+  private final JTable table;
+  private final ContactTableModel model;
+  private final JButton createNewContactButton;
+  private final JPopupMenu tablePopupMenu;
 
   private static final Contact.Field[] ALL_FIELDS =
     {Contact.Field.FIRST_NAME,

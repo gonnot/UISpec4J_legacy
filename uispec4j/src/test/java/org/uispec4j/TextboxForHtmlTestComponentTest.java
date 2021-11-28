@@ -1,8 +1,10 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.FileTestUtils;
-import org.uispec4j.utils.Functor;
 import org.uispec4j.utils.UIComponentFactory;
 
 import javax.swing.*;
@@ -16,8 +18,9 @@ import java.net.URL;
 public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
   private JTextComponent jTextComponent;
 
-  protected void setUp() throws Exception {
-    super.setUp();
+  @BeforeEach
+  final protected void setUp() {
+
     initWithHtmlTextPane();
   }
 
@@ -26,22 +29,26 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
     textBox.setText(text);
   }
 
-  public void testGetComponentTypeName() throws Exception {
-    assertEquals("textBox", UIComponentFactory.createUIComponent(new JTextPane()).getDescriptionTypeName());
+  @Test
+  public void testGetComponentTypeName() {
+    Assertions.assertEquals("textBox", UIComponentFactory.createUIComponent(new JTextPane()).getDescriptionTypeName());
   }
 
-  public void testGetDescription() throws Exception {
-    assertTrue(textBox.getDescription().startsWith("<textBox name='myText' text='&lt;html".replaceAll("'", "\"")));
+  @Test
+  public void testGetDescription() {
+    Assertions.assertTrue(textBox.getDescription().startsWith("<textBox name='myText' text='&lt;html".replaceAll("'", "\"")));
   }
 
-  public void testFactory() throws Exception {
+  @Test
+  public void testFactory() {
     checkFactory(new JTextArea(), TextBox.class);
     checkFactory(new JTextPane(), TextBox.class);
     checkFactory(new JEditorPane(), TextBox.class);
     checkFactory(new JTextField(), TextBox.class);
   }
 
-  public void testAssertTextEqualsWithHtml() throws Exception {
+  @Test
+  public void testAssertTextEqualsWithHtml() {
     initWithHtmlTextPane();
     String text = "Universal <b>rules</b>:" +
                   "<ul>" +
@@ -54,11 +61,12 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
       assertTrue(textBox.textEquals("Universal rules: a < b 2 > 1, seb is the best"));
       throw new AssertionFailureNotDetectedError();
     }
-    catch (AssertionError e) {
+    catch (AssertionError ignored) {
     }
   }
 
-  public void testAssertHtmlEqualsWithMetaInHeader() throws Exception {
+  @Test
+  public void testAssertHtmlEqualsWithMetaInHeader() {
     initWithHtmlTextPane();
     String text = "<html>" +
                   "  <head>" +
@@ -82,11 +90,12 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
                                     "</ul>"));
       throw new AssertionFailureNotDetectedError();
     }
-    catch (AssertionError e) {
+    catch (AssertionError ignored) {
     }
   }
 
-  public void testAssertHtmlEquals() throws Exception {
+  @Test
+  public void testAssertHtmlEquals() {
     initWithHtmlTextPane();
     String text = "Universal <b>rules</b>:" +
                   "<ul>" +
@@ -102,11 +111,12 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
                                     "</ul>"));
       throw new AssertionFailureNotDetectedError();
     }
-    catch (AssertionError e) {
+    catch (AssertionError ignored) {
     }
   }
 
-  public void testAssertTextContainsWithHtml() throws Exception {
+  @Test
+  public void testAssertTextContainsWithHtml() {
     initWithHtmlTextPane();
     String text = "My name is <b>Bond</b>";
     textBox.setText(text);
@@ -116,16 +126,19 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("The component text does not contain 'error' - actual content is:<html>\n" +
-                   "  <head>\n" +
-                   "  </head>\n" +
-                   "  <body>My name is <b>Bond</b></body>\n" +
-                   "</html>\n",
-                   e.getMessage());
+      Assertions.assertEquals("""
+                              The component text does not contain 'error' - actual content is:<html>
+                                <head>
+                                </head>
+                                <body>My name is <b>Bond</b></body>
+                              </html>
+                               ==> expected: <true> but was: <false>""",
+                              e.getMessage());
     }
   }
 
-  public void testAssertTextEqualsWithEmptyStringIsTheSameAsAssertTextIsEmpty() throws Exception {
+  @Test
+  public void testAssertTextEqualsWithEmptyStringIsTheSameAsAssertTextIsEmpty() {
     initWithHtmlTextPane();
     assertTrue(textBox.textEquals(""));
     jTextComponent.setText("blah");
@@ -133,18 +146,16 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
     assertTrue(textBox.textEquals(""));
   }
 
-  public void testAssertTextContainsHandlesHtmlLineBreaksAndFormatting() throws Exception {
+  @Test
+  public void testAssertTextContainsHandlesHtmlLineBreaksAndFormatting() {
     initWithHtmlTextPane();
-    StringBuffer buffer = new StringBuffer();
-    for (int i = 0; i < 20; i++) {
-      buffer.append("blah ");
-    }
-    String text = buffer.toString();
+    String text = "blah ".repeat(20);
     textBox.setText(text);
     assertTrue(textBox.textContains(text));
   }
 
-  public void testAssertEmptyWithHtml() throws Exception {
+  @Test
+  public void testAssertEmptyWithHtml() {
     initWithHtmlTextPane();
     assertTrue(textBox.textIsEmpty());
     jTextComponent.setText("");
@@ -155,29 +166,32 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Text should be empty but contains: <html>\n" +
-                   "  <head>\n" +
-                   "    \n" +
-                   "  </head>\n" +
-                   "  <body>\n" +
-                   "    a\n" +
-                   "  </body>\n" +
-                   "</html>\n",
-                   e.getMessage());
+      Assertions.assertEquals("""
+                              Text should be empty but contains: <html>
+                                <head>
+                                 \s
+                                </head>
+                                <body>
+                                  a
+                                </body>
+                              </html>
+                              """,
+                              e.getMessage());
     }
 
-    jTextComponent.setText("<html>\n" +
-                           "  <head>\n" +
-                           "\n" +
-                           "  </head>\n" +
-                           "  <body>\n" +
-                           "    <p>\n" +
-                           "      \n" +
-                           "    </p>\n" +
-                           "  </body>\n" +
-                           "</html>\n" +
-                           "\n" +
-                           "");
+    jTextComponent.setText("""
+                           <html>
+                             <head>
+
+                             </head>
+                             <body>
+                               <p>
+                                \s
+                               </p>
+                             </body>
+                           </html>
+
+                           """);
     assertTrue(textBox.textIsEmpty());
 
     jTextComponent.setText("<html><p></html>");
@@ -185,7 +199,8 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
     assertTrue(textBox.textIsEmpty());
   }
 
-  public void testAssertEmptyAfterReset() throws Exception {
+  @Test
+  public void testAssertEmptyAfterReset() {
     initWithHtmlTextPane();
     assertTrue(textBox.textIsEmpty());
     jTextComponent.setText("blah");
@@ -200,50 +215,55 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
     return textPane;
   }
 
+  @Test
   public void testClickOnHyperlink() throws Exception {
-    checkClickOnHyperlink("<html>blah blah<a href=\"http://www.junit.org\">link text</a>reblah</html>",
+    checkClickOnHyperlink("<html>blah blah<a href=\"https://www.junit.org\">link text</a>reblah</html>",
                           "link text",
-                          "http://www.junit.org");
+                          "https://www.junit.org");
   }
 
+  @Test
   public void testClickOnHyperlinkAcceptsSubstrings() throws Exception {
-    checkClickOnHyperlink("<html>blah blah<a href=\"http://www.junit.org\">link text</a>reblah</html>",
+    checkClickOnHyperlink("<html>blah blah<a href=\"https://www.junit.org\">link text</a>reblah</html>",
                           "link",
-                          "http://www.junit.org");
+                          "https://www.junit.org");
   }
 
+  @Test
   public void testClickOnHyperLinkAcceptsLineSeparators() throws Exception {
     String link = "link text is very long so it will be on two lines";
-    checkClickOnHyperlink("<html>blah blah<a href=\"http://www.junit.org\">" + link + "</a>reblah</html>",
+    checkClickOnHyperlink("<html>blah blah<a href=\"https://www.junit.org\">" + link + "</a>reblah</html>",
                           link,
-                          "http://www.junit.org");
+                          "https://www.junit.org");
   }
 
+  @Test
   public void testClickOnHyperlinkIsCaseInsensitive() throws Exception {
-    checkClickOnHyperlink("<html>blah blah<a href=\"http://www.junit.org\">link text</a>reblah</html>",
+    checkClickOnHyperlink("<html>blah blah<a href=\"https://www.junit.org\">link text</a>reblah</html>",
                           "liNk tEXt",
-                          "http://www.junit.org");
+                          "https://www.junit.org");
   }
 
+  @Test
   public void testClickOnHyperLinkWaitsForTheCompletePageLoad() throws Exception {
-    String content1 = "<html>\n" +
-                      "  <head>\n" +
-                      "    <title>Subject 1</title>\n" +
-                      "  </head>\n" +
-                      "  <body>\n" +
-                      "    <p>blabla</p>" +
-                      "    <a href=\"file2.html\">Subject 2</a>\n" +
-                      "  </body>\n" +
-                      "</html>";
-    String content2 = "<html>\n" +
-                      "  <head>\n" +
-                      "    <title>Subject 2</title>\n" +
-                      "  </head>\n" +
-                      "  <body>\n" +
-                      "    <p>blabla</p>" +
-                      "    <a href=\"file1.html\">Subject 1</a>\n" +
-                      "  </body>\n" +
-                      "</html>";
+    String content1 = """
+                      <html>
+                        <head>
+                          <title>Subject 1</title>
+                        </head>
+                        <body>
+                          <p>blabla</p>    <a href="file2.html">Subject 2</a>
+                        </body>
+                      </html>""";
+    String content2 = """
+                      <html>
+                        <head>
+                          <title>Subject 2</title>
+                        </head>
+                        <body>
+                          <p>blabla</p>    <a href="file1.html">Subject 1</a>
+                        </body>
+                      </html>""";
 
     File file1 = FileTestUtils.dumpStringToFile("file1.html", content1);
     File file2 = FileTestUtils.dumpStringToFile("file2.html", content2);
@@ -256,53 +276,58 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
     checkSwitchBetweenPages(textComponent, content1, content2);
   }
 
+  @Test
   public void testClickOnHyperlinkGivesPriorityToExactMatches() throws Exception {
-    checkClickOnHyperlink("<html>blah blah<a href=\"http://www.junit.org\">a link text</a>reblah" +
-                          "blah blah<a href=\"http://www.apache.org\">link text</a>reblah</html>",
+    checkClickOnHyperlink("<html>blah blah<a href=\"https://www.junit.org\">a link text</a>reblah" +
+                          "blah blah<a href=\"https://www.apache.org\">link text</a>reblah</html>",
                           "link text",
-                          "http://www.apache.org");
+                          "https://www.apache.org");
   }
 
+  @Test
   public void testClickOnUnknownHyperlink() throws Exception {
-    checkClickOnHyperlinkError("<html>blah blah<a href=\"http://www.junit.org\">a link text</a>reblah" +
-                               "blah blah<a href=\"http://www.apache.org\">link text</a>reblah</html>",
+    checkClickOnHyperlinkError("<html>blah blah<a href=\"https://www.junit.org\">a link text</a>reblah" +
+                               "blah blah<a href=\"https://www.apache.org\">link text</a>reblah</html>",
                                "unknown",
                                "Hyperlink 'unknown' not found");
   }
 
+  @Test
   public void testClickOnHyperlinkWithAmbiguity() throws Exception {
-    checkClickOnHyperlinkError("<html>blah blah<a href=\"http://www.junit.org\">a link text</a>reblah" +
-                               "blah blah<a href=\"http://www.apache.org\">another link text</a>reblah</html>",
+    checkClickOnHyperlinkError("<html>blah blah<a href=\"https://www.junit.org\">a link text</a>reblah" +
+                               "blah blah<a href=\"https://www.apache.org\">another link text</a>reblah</html>",
                                "link text",
                                "Ambiguous command - found several hyperlinks matching 'link text'");
   }
 
+  @Test
   public void testClickOnHyperlinkAcceptsAttributesOnATag() throws Exception {
     checkClickOnHyperlink("<html>blah blah<a title=\"JUNIT \" " +
-                          "                  href=\"http://www.junit.org\" " +
+                          "                  href=\"https://www.junit.org\" " +
                           "                  name = \"junit hyperlink\">link text</a>reblah</html>",
                           "link text",
-                          "http://www.junit.org");
+                          "https://www.junit.org");
   }
 
+  @Test
   public void testClickOnHyperlinkWithBigHtml() throws Exception {
-    StringBuffer htmlText = new StringBuffer("<html>" +
-                                             "  <head>" +
-                                             "    <meta name=\"UISpec4J\" lang=\"en\" content=\"text/HTML; charset=utf-8\"/>" +
-                                             "    <title name=\"Universal rules\"/>" +
-                                             "  </head>" +
-                                             "  <body>" +
-                                             "    Universal <b>rules</b>:" +
-                                             "    <a href=\"http://www.junit.org\">link text</a>");
+    StringBuilder htmlText = new StringBuilder("<html>" +
+                                               "  <head>" +
+                                               "    <meta name=\"UISpec4J\" lang=\"en\" content=\"text/HTML; charset=utf-8\"/>" +
+                                               "    <title name=\"Universal rules\"/>" +
+                                               "  </head>" +
+                                               "  <body>" +
+                                               "    Universal <b>rules</b>:" +
+                                               "    <a href=\"https://www.junit.org\">link text</a>");
     for (int i = 0; i < 5000; i++) {
-      htmlText.append("<a href=\"http://www.otherlink.org\">other link text")
+      htmlText.append("<a href=\"https://www.otherlink.org\">other link text")
         .append(i)
         .append("</a>");
     }
     htmlText.append("</body></html>");
     checkClickOnHyperlink(htmlText.toString(),
                           "link text",
-                          "http://www.junit.org");
+                          "https://www.junit.org");
   }
 
   private void checkSwitchBetweenPages(JTextComponent textComponent, String content1, String content2) {
@@ -322,13 +347,11 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
     jTextPane.setContentType("text/html");
     jTextPane.setPage(url);
 
-    jTextPane.addHyperlinkListener(new HyperlinkListener() {
-      public void hyperlinkUpdate(HyperlinkEvent event) {
-        try {
-          jTextPane.setPage(event.getURL());
-        }
-        catch (IOException e) {
-        }
+    jTextPane.addHyperlinkListener(event -> {
+      try {
+        jTextPane.setPage(event.getURL());
+      }
+      catch (IOException ignored) {
       }
     });
     return jTextPane;
@@ -344,28 +367,20 @@ public class TextboxForHtmlTestComponentTest extends TextBoxComponentTestCase {
     editorPane.addHyperlinkListener(listener);
     TextBox textComponent = new TextBox(editorPane);
     textComponent.clickOnHyperlink(link);
-    assertEquals(1, listener.getCallCount());
-    assertEquals(expectedTarget, listener.getLastEvent().getDescription());
+    Assertions.assertEquals(1, listener.getCallCount());
+    Assertions.assertEquals(expectedTarget, listener.getLastEvent().getDescription());
 
     listener.reset();
     textComponent.triggerClickOnHyperlink(link).run();
-    assertEquals(1, listener.getCallCount());
-    assertEquals(expectedTarget, listener.getLastEvent().getDescription());
+    Assertions.assertEquals(1, listener.getCallCount());
+    Assertions.assertEquals(expectedTarget, listener.getLastEvent().getDescription());
   }
 
   private void checkClickOnHyperlinkError(String html, final String link, String errorMessage) throws Exception {
     final TextBox textComponent = new TextBox(createHtmlTextPane(html));
-    checkAssertionError(new Functor() {
-      public void run() throws Exception {
-        textComponent.clickOnHyperlink(link);
-      }
-    }, errorMessage);
+    checkAssertionError(() -> textComponent.clickOnHyperlink(link), errorMessage);
 
-    checkAssertionError(new Functor() {
-      public void run() throws Exception {
-        textComponent.triggerClickOnHyperlink(link).run();
-      }
-    }, errorMessage);
+    checkAssertionError(() -> textComponent.triggerClickOnHyperlink(link).run(), errorMessage);
   }
 
   private static class DummyHyperlinkListener implements HyperlinkListener {

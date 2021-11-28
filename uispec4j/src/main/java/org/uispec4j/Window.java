@@ -83,7 +83,7 @@ public class Window extends Panel {
   public Assertion titleContains(final String expected) {
     return new Assertion() {
       public void check() {
-        AssertAdapter.assertTrue("expected to contain:<" + expected + "> but was:<" + getTitle() + ">",
+        AssertAdapter.assertTrue("expected to contain:<" + expected + "> but was: <" + getTitle() + ">",
                                   getTitle().contains(expected));
       }
     };

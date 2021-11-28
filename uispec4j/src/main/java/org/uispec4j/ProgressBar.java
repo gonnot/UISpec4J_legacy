@@ -39,7 +39,7 @@ public class ProgressBar extends AbstractUIComponent {
     return new Assertion() {
       public void check() {
         if (expectedValue == -1) {
-          AssertAdapter.assertTrue("The progress bar status is not undeterminate",
+          AssertAdapter.assertTrue("The progress bar status is not indeterminate",
                                     jProgressBar.isIndeterminate());
           return;
         }

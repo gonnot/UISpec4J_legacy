@@ -1,5 +1,8 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.UIComponentFactory;
 import org.uispec4j.xml.XmlAssert;
 
@@ -7,11 +10,12 @@ import javax.swing.*;
 
 public class ButtonTest extends ButtonTestCase {
 
-  private JButton jButton = new JButton();
+  private final JButton jButton = new JButton();
   private Button button;
 
-  protected void setUp() throws Exception {
-    super.setUp();
+  @BeforeEach
+  final protected void setUp() throws Exception {
+
     button = (Button)UIComponentFactory.createUIComponent(jButton);
   }
 
@@ -23,16 +27,19 @@ public class ButtonTest extends ButtonTestCase {
     return jButton;
   }
 
+  @Test
   public void testGetComponentTypeName() throws Exception {
-    assertEquals("button", button.getDescriptionTypeName());
+    Assertions.assertEquals("button", button.getDescriptionTypeName());
   }
 
+  @Test
   public void testGetDescription() throws Exception {
     XmlAssert.assertEquivalent("<button/>", button.getDescription());
     jButton.setText("toto");
     XmlAssert.assertEquivalent("<button label='toto'/>", button.getDescription());
   }
 
+  @Test
   public void testFactory() throws Exception {
     checkFactory(new JButton(), Button.class);
   }

@@ -1,5 +1,8 @@
 package org.uispec4j.interception;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.Button;
 import org.uispec4j.Trigger;
 import org.uispec4j.UISpec4J;
@@ -14,14 +17,15 @@ import javax.swing.*;
 public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestCase {
   private Thread thread;
 
-  protected void tearDown() throws Exception {
-    super.tearDown();
+  @AfterEach
+  final protected void tearDown() throws Exception {
     if (thread != null) {
       thread.join();
       thread = null;
     }
   }
 
+  @Test
   public void testInterceptingAModalDialog() throws Exception {
     Window window = WindowInterceptor.getModalDialog(new Trigger() {
       public void run() {
@@ -42,6 +46,7 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
     assertFalse(window.isVisible());
   }
 
+  @Test
   public void testInterceptingAFrame() throws Exception {
     try {
       WindowInterceptor.getModalDialog(new Trigger() {
@@ -52,11 +57,12 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
       throw new AssertionFailureNotDetectedError();
     }
     catch (Exception e) {
-      assertEquals("Window 'aFrame' is non-modal, it must be intercepted with WindowInterceptor.run(Trigger)",
-                   e.getCause().getMessage());
+      Assertions.assertEquals("Window 'aFrame' is non-modal, it must be intercepted with WindowInterceptor.run(Trigger)",
+                              e.getCause().getMessage());
     }
   }
 
+  @Test
   public void testInterceptingANonModalJDialog() throws Exception {
     try {
       WindowInterceptor.getModalDialog(new Trigger() {
@@ -69,22 +75,24 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Window 'aDialog' is non-modal, it must be intercepted with WindowInterceptor.run(Trigger)",
-                   e.getMessage());
+      Assertions.assertEquals("Window 'aDialog' is non-modal, it must be intercepted with WindowInterceptor.run(Trigger)",
+                              e.getMessage());
     }
   }
 
+  @Test
   public void testInterceptionWithATriggerThatDisplaysNothing() throws Exception {
     try {
       WindowInterceptor.getModalDialog(Trigger.DO_NOTHING);
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals(ShownInterceptionDetectionHandler.NO_WINDOW_WAS_SHOWN_ERROR_MESSAGE,
-                   e.getMessage());
+      Assertions.assertEquals(ShownInterceptionDetectionHandler.NO_WINDOW_WAS_SHOWN_ERROR_MESSAGE,
+                              e.getMessage());
     }
   }
 
+  @Test
   public void testTriggerExceptionsAreConvertedIntoInterceptionErrors() throws Exception {
     final Exception exception = new IllegalAccessException("error");
     try {
@@ -96,10 +104,11 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
       throw new AssertionFailureNotDetectedError();
     }
     catch (RuntimeException e) {
-      assertSame(exception, e.getCause());
+      Assertions.assertSame(exception, e.getCause());
     }
   }
 
+  @Test
   public void testTriggerExceptionsAreStoredAndRethrownWhenNotCaughtImmediately() throws Exception {
     final Exception exception = new RuntimeException("unexpected production code exception");
     Window window1 = WindowInterceptor.getModalDialog(new Trigger() {
@@ -127,13 +136,14 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
           dialog3.setVisible(true);
         }
       });
-      fail();
+      Assertions.fail();
     }
     catch (Exception e) {
-      assertSame(exception, e.getCause());
+      Assertions.assertSame(exception, e.getCause());
     }
   }
 
+  @Test
   public void testTriggerExceptionsAreStoredWhenNotCaughtImmediately2() throws Exception {
     final RuntimeException exception = new RuntimeException("unexpected production code exception");
     Window window = WindowInterceptor.getModalDialog(new Trigger() {
@@ -149,13 +159,14 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
     Utils.sleep(1);
     try {
       UISpecDisplay.instance().rethrowIfNeeded();
-      fail();
+      Assertions.fail();
     }
     catch (Exception e) {
-      assertSame(exception, e.getCause());
+      Assertions.assertSame(exception, e.getCause());
     }
   }
 
+  @Test
   public void testInterceptingUsingAButtonTrigger() throws Exception {
     Button button = new Button(new JButton(new ShowDialogAction(true)));
     Window window = WindowInterceptor.getModalDialog(button.triggerClick());
@@ -163,6 +174,7 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
     window.dispose();
   }
 
+  @Test
   public void testInterceptingAJDialogShownFromAnotherThread() throws Exception {
     Window window = WindowInterceptor.getModalDialog(new Trigger() {
       public void run() throws Exception {
@@ -192,7 +204,7 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
   private void showModalDialogInThread(int waitWindowTimeLimit, final int waitTimeInThread) {
     final JDialog dialog = new JDialog(new JFrame(), "dialogShownInThread", true);
     UISpec4J.setWindowInterceptionTimeLimit(waitWindowTimeLimit);
-    assertNotNull(WindowInterceptor.getModalDialog(new Trigger() {
+    Assertions.assertNotNull(WindowInterceptor.getModalDialog(new Trigger() {
       public void run() {
         logger.log("triggerRun");
         thread = new Thread(new Runnable() {
@@ -201,7 +213,7 @@ public class WindowInterceptorForModalDialogsTest extends WindowInterceptorTestC
             dialog.setVisible(true);
           }
         });
-        thread.setName(thread.getName() + "(" + getName() + ")");
+        thread.setName(thread.getName() + "(" + getClass().getSimpleName() + ")");
         thread.start();
       }
     }));

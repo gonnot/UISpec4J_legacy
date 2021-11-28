@@ -1,5 +1,8 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.xml.EventLogger;
 import org.uispec4j.xml.XmlAssert;
@@ -11,6 +14,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListBoxTest extends UIComponentTestCase {
   private static final String[] ALL_ITEMS = {"First Item", "Second Item", "Third Item"};
@@ -18,8 +22,9 @@ public class ListBoxTest extends UIComponentTestCase {
   private JList jList;
   private ListBox listBox;
 
-  protected void setUp() throws Exception {
-    super.setUp();
+  @BeforeEach
+  final protected void setUp() throws Exception {
+
     init(new JList(ALL_ITEMS));
   }
 
@@ -29,14 +34,17 @@ public class ListBoxTest extends UIComponentTestCase {
     listBox = new ListBox(jList);
   }
 
+  @Test
   public void testGetComponentTypeName() throws Exception {
-    assertEquals("listBox", listBox.getDescriptionTypeName());
+    Assertions.assertEquals("listBox", listBox.getDescriptionTypeName());
   }
 
+  @Test
   public void testGetDescription() throws Exception {
     XmlAssert.assertEquivalent("<listBox name='myList'/>", listBox.getDescription());
   }
 
+  @Test
   public void testFactory() throws Exception {
     checkFactory(new JList(), ListBox.class);
   }
@@ -45,31 +53,36 @@ public class ListBoxTest extends UIComponentTestCase {
     return listBox;
   }
 
+  @Test
   public void testEmptyList() throws Exception {
     init(new JList());
     assertTrue(listBox.isEmpty());
   }
 
+  @Test
   public void testAssertEmptyFailure() throws Exception {
     try {
       assertTrue(listBox.isEmpty());
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("List should be empty but contains: [First Item,Second Item,Third Item]",
-                   e.getMessage());
+      Assertions.assertEquals("List should be empty but contains: [First Item,Second Item,Third Item]",
+                              e.getMessage());
     }
   }
 
+  @Test
   public void testContentEquals() throws Exception {
     assertTrue(listBox.contentEquals(ALL_ITEMS));
   }
 
+  @Test
   public void testContentEqualsWithNullItem() throws Exception {
     init(new JList(new Object[]{"First Item", null}));
     listBox.contentEquals("First Item", "");
   }
 
+  @Test
   public void testContentEqualsErrors() throws Exception {
     try {
       assertTrue(listBox.contentEquals("another", "list", "here"));
@@ -91,12 +104,14 @@ public class ListBoxTest extends UIComponentTestCase {
     }
   }
 
+  @Test
   public void testContains() throws Exception {
     init(new JList(new Object[]{"one", "two", "three"}));
     assertTrue(listBox.contains("two"));
     assertTrue(listBox.contains("three", "one"));
   }
 
+  @Test
   public void testContainsErrors() throws Exception {
     init(new JList(new Object[]{"one", "two", "three"}));
     try {
@@ -104,46 +119,52 @@ public class ListBoxTest extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Item 'unknown' not found - actual content:[one, two, three]", e.getMessage());
+      Assertions.assertEquals("Item 'unknown' not found - actual content:[one, two, three]", e.getMessage());
     }
 
     try {
-      assertTrue(listBox.contains(new String[]{"three", "unknown"}));
+      assertTrue(listBox.contains("three", "unknown"));
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Item 'unknown' not found - actual content:[one, two, three]", e.getMessage());
+      Assertions.assertEquals("Item 'unknown' not found - actual content:[one, two, three]", e.getMessage());
     }
   }
 
+  @Test
   public void testSelectByIndex() throws Exception {
-    assertEquals(-1, jList.getSelectedIndex());
+    Assertions.assertEquals(-1, jList.getSelectedIndex());
     listBox.selectIndices(2);
-    assertEquals(2, jList.getSelectedIndex());
+    Assertions.assertEquals(2, jList.getSelectedIndex());
   }
 
+  @Test
   public void testSelectByName() throws Exception {
     checkSelectionByName("First Item", "Second Item", "Third Item");
   }
 
+  @Test
   public void testSelectionIsNotCaseSensitive() throws Exception {
     checkSelectionByName("first iteM", "second Item", "THIRD iTem");
   }
 
+  @Test
   public void testSelectionWithSubstring() throws Exception {
     checkSelectionByName("first", "second", "ird it");
   }
 
+  @Test
   public void testAmbiguityInSelection() throws Exception {
     try {
       listBox.select("item");
       throw new AssertionFailureNotDetectedError();
     }
     catch (ItemAmbiguityException e) {
-      assertEquals("3 items are matching the same pattern 'item': [First Item,Second Item,Third Item]", e.getMessage());
+      Assertions.assertEquals("3 items are matching the same pattern 'item': [First Item,Second Item,Third Item]", e.getMessage());
     }
   }
 
+  @Test
   public void testSelectingAnUnknownValueThrowsAnException() throws Exception {
     try {
       listBox.select("unknown");
@@ -153,41 +174,46 @@ public class ListBoxTest extends UIComponentTestCase {
     }
   }
 
+  @Test
   public void testClearSelection() throws Exception {
     jList.setSelectedIndex(1);
     listBox.clearSelection();
     assertTrue(listBox.selectionIsEmpty());
   }
 
+  @Test
   public void testSelectByNameThrowsAnExceptionIfTheItemIsNotFound() throws Exception {
     try {
       listBox.select("unknown");
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Item 'unknown' not found in [First Item,Second Item,Third Item]",
-                   e.getMessage());
+      Assertions.assertEquals("Item 'unknown' not found in [First Item,Second Item,Third Item]",
+                              e.getMessage());
     }
   }
 
+  @Test
   public void testMultiSelectionWithIndices() throws Exception {
     listBox.selectIndices(0, 1);
 
     int[] selectedIndices = jList.getSelectedIndices();
-    assertEquals(2, selectedIndices.length);
-    assertEquals(0, selectedIndices[0]);
-    assertEquals(1, selectedIndices[1]);
+    Assertions.assertEquals(2, selectedIndices.length);
+    Assertions.assertEquals(0, selectedIndices[0]);
+    Assertions.assertEquals(1, selectedIndices[1]);
   }
 
+  @Test
   public void testMultiSelectionWithNames() throws Exception {
     listBox.select("first", "second");
 
     int[] selectedIndices = jList.getSelectedIndices();
-    assertEquals(2, selectedIndices.length);
-    assertEquals(0, selectedIndices[0]);
-    assertEquals(1, selectedIndices[1]);
+    Assertions.assertEquals(2, selectedIndices.length);
+    Assertions.assertEquals(0, selectedIndices[0]);
+    Assertions.assertEquals(1, selectedIndices[1]);
   }
 
+  @Test
   public void testMultiSelectionSetsTheAdjustingMode() throws Exception {
     final EventLogger logger = new EventLogger();
     jList.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -203,20 +229,23 @@ public class ListBoxTest extends UIComponentTestCase {
     logger.assertEquals("<log><valueChanged/></log>");
   }
 
+  @Test
   public void testMultiSelectionWithNamesWhenSomeNamesDoNotMatch() throws Exception {
     try {
       listBox.select("first", "third", "fourth");
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Item 'fourth' not found in [First Item,Second Item,Third Item]", e.getMessage());
+      Assertions.assertEquals("Item 'fourth' not found in [First Item,Second Item,Third Item]", e.getMessage());
     }
   }
 
+  @Test
   public void testGetSize() throws Exception {
-    assertEquals(3, listBox.getSize());
+    Assertions.assertEquals(3, listBox.getSize());
   }
 
+  @Test
   public void testAssertSelectionEmpty() throws Exception {
     jList.setSelectedIndex(-1);
     assertTrue(listBox.selectionIsEmpty());
@@ -226,10 +255,11 @@ public class ListBoxTest extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Selection should be empty but is: [Second Item]", e.getMessage());
+      Assertions.assertEquals("Selection should be empty but is: [Second Item]", e.getMessage());
     }
   }
 
+  @Test
   public void testAssertSelection() throws Exception {
     jList.setSelectedIndex(0);
     assertTrue(listBox.selectionEquals("First Item"));
@@ -239,6 +269,7 @@ public class ListBoxTest extends UIComponentTestCase {
     assertTrue(listBox.selectionEquals("First Item", "Third Item"));
   }
 
+  @Test
   public void testAssertSelectionErrors() throws Exception {
     jList.setSelectedIndex(0);
     try {
@@ -246,20 +277,21 @@ public class ListBoxTest extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Expected: [Second Item]\n" +
-                   "Actual:   [First Item]", e.getMessage());
+      Assertions.assertEquals("Expected: [Second Item]\n" +
+                              "Actual:   [First Item]", e.getMessage());
     }
 
     try {
-      assertTrue(listBox.selectionEquals(new String[]{"First Item", "Third Item"}));
+      assertTrue(listBox.selectionEquals("First Item", "Third Item"));
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Expected: [First Item,Third Item]\n" +
-                   "Actual:   [First Item]", e.getMessage());
+      Assertions.assertEquals("Expected: [First Item,Third Item]\n" +
+                              "Actual:   [First Item]", e.getMessage());
     }
   }
 
+  @Test
   public void testPressingKeyForNavigatingInTheList() throws Exception {
     jList.setSelectedIndex(0);
     assertTrue(listBox.selectionEquals("First Item"));
@@ -271,6 +303,7 @@ public class ListBoxTest extends UIComponentTestCase {
     assertTrue(listBox.selectionEquals("Second Item"));
   }
 
+  @Test
   public void testUsingShiftToSelectMultipleElements() throws Exception {
     jList.setSelectedIndex(0);
     listBox.pressKey(Key.shift(Key.DOWN));
@@ -279,6 +312,7 @@ public class ListBoxTest extends UIComponentTestCase {
     assertTrue(listBox.selectionEquals(ALL_ITEMS));
   }
 
+  @Test
   public void testPressingDownAndUpKeysChangesTheSelection() throws Exception {
     DummyKeyListener keyListener = new DummyKeyListener();
     jList.addKeyListener(keyListener);
@@ -292,6 +326,7 @@ public class ListBoxTest extends UIComponentTestCase {
     assertTrue(listBox.selectionEquals("First Item"));
   }
 
+  @Test
   public void testUsingARenderer() throws Exception {
     init(new JList(new Object[]{3, 7, 11}));
     jList.setCellRenderer(new DefaultListCellRenderer() {
@@ -303,13 +338,14 @@ public class ListBoxTest extends UIComponentTestCase {
         return super.getListCellRendererComponent(list, "-" + value, index, isSelected, cellHasFocus);
       }
     });
-    assertTrue(listBox.contentEquals(new String[]{"-3", "-7", "-11"}));
+    assertTrue(listBox.contentEquals("-3", "-7", "-11"));
     listBox.selectIndex(0);
     assertTrue(listBox.selectionEquals("-3"));
     listBox.select("-7");
     assertTrue(listBox.selectionEquals("-7"));
   }
 
+  @Test
   public void testUsingACustomCellRenderer() throws Exception {
     init(new JList(new Object[]{3, 7}));
     jList.setCellRenderer(new ListCellRenderer() {
@@ -326,13 +362,14 @@ public class ListBoxTest extends UIComponentTestCase {
         return ((JButton)renderedComponent).getText();
       }
     });
-    assertTrue(listBox.contentEquals(new String[]{"-3", "-7"}));
+    assertTrue(listBox.contentEquals("-3", "-7"));
     listBox.selectIndex(0);
     assertTrue(listBox.selectionEquals("-3"));
     listBox.select("-7");
     assertTrue(listBox.selectionEquals("-7"));
   }
 
+  @Test
   public void testAssertContentEqualsAfterSettingACustomCellValueConverter() throws Exception {
     assertTrue(listBox.contentEquals(ALL_ITEMS));
 
@@ -344,7 +381,7 @@ public class ListBoxTest extends UIComponentTestCase {
         return modelObject.toString();
       }
     });
-    assertTrue(listBox.contentEquals(new String[]{"Item converted", "Second Item", "Third Item"}));
+    assertTrue(listBox.contentEquals("Item converted", "Second Item", "Third Item"));
 
     try {
       assertTrue(listBox.contentEquals(ALL_ITEMS));
@@ -359,11 +396,12 @@ public class ListBoxTest extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("List should be empty but contains: [Item converted,Second Item,Third Item]",
-                   e.getMessage());
+      Assertions.assertEquals("List should be empty but contains: [Item converted,Second Item,Third Item]",
+                              e.getMessage());
     }
   }
 
+  @Test
   public void testSelectionAfterSettingACustomCellValueConverter() throws Exception {
     assertTrue(listBox.contentEquals(ALL_ITEMS));
 
@@ -379,18 +417,19 @@ public class ListBoxTest extends UIComponentTestCase {
     listBox.select("Item converted");
 
     assertTrue(listBox.selectionEquals("Item converted"));
-    assertTrue(listBox.selectionEquals(new String[]{"Item converted"}));
+    assertTrue(listBox.selectionEquals("Item converted"));
 
     try {
       listBox.select("First Item");
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Item 'First Item' not found in [Item converted,Second Item,Third Item]",
-                   e.getMessage());
+      Assertions.assertEquals("Item 'First Item' not found in [Item converted,Second Item,Third Item]",
+                              e.getMessage());
     }
   }
 
+  @Test
   public void testCellForegroundAndBackground() throws Exception {
     jList.setCellRenderer(new DefaultListCellRenderer() {
       public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -412,7 +451,7 @@ public class ListBoxTest extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Error at index 1 - expected:<BLUE> but was:<FFAFAF>", e.getMessage());
+      Assertions.assertEquals("Error at index 1 - expected: <BLUE> but was: <FFAFAF>", e.getMessage());
     }
 
     assertTrue(listBox.foregroundNear(0, "black"));
@@ -431,15 +470,16 @@ public class ListBoxTest extends UIComponentTestCase {
   private void checkSelectionByName(String... names) {
     listBox.select(names[0]);
     assertTrue(listBox.selectionEquals("First Item"));
-    assertEquals(0, jList.getSelectedIndex());
+    Assertions.assertEquals(0, jList.getSelectedIndex());
     listBox.select(names[1]);
     assertTrue(listBox.selectionEquals("Second Item"));
-    assertEquals(1, jList.getSelectedIndex());
+    Assertions.assertEquals(1, jList.getSelectedIndex());
     listBox.select(names[2]);
     assertTrue(listBox.selectionEquals("Third Item"));
-    assertEquals(2, jList.getSelectedIndex());
+    Assertions.assertEquals(2, jList.getSelectedIndex());
   }
 
+  @Test
   public void testItemClicks() throws Exception {
     DummySelectionListener listener = new DummySelectionListener();
     installSelection(listener);
@@ -459,7 +499,7 @@ public class ListBoxTest extends UIComponentTestCase {
   }
 
   private class DummySelectionListener extends MouseAdapter implements ListSelectionListener {
-    private final java.util.List<String> events = new ArrayList<String>();
+    private final List<String> events = new ArrayList<String>();
     private Object selectedValue;
 
     public void valueChanged(ListSelectionEvent e) {

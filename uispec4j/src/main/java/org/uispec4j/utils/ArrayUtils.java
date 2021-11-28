@@ -80,7 +80,7 @@ public class ArrayUtils {
   public static String toString(List list) {
     StringBuilder buffer = new StringBuilder();
     buffer.append('[');
-    for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+    for (Iterator iterator = list.iterator(); iterator.hasNext(); ) {
       buffer.append(iterator.next());
       if (iterator.hasNext()) {
         buffer.append(',');
@@ -115,8 +115,8 @@ public class ArrayUtils {
     else {
       String prefix = message != null ? message + "\n" : "";
       AssertAdapter.fail(prefix +
-                          "Expected: " + toString(expected) +
-                          "\nActual:   " + toString(actual));
+                         "Expected: " + toString(expected) +
+                         "\nActual:   " + toString(actual));
     }
   }
 
@@ -151,17 +151,17 @@ public class ArrayUtils {
     List actualList = new ArrayList();
     while (actualIterator.hasNext()) {
       if (index >= expectedArray.length) {
-        for (Iterator iterator = actualIterator; iterator.hasNext();) {
+        for (Iterator iterator = actualIterator; iterator.hasNext(); ) {
           actualList.add(iterator.next());
         }
         AssertAdapter.fail("The iterator contains too many elements: expected: " +
-                            toString(expectedArray) + " but was: " + actualList);
+                           toString(expectedArray) + " but was: " + actualList);
       }
       Object obj = actualIterator.next();
       actualList.add(obj);
       if (!obj.equals(expectedArray[index])) {
         AssertAdapter.fail("Mismatch at index " + index + ". expected: " + expectedArray[index] +
-                            " but was: " + obj);
+                           " but was: " + obj);
       }
       index++;
     }
@@ -171,22 +171,12 @@ public class ArrayUtils {
   }
 
   public static void orderedCompare(Object[][] expectedData, Object[][] actualData) {
-    compareCollection(actualData, expectedData, ArrayList.class);
+    compareCollection(actualData, expectedData);
   }
 
-  private static void compareCollection(Object[][] actualData, Object[][] expectedData, Class collectionClass) {
-    Collection actual;
-    Collection expected;
-    try {
-      actual = (Collection)collectionClass.newInstance();
-      expected = (Collection)collectionClass.newInstance();
-    }
-    catch (InstantiationException e) {
-      throw new RuntimeException(e);
-    }
-    catch (IllegalAccessException e) {
-      throw new RuntimeException(e);
-    }
+  private static void compareCollection(Object[][] actualData, Object[][] expectedData) {
+    Collection<String> actual = new ArrayList<>();
+    Collection<String> expected = new ArrayList<>();
     for (Object[] anActualData : actualData) {
       actual.add(toString(anActualData));
     }

@@ -1,5 +1,8 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.UIComponentFactory;
 import org.uispec4j.xml.XmlAssert;
 
@@ -9,8 +12,8 @@ public class TableComponentTest extends UIComponentTestCase {
   private Table table;
   private JTable jTable;
 
-  protected void setUp() throws Exception {
-    super.setUp();
+  @BeforeEach
+  final protected void setUp() throws Exception {
     init(new JTable(new String[][]{}, new String[]{}));
   }
 
@@ -18,18 +21,21 @@ public class TableComponentTest extends UIComponentTestCase {
     jTable = table;
     jTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     jTable.setName("myTable");
-    jTable.setDefaultEditor(Integer.class, new DefaultCellEditor(new JComboBox(new Object[]{new Integer(3), new Integer(4), new Integer(5)})));
+    jTable.setDefaultEditor(Integer.class, new DefaultCellEditor(new JComboBox(new Object[]{3, 4, 5})));
     this.table = (Table)UIComponentFactory.createUIComponent(jTable);
   }
 
+  @Test
   public void testGetComponentTypeName() throws Exception {
-    assertEquals("table", table.getDescriptionTypeName());
+    Assertions.assertEquals("table", table.getDescriptionTypeName());
   }
 
+  @Test
   public void testGetDescription() throws Exception {
     XmlAssert.assertEquivalent("<table name='myTable'/>", table.getDescription());
   }
 
+  @Test
   public void testFactory() throws Exception {
     checkFactory(new JTable(), Table.class);
   }

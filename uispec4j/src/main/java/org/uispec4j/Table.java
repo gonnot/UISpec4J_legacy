@@ -311,7 +311,6 @@ public class Table extends AbstractSwingUIComponent {
           }
         }
         catch (Error e) {
-          e.printStackTrace();
           AssertAdapter.assertEquals(ArrayUtils.toString(expected), getContent());
           throw e;
         }

@@ -13,9 +13,9 @@ import java.util.Stack;
 
 class SaxParser extends DefaultHandler {
 
-  private Stack nodesStack = new Stack();
-  private SAXParser parser;
-  private StringBuffer charBuffer;
+  private final Stack nodesStack = new Stack();
+  private final SAXParser parser;
+  private final StringBuffer charBuffer;
 
   public SaxParser() {
     try {
@@ -23,10 +23,7 @@ class SaxParser extends DefaultHandler {
       saxParserFactory.setNamespaceAware(true);
       parser = saxParserFactory.newSAXParser();
     }
-    catch (ParserConfigurationException e) {
-      throw new RuntimeException(e);
-    }
-    catch (SAXException e) {
+    catch (ParserConfigurationException | SAXException e) {
       throw new RuntimeException(e);
     }
     charBuffer = new StringBuffer();

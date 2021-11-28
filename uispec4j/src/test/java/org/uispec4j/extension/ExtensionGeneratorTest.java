@@ -1,5 +1,8 @@
 package org.uispec4j.extension;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.TestUtils;
 import org.uispec4j.utils.UnitTestCase;
 
@@ -9,21 +12,24 @@ import java.io.IOException;
 public class ExtensionGeneratorTest extends UnitTestCase {
   private File output;
 
-  protected void setUp() throws Exception {
-    super.setUp();
+  @BeforeEach
+  final protected void setUp() throws Exception {
     output = new File(findTargetDirectory(), "tmp/extension.jar");
     output.getParentFile().mkdirs();
     output.delete();
   }
 
+  @Test
   public void testStandardGenerationUsageWithCustomClass() throws Exception {
     checkStandardGenerationUsage(CustomCountingButton.class);
   }
 
+  @Test
   public void testStandardGenerationUsageWithDerivedClass() throws Exception {
     checkStandardGenerationUsage(DerivedCountingButton.class);
   }
 
+  @Test
   public void testRunningTheGenerationOverAnExistingJarReplacesThePanelClass() throws Exception {
     checkRunningTheGenerationOverAnExistingJarReplacesThePanelClass(CustomCountingButton.class);
     checkRunningTheGenerationOverAnExistingJarReplacesThePanelClass(DerivedCountingButton.class);
@@ -77,8 +83,8 @@ public class ExtensionGeneratorTest extends UnitTestCase {
     if (TestUtils.isMacOsX()) {
       errorOutput = cleanUpOutputForMacOSX(errorOutput);
     }
-    assertEquals("", errorOutput);
-    assertEquals("OK", output.getResult());
+    Assertions.assertEquals("", errorOutput);
+    Assertions.assertEquals("OK", output.getResult());
   }
 
   public String cleanUpOutputForMacOSX(String input) {

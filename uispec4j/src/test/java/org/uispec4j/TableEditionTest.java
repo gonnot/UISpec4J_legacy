@@ -1,12 +1,17 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.assertion.Assertion;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 
 import javax.swing.*;
 
+import static org.uispec4j.assertion.UISpecAssert.fail;
+
 public class TableEditionTest extends TableTestCase {
-  public void testEditCellForString() throws Exception {
+  @Test
+  public void testEditCellForString() {
     table.editCell(0, 0, "value", false);
     assertTrue(table.contentEquals(new Object[][]{
       {"a", Boolean.TRUE, "3"},
@@ -19,7 +24,8 @@ public class TableEditionTest extends TableTestCase {
     }));
   }
 
-  public void testEditCellForComboBox() throws Exception {
+  @Test
+  public void testEditCellForComboBox() {
     table.editCell(0, 2, "5", false);
     assertTrue(table.contentEquals(new Object[][]{
       {"a", Boolean.TRUE, "3"},
@@ -32,13 +38,14 @@ public class TableEditionTest extends TableTestCase {
     }));
   }
 
-  public void testEditCellErrors() throws Exception {
+  @Test
+  public void testEditCellErrors() {
     try {
       table.editCell(1, 0, "notEditable", true);
       fail();
     }
     catch (RuntimeException e) {
-      assertEquals("Cell (1, 0) is not editable", e.getMessage());
+      Assertions.assertEquals("Cell (1, 0) is not editable", e.getMessage());
     }
 
     try {
@@ -46,11 +53,12 @@ public class TableEditionTest extends TableTestCase {
       fail();
     }
     catch (Exception e) {
-      assertEquals("Unexpected editor at (1, 1): javax.swing.JCheckBox", e.getMessage());
+      Assertions.assertEquals("Unexpected editor at (1, 1): javax.swing.JCheckBox", e.getMessage());
     }
   }
 
-  public void testAssertEditable() throws Exception {
+  @Test
+  public void testAssertEditable() {
     jTable.setModel(new MyModel() {
       public boolean isCellEditable(int row, int col) {
         return (row + col) % 2 == 0;
@@ -69,14 +77,16 @@ public class TableEditionTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Error at row 0:\n" +
-                   "Expected: [false,false,false]\n" +
-                   "Actual:   [true,false,true]",
-                   e.getMessage());
+      Assertions.assertEquals("""
+                              Error at row 0:
+                              Expected: [false,false,false]
+                              Actual:   [true,false,true]""",
+                              e.getMessage());
     }
   }
 
-  public void testAssertCellEditable() throws Exception {
+  @Test
+  public void testAssertCellEditable() {
     jTable.setModel(new MyModel() {
       public boolean isCellEditable(int row, int col) {
         return (col == 0) || ((col == 1) && (row == 1));
@@ -100,7 +110,8 @@ public class TableEditionTest extends TableTestCase {
     }
   }
 
-  public void testAssertColumnEditableWithColumnIndex() throws Exception {
+  @Test
+  public void testAssertColumnEditableWithColumnIndex() {
     jTable.setModel(new MyModel() {
       public boolean isCellEditable(int row, int col) {
         return (col == 0) || ((col == 1) && (row == 1));
@@ -115,11 +126,12 @@ public class TableEditionTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Cell at row 0 is not editable", e.getMessage());
+      Assertions.assertEquals("Cell at row 0 is not editable", e.getMessage());
     }
   }
 
-  public void testAssertColumnEditableWithColumnName() throws Exception {
+  @Test
+  public void testAssertColumnEditableWithColumnName() {
     jTable.setModel(new MyModel() {
       public boolean isCellEditable(int row, int col) {
         return (col == 0) || ((col == 1) && (row == 1));
@@ -134,7 +146,7 @@ public class TableEditionTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Cell at row 0 is not editable", e.getMessage());
+      Assertions.assertEquals("Cell at row 0 is not editable", e.getMessage());
     }
 
     try {
@@ -142,13 +154,14 @@ public class TableEditionTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Column 'unknown' not found - actual names: [0, 1, 2]", e.getMessage());
+      Assertions.assertEquals("Column 'unknown' not found - actual names: [0, 1, 2]", e.getMessage());
     }
   }
 
-  public void testEditingACellWithAComboBox() throws Exception {
+  @Test
+  public void testEditingACellWithAComboBox() {
     String[] choices = new String[]{"a", "b", "c"};
-    jTable.setDefaultEditor(String.class, new DefaultCellEditor(new JComboBox(choices)));
+    jTable.setDefaultEditor(String.class, new DefaultCellEditor(new JComboBox<>(choices)));
     assertTrue(table.contentEquals(new Object[][]{
       {"a", Boolean.TRUE, "3"},
       {"c", Boolean.FALSE, "4"}
@@ -162,7 +175,8 @@ public class TableEditionTest extends TableTestCase {
     }));
   }
 
-  public void testEditingACellWithATextField() throws Exception {
+  @Test
+  public void testEditingACellWithATextField() {
     jTable.setDefaultEditor(String.class, new DefaultCellEditor(new JTextField()));
     assertTrue(table.contentEquals(new Object[][]{
       {"a", Boolean.TRUE, "3"},
@@ -175,7 +189,8 @@ public class TableEditionTest extends TableTestCase {
     }));
   }
 
-  public void testEditCellChecksThatTheCellIsEditable() throws Exception {
+  @Test
+  public void testEditCellChecksThatTheCellIsEditable() {
     jTable.setModel(new MyModel() {
       public boolean isCellEditable(int row, int column) {
         return false;
@@ -186,7 +201,7 @@ public class TableEditionTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Cell (0,0) is not editable", e.getMessage());
+      Assertions.assertEquals("Cell (0,0) is not editable ==> expected: <true> but was: <false>", e.getMessage());
     }
   }
 }

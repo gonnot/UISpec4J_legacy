@@ -1,5 +1,7 @@
 package org.uispec4j.interception;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.*;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.Functor;
@@ -13,11 +15,13 @@ import java.io.IOException;
 
 public class PopupMenuInterceptorTest extends InterceptionTestCase {
 
+  @Test
   public void testStandardUsageWithHeavyweightPopup() throws Exception {
     JPopupMenu.setDefaultLightWeightPopupEnabled(false);
     checkStandardUsage();
   }
 
+  @Test
   public void testStandardUsageWithLightweightPopup() throws Exception {
     JPopupMenu.setDefaultLightWeightPopupEnabled(true);
     checkStandardUsage();
@@ -31,6 +35,7 @@ public class PopupMenuInterceptorTest extends InterceptionTestCase {
                         "</log>");
   }
 
+  @Test
   public void testRetryStrategy() throws Exception {
     checkInterceptionAfterSomeTime(false);
     logger.assertEquals("<log>" +
@@ -38,6 +43,7 @@ public class PopupMenuInterceptorTest extends InterceptionTestCase {
                         "</log>");
   }
 
+  @Test
   public void testRetryStrategyWithAnotherTimeout() throws Exception {
     checkInterceptionAfterSomeTime(true);
   }
@@ -69,7 +75,7 @@ public class PopupMenuInterceptorTest extends InterceptionTestCase {
       if (exceedsTimeLimit) {
         UISpec4J.setWindowInterceptionTimeLimit(delay);
         launchInterception(Trigger.DO_NOTHING);
-        assertEquals("No popup was shown", e.getMessage());
+        Assertions.assertEquals("No popup was shown", e.getMessage());
       }
       else {
         throw new Exception(e);
@@ -86,6 +92,7 @@ public class PopupMenuInterceptorTest extends InterceptionTestCase {
     return new PopupDisplayTrigger(button);
   }
 
+  @Test
   public void testAnErrorIsRaisedIfTheTriggerDoesNotPopupAMenu() throws Exception {
     checkAssertionError(new Functor() {
       public void run() throws Exception {
@@ -94,7 +101,8 @@ public class PopupMenuInterceptorTest extends InterceptionTestCase {
     }, "No popup was shown");
   }
 
-  public void testExceptionRaisedWhenAPopupAppearsWithoutInterceptionOnMacOsX() throws Throwable {
+  @Test
+  public void testExceptionRaisedWhenAPopupAppearsWithoutInterceptionOnMacOsX() throws Exception {
     if (!TestUtils.isMacOsX()) {
       return;
     }
@@ -105,11 +113,12 @@ public class PopupMenuInterceptorTest extends InterceptionTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (Error e) {
-      assertTrue(e.getMessage().startsWith("Unexpected window shown - this window should be handled with WindowInterceptor."));
+      Assertions.assertTrue(e.getMessage().startsWith("Unexpected window shown - this window should be handled with WindowInterceptor."));
     }
   }
-  
-  public void testNoExceptionRaisedWhenAPopupAppearsWithoutInterception() throws Throwable {
+
+  @Test
+  public void testNoExceptionRaisedWhenAPopupAppearsWithoutInterception() throws Exception {
     if (TestUtils.isMacOsX()) {
       return;
     }
@@ -118,6 +127,7 @@ public class PopupMenuInterceptorTest extends InterceptionTestCase {
     new PopupDisplayTrigger(button).run();
   }
 
+  @Test
   public void testExceptionRaisedByTheTriggerAreConvertedIntoRuntimeExceptions() throws Exception {
     try {
       PopupMenuInterceptor.run(new Trigger() {
@@ -128,10 +138,11 @@ public class PopupMenuInterceptorTest extends InterceptionTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (RuntimeException e) {
-      assertEquals("msg", e.getCause().getMessage());
+      Assertions.assertEquals("msg", e.getCause().getMessage());
     }
   }
 
+  @Test
   public void testHandlingADialogShownByAPopupMenu() throws Exception {
     final JPanel panel = new JPanel();
     showLargeDialogWithComponent(panel);
@@ -144,22 +155,22 @@ public class PopupMenuInterceptorTest extends InterceptionTestCase {
 
     WindowInterceptor
       .init(PopupMenuInterceptor
-        .run(new Trigger() {
-          public void run() throws Exception {
-            JPopupMenu menu = new JPopupMenu();
-            menu.add(new AbstractAction("menu") {
-              public void actionPerformed(ActionEvent e) {
-                logger.log("dialog");
-                JDialog dialog = new JDialog();
-                dialog.getContentPane().add(button);
-                dialog.setVisible(true);
-              }
-            });
-            menu.show(panel, 10, 10);
-          }
-        })
-        .getSubMenu("menu")
-        .triggerClick())
+              .run(new Trigger() {
+                public void run() throws Exception {
+                  JPopupMenu menu = new JPopupMenu();
+                  menu.add(new AbstractAction("menu") {
+                    public void actionPerformed(ActionEvent e) {
+                      logger.log("dialog");
+                      JDialog dialog = new JDialog();
+                      dialog.getContentPane().add(button);
+                      dialog.setVisible(true);
+                    }
+                  });
+                  menu.show(panel, 10, 10);
+                }
+              })
+              .getSubMenu("menu")
+              .triggerClick())
       .process(new WindowHandler() {
         public Trigger process(Window window) throws Exception {
           logger.log("handleWindow");
@@ -175,6 +186,7 @@ public class PopupMenuInterceptorTest extends InterceptionTestCase {
                         "</log>");
   }
 
+  @Test
   public void testPopupMenuShownFromATree() throws Exception {
     final JTree jTree = new JTree();
     jTree.addMouseListener(new MouseAdapter() {
@@ -217,8 +229,8 @@ public class PopupMenuInterceptorTest extends InterceptionTestCase {
 
   private void launchInterception(Trigger trigger) {
     MenuItem menu = PopupMenuInterceptor.run(trigger);
-    assertNotNull(menu);
-    assertTrue(menu.contentEquals(new String[]{"item 1", "item 2"}));
+    Assertions.assertNotNull(menu);
+    assertTrue(menu.contentEquals("item 1", "item 2"));
     menu.getSubMenu("item 1").click();
   }
 
@@ -236,7 +248,7 @@ public class PopupMenuInterceptorTest extends InterceptionTestCase {
   }
 
   private class PopupDisplayTrigger implements Trigger {
-    private JComponent component;
+    private final JComponent component;
 
     public PopupDisplayTrigger(JComponent c) {
       component = c;

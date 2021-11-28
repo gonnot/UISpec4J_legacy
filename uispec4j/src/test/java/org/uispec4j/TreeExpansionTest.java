@@ -1,12 +1,15 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 
 import javax.swing.tree.TreePath;
 
 public class TreeExpansionTest extends TreeTestCase {
 
-  public void testExpandAndCollapsePath() throws Exception {
+  @Test
+  public void testExpandAndCollapsePath() {
     TreePath path = new TreePath(child1Node.getPath());
     jTree.expandPath(path);
     checkExpanded("child1", true);
@@ -14,20 +17,22 @@ public class TreeExpansionTest extends TreeTestCase {
     checkExpanded("child1", false);
   }
 
-  public void testAssertPathExpanded() throws Exception {
+  @Test
+  public void testAssertPathExpanded() {
     tree.expand("child1", true);
     checkExpanded("child1", true);
     tree.expand("child1", false);
     checkExpanded("child1", false);
   }
 
-  public void testAssertPathExpandedNeedsAValidPath() throws Exception {
+  @Test
+  public void testAssertPathExpandedNeedsAValidPath() {
     try {
       tree.expand("unknown", true);
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals(Tree.badTreePath("unknown"), e.getMessage());
+      Assertions.assertEquals(Tree.badTreePath("unknown"), e.getMessage());
     }
   }
 
@@ -37,7 +42,7 @@ public class TreeExpansionTest extends TreeTestCase {
       assertEquals(!expanded, tree.pathIsExpanded(path));
       throw new AssertionFailureNotDetectedError();
     }
-    catch (AssertionError e) {
+    catch (AssertionError ignored) {
     }
   }
 }

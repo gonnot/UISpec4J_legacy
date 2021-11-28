@@ -1,5 +1,6 @@
 package samples.addressbook.functests;
 
+import org.junit.jupiter.api.Test;
 import org.uispec4j.Key;
 import org.uispec4j.Trigger;
 import org.uispec4j.interception.BasicHandler;
@@ -7,16 +8,19 @@ import org.uispec4j.interception.WindowInterceptor;
 
 public class CategoryCreationTest extends AddressBookTestCase {
 
+  @Test
   public void testTreeStateAtStartup() throws Exception {
     assertThat(categoryTree.contentEquals("All"));
     assertThat(categoryTree.selectionEquals(""));
   }
 
+  @Test
   public void testCategoryCannotBeCreatedIfThereIsNoSelectionInTree() throws Exception {
     categoryTree.clearSelection();
     assertFalse(newCategoryButton.isEnabled());
   }
 
+  @Test
   public void testCreatingACategory() throws Exception {
     assertThat(categoryTree.contentEquals("All"));
 
@@ -39,6 +43,7 @@ public class CategoryCreationTest extends AddressBookTestCase {
     assertThat(categoryTree.pathIsExpanded("friends"));
   }
 
+  @Test
   public void testCreatingACategoryThroughKeyStroke() throws Exception {
     assertThat(categoryTree.contentEquals("All"));
 
@@ -51,6 +56,7 @@ public class CategoryCreationTest extends AddressBookTestCase {
                                           "  friends"));
   }
 
+  @Test
   public void testCreatingACategoryThatAlreadyExists() throws Exception {
     createCategory("", "work");
     assertThat(categoryTree.contentEquals("All\n" +
@@ -63,8 +69,8 @@ public class CategoryCreationTest extends AddressBookTestCase {
         }
       })
       .process(BasicHandler.init()
-        .assertContainsText("Category 'work' already exists")
-        .triggerButtonClick("OK"))
+                 .assertContainsText("Category 'work' already exists")
+                 .triggerButtonClick("OK"))
       .run();
 
     assertThat(categoryTree.contentEquals("All\n" +

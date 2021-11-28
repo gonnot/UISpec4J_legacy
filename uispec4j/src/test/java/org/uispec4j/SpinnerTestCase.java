@@ -1,7 +1,8 @@
 package org.uispec4j;
 
-import java.util.Arrays;
-
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.xml.XmlAssert;
 
@@ -15,30 +16,23 @@ public abstract class SpinnerTestCase extends UIComponentTestCase {
 
   protected abstract Spinner createSpinner(JSpinner jSpinner);
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void spinnerSetUp() throws Exception {
     init();
   }
 
+  @Test
   public final void testGetComponentTypeName() throws Exception {
-    assertEquals("spinner", spinner.getDescriptionTypeName());
+    Assertions.assertEquals("spinner", spinner.getDescriptionTypeName());
   }
 
+  @Test
   public final void testGetDescription() throws Exception {
-    String property = System.getProperty("java.specification.version");
-    if (Arrays.asList("", "1.6", "1.7", "1.8").contains(property)) {
-      XmlAssert.assertEquivalent("<spinner name='marcel'>" +
-                                 "  <button name='Spinner.nextButton'/>" +
-                                 "  <button name='Spinner.previousButton'/>" +
-                                 "  <textBox name='Spinner.formattedTextField' text='" + getText() + "'/>" +
-                                 "</spinner>", spinner.getDescription());
-    }
-    else {
-      XmlAssert.assertEquivalent("<spinner name='marcel'>" +
-                                 "  <button/>" +
-                                 "  <button/>" +
-                                 "  <textBox name='Spinner.formattedTextField' text='" + getText() + "'/>" +
-                                 "</spinner>", spinner.getDescription());
-    }
+    XmlAssert.assertEquivalent("<spinner name='marcel'>" +
+                               "  <button name='Spinner.nextButton'/>" +
+                               "  <button name='Spinner.previousButton'/>" +
+                               "  <textBox name='Spinner.formattedTextField' text='" + getText() + "'/>" +
+                               "</spinner>", spinner.getDescription());
   }
 
   protected final UIComponent createComponent() {
@@ -51,7 +45,7 @@ public abstract class SpinnerTestCase extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("No previous value from the start", e.getMessage());
+      Assertions.assertEquals("No previous value from the start", e.getMessage());
     }
   }
 
@@ -61,7 +55,7 @@ public abstract class SpinnerTestCase extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("No previous value from the end", e.getMessage());
+      Assertions.assertEquals("No previous value from the end", e.getMessage());
     }
   }
 
@@ -71,6 +65,7 @@ public abstract class SpinnerTestCase extends UIComponentTestCase {
     spinner = createSpinner(jSpinner);
   }
 
+  @Test
   public void testFactory() throws Exception {
     checkFactory(jSpinner, Spinner.class);
   }

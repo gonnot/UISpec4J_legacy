@@ -1,5 +1,6 @@
 package org.uispec4j.finder;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.Panel;
 import org.uispec4j.utils.UnitTestCase;
 
@@ -14,8 +15,8 @@ public abstract class PanelComponentFinderTestCase extends UnitTestCase {
   protected Panel panel;
   protected List components = new ArrayList();
 
-  protected void setUp() throws Exception {
-    super.setUp();
+  @BeforeEach
+  final protected void finderSetUp() {
     jPanel = new JPanel();
     jPanel.setName("myPanel");
     panel = new Panel(jPanel);
@@ -31,11 +32,11 @@ public abstract class PanelComponentFinderTestCase extends UnitTestCase {
   private <T extends Component> T createComponent(Class<T> awtComponentclass, String name) throws Exception {
     Component component;
     try {
-      Constructor constructor = awtComponentclass.getConstructor(new Class[]{String.class});
-      component = (Component) constructor.newInstance(new Object[]{name});
+      Constructor<T> constructor = awtComponentclass.getConstructor(String.class);
+      component = constructor.newInstance(name);
     }
     catch (NoSuchMethodException e) {
-      component = (Component) awtComponentclass.newInstance();
+      component = awtComponentclass.getDeclaredConstructor().newInstance();
     }
     component.setName(name);
     return (T)component;

@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 enum TestLibraries {
-  JUNIT("junit.framework.Assert", JUnitLibrary.class),
+  JUNIT("org.junit.jupiter.api.Assertions", JUnitLibrary.class),
   TESTNG("org.testng.Assert", TestNGLibrary.class);
 
-  private String representativeClassPath;
-  private TestLibrary dependency;
+  private final String representativeClassPath;
+  private final TestLibrary dependency;
 
   private static final String TEST_LIBRARY_PROPERTY = "uispec4j.test.library";
 
-  private TestLibraries(String assertPath, Class<? extends TestLibrary> dependencyClass) {
+  TestLibraries(String assertPath, Class<? extends TestLibrary> dependencyClass) {
     this.representativeClassPath = assertPath;
     try {
-      this.dependency = dependencyClass.newInstance();
+      this.dependency = dependencyClass.getDeclaredConstructor().newInstance();
     }
     catch (Exception e) {
       throw new RuntimeException(e);
@@ -59,9 +59,9 @@ enum TestLibraries {
 
     if (libraries.size() > 1) {
       return new InvalidLibrary("UISpec4J found several testing frameworks in your classpath. " +
-                              "You must set the '" + TEST_LIBRARY_PROPERTY +
-                              "' property to one among " +
-                              getList() + " or trim your classpath to keep only one of them.");
+                                "You must set the '" + TEST_LIBRARY_PROPERTY +
+                                "' property to one among " +
+                                getList() + " or trim your classpath to keep only one of them.");
     }
     return libraries.get(0).getDependency();
   }
@@ -84,12 +84,12 @@ enum TestLibraries {
     }
     catch (IllegalArgumentException e) {
       return new InvalidLibrary("You required UISpec4J to use " + libraryName + " as your testing framework, but UISpec4J does not recognize it. " +
-                              "Please use one of the following, before running your tests: " +
-                              getList());
+                                "Please use one of the following, before running your tests: " +
+                                getList());
     }
     if (!testLibrary.isPresent()) {
       return new InvalidLibrary("You required UISpec4J to use " + libraryName + " as your testing framework. " +
-                              "Please add it to the classpath and retry.");
+                                "Please add it to the classpath and retry.");
     }
     return testLibrary.getDependency();
   }

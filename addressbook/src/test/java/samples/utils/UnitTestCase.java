@@ -1,21 +1,20 @@
 package samples.utils;
 
-import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.opentest4j.AssertionFailedError;
 import org.uispec4j.UISpec4J;
 import org.uispec4j.assertion.Assertion;
 import org.uispec4j.assertion.UISpecAssert;
 import org.uispec4j.interception.InterceptionError;
 
-import java.util.Locale;
-
-public abstract class UnitTestCase extends TestCase {
+public abstract class UnitTestCase {
   static {
     UISpec4J.init();
-    Locale.setDefault(Locale.ENGLISH);
   }
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     UISpec4J.setWindowInterceptionTimeLimit(10);
     UISpec4J.setAssertionTimeLimit(10);
   }
@@ -46,7 +45,7 @@ public abstract class UnitTestCase extends TestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionFailedError e) {
-      assertEquals(expectedMessage, e.getMessage());
+      Assertions.assertEquals(expectedMessage, e.getMessage());
     }
   }
 
@@ -56,7 +55,7 @@ public abstract class UnitTestCase extends TestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (Exception e) {
-      assertEquals(expectedMessage, e.getMessage());
+      Assertions.assertEquals(expectedMessage, e.getMessage());
     }
   }
 
@@ -66,7 +65,7 @@ public abstract class UnitTestCase extends TestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (InterceptionError e) {
-      assertEquals(expectedMessage, e.getMessage());
+      Assertions.assertEquals(expectedMessage, e.getMessage());
     }
   }
 
@@ -76,7 +75,7 @@ public abstract class UnitTestCase extends TestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (Throwable e) {
-      assertEquals(expectedMessage, e.getMessage());
+      Assertions.assertEquals(expectedMessage, e.getMessage());
     }
   }
 

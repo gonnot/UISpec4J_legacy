@@ -1,5 +1,6 @@
 package org.uispec4j.xml;
 
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.UnitTestCase;
 
 import java.io.StringReader;
@@ -8,6 +9,7 @@ import java.io.StringWriter;
 public class XmlWriterTest extends UnitTestCase {
   private StringWriter out = new StringWriter();
 
+  @Test
   public void testStartTag() throws Exception {
     XmlWriter.startTag(out, "Root")
       .addAttribute("toto", "titi")

@@ -1,5 +1,8 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.assertion.UISpecAssert;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.UIComponentFactory;
@@ -12,22 +15,25 @@ public class ProgressBarTest extends UIComponentTestCase {
   private ProgressBar progressBar;
   private JProgressBar jProgressBar;
 
-  protected void setUp() throws Exception {
-    super.setUp();
+  @BeforeEach
+  final protected void setUp() {
     jProgressBar = new JProgressBar();
     jProgressBar.setName("myProgressBar");
     progressBar = (ProgressBar)UIComponentFactory.createUIComponent(jProgressBar);
   }
 
-  public void testGetComponentTypeName() throws Exception {
-    assertEquals("progressBar", progressBar.getDescriptionTypeName());
+  @Test
+  public void testGetComponentTypeName() {
+    Assertions.assertEquals("progressBar", progressBar.getDescriptionTypeName());
   }
 
-  public void testGetDescription() throws Exception {
+  @Test
+  public void testGetDescription() {
     XmlAssert.assertEquivalent("<progressBar name='myProgressBar'/>", progressBar.getDescription());
   }
 
-  public void testFactory() throws Exception {
+  @Test
+  public void testFactory() {
     checkFactory(new JProgressBar(), ProgressBar.class);
   }
 
@@ -35,13 +41,15 @@ public class ProgressBarTest extends UIComponentTestCase {
     return progressBar;
   }
 
-  public void testAssertValueEquals() throws Exception {
+  @Test
+  public void testAssertValueEquals() {
     setProgressValues(5, 15, 10);
     assertTrue(progressBar.completionEquals(50));
     checkAssertCompletionError(10, 50);
   }
 
-  public void testCompleted() throws Exception {
+  @Test
+  public void testCompleted() {
     setProgressValues(5, 15, 15);
     assertTrue(progressBar.completionEquals(100));
     assertTrue(progressBar.isCompleted());
@@ -52,7 +60,7 @@ public class ProgressBarTest extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Unexpected completion rate - expected:<100> but was:<50>", e.getMessage());
+      Assertions.assertEquals("Unexpected completion rate - ==> expected: <100> but was: <50>", e.getMessage());
     }
 
     jProgressBar.setIndeterminate(true);
@@ -61,39 +69,44 @@ public class ProgressBarTest extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Unexpected completion rate - expected:<100> but was:<-1>", e.getMessage());
+      Assertions.assertEquals("Unexpected completion rate - ==> expected: <100> but was: <-1>", e.getMessage());
     }
   }
 
-  public void testAssertCompletionEqualsAcceptsValuesBetween0And100() throws Exception {
+  @Test
+  public void testAssertCompletionEqualsAcceptsValuesBetween0And100() {
     checkAssertCompletionError(-2, "Expected value should be in range [0,100]");
     checkAssertCompletionError(101, "Expected value should be in range [0,100]");
   }
 
-  public void testExpectedValueIsMinusOneWhenTheProgressBarIsUndeterminate() throws Exception {
+  @Test
+  public void testExpectedValueIsMinusOneWhenTheProgressBarIsIndeterminate() {
     jProgressBar.setIndeterminate(false);
     try {
       assertTrue(progressBar.completionEquals(-1));
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("The progress bar status is not undeterminate", e.getMessage());
+      Assertions.assertEquals("The progress bar status is not indeterminate ==> expected: <true> but was: <false>", e.getMessage());
     }
   }
 
-  public void testAssertCompletionEqualsChecksTheValidityOfTheMinMaxRange() throws Exception {
+  @Test
+  public void testAssertCompletionEqualsChecksTheValidityOfTheMinMaxRange() {
     setProgressValues(10, -5, 8);
     checkAssertCompletionError(8, "Invalid range [-5,-5]");
     setProgressValues(10, 10, 10);
     checkAssertCompletionError(10, "Invalid range [10,10]");
   }
 
-  public void testAssertValueWhenProgressBarIsInIndeterminateMode() throws Exception {
+  @Test
+  public void testAssertValueWhenProgressBarIsInIndeterminateMode() {
     jProgressBar.setIndeterminate(true);
     assertTrue(progressBar.completionEquals(-1));
   }
 
-  public void testUsingAPrecision() throws Exception {
+  @Test
+  public void testUsingAPrecision() {
     setProgressValues(0, 100, 23);
     assertTrue(progressBar.completionEquals(22));
     assertTrue(progressBar.completionEquals(24));
@@ -105,16 +118,19 @@ public class ProgressBarTest extends UIComponentTestCase {
     checkAssertCompletionError(17, 23);
   }
 
-  public void testWaitForCompletion() throws Exception {
+  @Test
+  public void testWaitForCompletion() throws InterruptedException {
     checkWaitForCompletion();
   }
 
-  public void testWaitForCompletionWithIndeterminateMode() throws Exception {
+  @Test
+  public void testWaitForCompletionWithIndeterminateMode() throws InterruptedException {
     jProgressBar.setIndeterminate(true);
     checkWaitForCompletion();
   }
 
-  public void testAssertDisplayedValueEquals() throws Exception {
+  @Test
+  public void testAssertDisplayedValueEquals() {
     assertTrue(progressBar.displayedValueEquals(jProgressBar.getString()));
     jProgressBar.setString("done");
     assertTrue(progressBar.displayedValueEquals("done"));
@@ -123,7 +139,7 @@ public class ProgressBarTest extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("expected:<[unexpected]> but was:<[done]>", e.getMessage());
+      Assertions.assertEquals("expected: <unexpected> but was: <done>", e.getMessage());
     }
   }
 
@@ -139,25 +155,23 @@ public class ProgressBarTest extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals(errorMessage, e.getMessage());
+      Assertions.assertEquals(errorMessage, e.getMessage());
     }
   }
 
   private void checkAssertCompletionError(int expectedValue, int actualValue) {
     checkAssertCompletionError(expectedValue,
-                               "Unexpected completion rate - expected:<" + expectedValue + "> but was:<" + actualValue + ">");
+                               "Unexpected completion rate - ==> expected: <" + expectedValue + "> but was: <" + actualValue + ">");
   }
 
   private void checkWaitForCompletion() throws InterruptedException {
     setProgressValues(0, 100, 0);
-    Thread thread = new Thread() {
-      public void run() {
-        Utils.sleep(50);
-        jProgressBar.setValue(100);
-        jProgressBar.setIndeterminate(false);
-        jProgressBar.setValue(100);
-      }
-    };
+    Thread thread = new Thread(() -> {
+      Utils.sleep(50);
+      jProgressBar.setValue(100);
+      jProgressBar.setIndeterminate(false);
+      jProgressBar.setValue(100);
+    });
     thread.start();
     UISpecAssert.waitUntil(progressBar.isCompleted(), 200);
     progressBar.completionEquals(100);

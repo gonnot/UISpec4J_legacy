@@ -1,5 +1,8 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.ColorUtils;
 import org.uispec4j.utils.UIComponentFactory;
@@ -12,8 +15,9 @@ public class TabGroupTest extends UIComponentTestCase {
   private TabGroup tabGroup;
   private JTabbedPane jTabbedPane;
 
-  protected void setUp() throws Exception {
-    super.setUp();
+  @BeforeEach
+  final protected void setUp() throws Exception {
+
     jTabbedPane = new JTabbedPane();
     jTabbedPane.setName("myTabbedPane");
     addTab("1", "tab1");
@@ -22,10 +26,12 @@ public class TabGroupTest extends UIComponentTestCase {
     tabGroup = new TabGroup(jTabbedPane);
   }
 
+  @Test
   public void testGetComponentTypeName() throws Exception {
-    assertEquals("tabGroup", UIComponentFactory.createUIComponent(new JTabbedPane()).getDescriptionTypeName());
+    Assertions.assertEquals("tabGroup", UIComponentFactory.createUIComponent(new JTabbedPane()).getDescriptionTypeName());
   }
 
+  @Test
   public void testGetDescription() throws Exception {
     checkTabDescription("1");
     checkTabDescription("2");
@@ -36,6 +42,7 @@ public class TabGroupTest extends UIComponentTestCase {
     return tabGroup;
   }
 
+  @Test
   public void testCheckCurrentTab() throws Exception {
     assertTrue(tabGroup.selectedTabEquals("1"));
     try {
@@ -46,12 +53,14 @@ public class TabGroupTest extends UIComponentTestCase {
     }
   }
 
+  @Test
   public void testClickOnTabWithPartOfItsKey() throws Exception {
     addTab("GrosseTable", "table");
     tabGroup.selectTab("grosse");
     assertTrue(tabGroup.selectedTabEquals("GrosseTable"));
   }
 
+  @Test
   public void testCheckTabs() throws Exception {
     assertTrue(tabGroup.tabNamesEquals(new String[]{"1", "2", "3"}));
     try {
@@ -63,23 +72,26 @@ public class TabGroupTest extends UIComponentTestCase {
     }
   }
 
+  @Test
   public void testSetCurrentTab() throws Exception {
     tabGroup.selectTab("2");
-    assertEquals("2", jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex()));
+    Assertions.assertEquals("2", jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex()));
     tabGroup.selectTab("3");
-    assertEquals("3", jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex()));
+    Assertions.assertEquals("3", jTabbedPane.getTitleAt(jTabbedPane.getSelectedIndex()));
   }
 
+  @Test
   public void testSetCurrentTabError() throws Exception {
     try {
       tabGroup.selectTab("unknown");
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("There is no tab labelled 'unknown' - existing tab names: [1, 2, 3]", e.getMessage());
+      Assertions.assertEquals("There is no tab labelled 'unknown' - existing tab names: [1, 2, 3] ==> expected: <true> but was: <false>", e.getMessage());
     }
   }
 
+  @Test
   public void testGetDescriptionWhenTheTabContainsAPanel() throws Exception {
     JButton button = new JButton("btn");
     JPanel panel = new JPanel();
@@ -91,23 +103,26 @@ public class TabGroupTest extends UIComponentTestCase {
                                "</tabGroup>", tabGroup.getDescription());
   }
 
+  @Test
   public void testFactory() throws Exception {
     checkFactory(new JTabbedPane(), TabGroup.class);
   }
 
+  @Test
   public void testTabLabelColor() throws Exception {
     jTabbedPane.setForegroundAt(0, Color.RED);
     assertTrue(tabGroup.tabColorEquals(new String[]{"RED", "BLACK", "BLACK"}));
   }
 
+  @Test
   public void testCheckColorErrors() throws Exception {
     try {
       assertTrue(tabGroup.tabColorEquals(new String[]{"BLACK", "GREEN"}));
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("You specified 2 colors but there are 3 tabs - expected:<2> but was:<3>",
-                   e.getMessage());
+      Assertions.assertEquals("You specified 2 colors but there are 3 tabs - ==> expected: <2> but was: <3>",
+                              e.getMessage());
     }
 
     try {
@@ -116,13 +131,14 @@ public class TabGroupTest extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Unexpected color for tab '2' (index 1) - " +
-                   "expected " + ColorUtils.getColorDescription("BLUE") +
-                   " but was " + ColorUtils.getColorDescription("000000"),
-                   e.getMessage());
+      Assertions.assertEquals("Unexpected color for tab '2' (index 1) - " +
+                              "expected " + ColorUtils.getColorDescription("BLUE") +
+                              " but was " + ColorUtils.getColorDescription("000000"),
+                              e.getMessage());
     }
   }
 
+  @Test
   public void testSearchComponentsWhenVisibleTabIsAPanel() throws Exception {
     JButton jButton = new JButton("button");
     Component jPanel1WithButton = createPanelWithComponent(jButton);
@@ -134,14 +150,15 @@ public class TabGroupTest extends UIComponentTestCase {
     jTabbedPane.addTab("panel2WithTable", jPanel2WithTable);
     tabGroup = new TabGroup(jTabbedPane);
 
-    assertSame(jPanel1WithButton, tabGroup.getSelectedTab().getAwtComponent());
-    assertSame(jButton, tabGroup.getSelectedTab().getButton("button").getAwtComponent());
+    Assertions.assertSame(jPanel1WithButton, tabGroup.getSelectedTab().getAwtComponent());
+    Assertions.assertSame(jButton, tabGroup.getSelectedTab().getButton("button").getAwtComponent());
 
     tabGroup.selectTab("panel2WithTable");
-    assertSame(jPanel2WithTable, tabGroup.getSelectedTab().getAwtComponent());
-    assertSame(jtable, tabGroup.getSelectedTab().getTable().getAwtComponent());
+    Assertions.assertSame(jPanel2WithTable, tabGroup.getSelectedTab().getAwtComponent());
+    Assertions.assertSame(jtable, tabGroup.getSelectedTab().getTable().getAwtComponent());
   }
 
+  @Test
   public void testSearchComponentsFailsWhenVisibleTabIsNotAPanel() throws Exception {
     jTabbedPane = new JTabbedPane();
     jTabbedPane.addTab("tree", new JTree());
@@ -152,7 +169,7 @@ public class TabGroupTest extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("tabGroup.getSelectedTab() only supports JPanel components inside a JTabbedPane", e.getMessage());
+      Assertions.assertEquals("tabGroup.getSelectedTab() only supports JPanel components inside a JTabbedPane", e.getMessage());
     }
   }
 

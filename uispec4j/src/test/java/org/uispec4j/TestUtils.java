@@ -1,6 +1,6 @@
 package org.uispec4j;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.uispec4j.utils.Utils;
 
 import java.awt.*;
@@ -10,18 +10,17 @@ import java.util.List;
 
 public class TestUtils {
   public static void assertUIComponentRefersTo(Component expectedComponent, UIComponent uiComponent) {
-    Assert.assertSame(expectedComponent, uiComponent.getAwtComponent());
+    Assertions.assertSame(expectedComponent, uiComponent.getAwtComponent());
   }
 
   public static void assertUIComponentsReferTo(Component[] expectedComponents, UIComponent[] uiComponents) {
     int expectedLength = expectedComponents.length;
     int actualLength = uiComponents.length;
-    Assert.assertEquals("Expected " + expectedLength + " components but was " + actualLength,
-                        expectedLength, actualLength);
+    Assertions.assertEquals(expectedLength, actualLength, "Expected " + expectedLength + " components but was " + actualLength);
 
-    List list = Arrays.asList(expectedComponents);
-    for (int i = 0; i < uiComponents.length; i++) {
-      Assert.assertTrue("unexpected component ", list.contains(uiComponents[i].getAwtComponent()));
+    List<Component> list = Arrays.asList(expectedComponents);
+    for (UIComponent uiComponent : uiComponents) {
+      Assertions.assertTrue(list.contains(uiComponent.getAwtComponent()), "unexpected component ");
     }
   }
 
@@ -51,11 +50,11 @@ public class TestUtils {
   }
 
   private static <T> void showDiff(Collection<T> expected, Collection<T> actual) {
-    Assert.assertEquals(format("Expected", expected), format("Actual", actual));
+    Assertions.assertEquals(format("Expected", expected), format("Actual", actual));
   }
 
   private static <T> String format(String title, Collection<T> collection) {
-    StringBuffer buffer = new StringBuffer();
+    StringBuilder buffer = new StringBuilder();
     buffer.append(title).append("\n");
     for (T t : collection) {
       buffer.append(t).append("\n");

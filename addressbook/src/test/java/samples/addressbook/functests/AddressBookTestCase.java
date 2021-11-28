@@ -1,5 +1,6 @@
 package samples.addressbook.functests;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.*;
 import org.uispec4j.interception.BasicHandler;
 import org.uispec4j.interception.MainClassAdapter;
@@ -18,8 +19,9 @@ public abstract class AddressBookTestCase extends UISpecTestCase {
   protected TextBox emailField;
   protected Button applyButton;
 
-  protected void setUp() throws Exception {
-    super.setUp();
+  @BeforeEach
+  final protected void addressBookSetUp() {
+
     setAdapter(new MainClassAdapter(Main.class));
 
     Window window = getMainWindow();
@@ -64,9 +66,9 @@ public abstract class AddressBookTestCase extends UISpecTestCase {
     WindowInterceptor
       .init(trigger)
       .process(BasicHandler.init()
-        .assertContainsText("Category name:")
-        .setText(categoryName)
-        .triggerButtonClick("OK"))
+                 .assertContainsText("Category name:")
+                 .setText(categoryName)
+                 .triggerButtonClick("OK"))
       .run();
   }
 }

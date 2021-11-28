@@ -15,8 +15,9 @@ import java.awt.peer.*;
  */
 public class UISpecToolkit extends ToolkitDelegate {
   static final String SYSTEM_PROPERTY = "awt.toolkit";
-  static final String UNIX_SYSTEM_DEFAULT_VALUE = "sun.awt.motif.MToolkit";
+  static final String UNIX_SYSTEM_DEFAULT_VALUE = System.getProperty("awt.toolkit", "sun.awt.X11.XToolkit");
   static final String WINDOWS_SYSTEM_DEFAULT_VALUE = "sun.awt.windows.WToolkit";
+  static final String MAC_DEFAULT_VALUE = "sun.lwawt.macosx.LWCToolkit";
 
   private static String awtToolkit;
 
@@ -40,6 +41,10 @@ public class UISpecToolkit extends ToolkitDelegate {
     System.setProperty(SYSTEM_PROPERTY, UISpecToolkit.class.getName());
   }
 
+  public boolean isTaskbarSupported() {
+    return false;
+  }
+
   /**
    * Sets the <code>awt.toolkit</code> to its initial value.
    * <p>This method will only work properly if the toolkit has not yet been instanciated by Swing.
@@ -56,7 +61,7 @@ public class UISpecToolkit extends ToolkitDelegate {
     return (UISpecToolkit)defaultToolkit;
   }
 
-  protected LightweightPeer createComponent(Component target) {
+  public LightweightPeer createComponent(Component target) {
     if (target instanceof JPopupMenu) {
       UISpecDisplay.instance().setCurrentPopup((JPopupMenu)target);
     }
@@ -107,7 +112,7 @@ public class UISpecToolkit extends ToolkitDelegate {
     return 0;
   }
 
-  protected MouseInfoPeer getMouseInfoPeer() {
+  public MouseInfoPeer getMouseInfoPeer() {
     return Empty.NULL_MOUSE_INFO;
   }
 
@@ -126,14 +131,20 @@ public class UISpecToolkit extends ToolkitDelegate {
         awtToolkit = UNIX_SYSTEM_DEFAULT_VALUE;
       }
       catch (ClassNotFoundException e1) {
-        throw new AWTError("Unable to locate AWT Toolkit");
+        try {
+          Class.forName(MAC_DEFAULT_VALUE);
+          awtToolkit = MAC_DEFAULT_VALUE;
+        }
+        catch (Exception ignored) {
+          throw new AWTError("Unable to locate AWT Toolkit");
+        }
       }
     }
   }
 
   private static void buildUnderlyingToolkit(String awtToolkit) {
     try {
-      underlyingToolkit = (Toolkit)Class.forName(awtToolkit).newInstance();
+      underlyingToolkit = (Toolkit)Class.forName(awtToolkit).getDeclaredConstructor().newInstance();
     }
     catch (Exception e) {
       throw new AWTError("Unable to load AWT Toolkit: " + awtToolkit + " - "

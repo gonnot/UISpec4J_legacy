@@ -1,20 +1,19 @@
 package org.uispec4j.utils;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.UISpec4J;
 import org.uispec4j.assertion.Assertion;
 import org.uispec4j.assertion.UISpecAssert;
 import org.uispec4j.interception.InterceptionError;
 
-import java.util.Locale;
-
-public abstract class UnitTestCase extends TestCase {
+public abstract class UnitTestCase {
   static {
     UISpec4J.init();
-    Locale.setDefault(Locale.ENGLISH);
   }
 
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final public void unitTestCaseSetUp() {
     UISpec4J.setWindowInterceptionTimeLimit(100);
     UISpec4J.setAssertionTimeLimit(30);
   }
@@ -45,7 +44,7 @@ public abstract class UnitTestCase extends TestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals(expectedMessage, e.getMessage());
+      Assertions.assertEquals(expectedMessage, e.getMessage());
     }
   }
 
@@ -55,7 +54,7 @@ public abstract class UnitTestCase extends TestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (Exception e) {
-      assertEquals(expectedMessage, e.getMessage());
+      Assertions.assertEquals(expectedMessage, e.getMessage());
     }
   }
 
@@ -65,7 +64,7 @@ public abstract class UnitTestCase extends TestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (InterceptionError e) {
-      assertEquals(expectedMessage, e.getMessage());
+      Assertions.assertEquals(expectedMessage, e.getMessage());
     }
   }
 
@@ -75,7 +74,7 @@ public abstract class UnitTestCase extends TestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (Throwable e) {
-      assertEquals(expectedMessage, e.getMessage());
+      Assertions.assertEquals(expectedMessage, e.getMessage());
     }
   }
 
@@ -84,9 +83,7 @@ public abstract class UnitTestCase extends TestCase {
       functor.run();
       throw new AssertionFailureNotDetectedError();
     }
-    catch (AssertionError e) {
-    }
-    catch (InterceptionError e) {
+    catch (AssertionError | InterceptionError ignored) {
     }
   }
 }

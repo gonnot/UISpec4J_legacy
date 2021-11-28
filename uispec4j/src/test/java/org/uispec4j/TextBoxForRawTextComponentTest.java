@@ -1,8 +1,10 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.DummyActionListener;
-import org.uispec4j.utils.Functor;
 import org.uispec4j.utils.UIComponentFactory;
 import org.uispec4j.xml.XmlAssert;
 
@@ -12,8 +14,9 @@ import javax.swing.text.*;
 public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
   private JTextComponent jTextComponent;
 
-  protected void setUp() throws Exception {
-    super.setUp();
+  @BeforeEach
+  final protected void setUp() {
+
     init(new JTextArea());
   }
 
@@ -28,22 +31,26 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
     textBox.setText(text);
   }
 
-  public void testGetComponentTypeName() throws Exception {
-    assertEquals("textBox", UIComponentFactory.createUIComponent(new JTextField()).getDescriptionTypeName());
+  @Test
+  public void testGetComponentTypeName() {
+    Assertions.assertEquals("textBox", UIComponentFactory.createUIComponent(new JTextField()).getDescriptionTypeName());
   }
 
-  public void testGetDescription() throws Exception {
+  @Test
+  public void testGetDescription() {
     XmlAssert.assertEquivalent("<textBox name='myText'/>", textBox.getDescription());
   }
 
-  public void testFactory() throws Exception {
+  @Test
+  public void testFactory() {
     checkFactory(new JTextArea(), TextBox.class);
     checkFactory(new JTextPane(), TextBox.class);
     checkFactory(new JEditorPane(), TextBox.class);
     checkFactory(new JTextField(), TextBox.class);
   }
 
-  public void testAssertTextEquals() throws Exception {
+  @Test
+  public void testAssertTextEquals() {
     assertTrue(textBox.textEquals(""));
     jTextComponent.setText("some text");
     assertTrue(textBox.textEquals("some text"));
@@ -53,11 +60,12 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("expected:<[error]> but was:<[some text]>", e.getMessage());
+      Assertions.assertEquals("expected: <error> but was: <some text>", e.getMessage());
     }
   }
 
-  public void testAssertTextContains() throws Exception {
+  @Test
+  public void testAssertTextContains() {
     jTextComponent.setText("some text");
     assertTrue(textBox.textContains("some"));
     try {
@@ -65,12 +73,13 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("The component text does not contain 'error' - actual content is:some text",
-                   e.getMessage());
+      Assertions.assertEquals("The component text does not contain 'error' - actual content is:some text ==> expected: <true> but was: <false>",
+                              e.getMessage());
     }
   }
 
-  public void testAssertTextDoesNotContain() throws Exception {
+  @Test
+  public void testAssertTextDoesNotContain() {
     jTextComponent.setText("some text");
     assertTrue(textBox.textDoesNotContain("xxx"));
     try {
@@ -78,19 +87,21 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("The component text should not contain 'some' - actual content is:some text",
-                   e.getMessage());
+      Assertions.assertEquals("The component text should not contain 'some' - actual content is:some text ==> expected: <true> but was: <false>",
+                              e.getMessage());
     }
   }
 
-  public void testAssertTextIsEditable() throws Exception {
+  @Test
+  public void testAssertTextIsEditable() {
     jTextComponent.setEditable(true);
     assertTrue(textBox.isEditable());
     jTextComponent.setEditable(false);
     assertFalse(textBox.isEditable());
   }
 
-  public void testAssertEmptyWithPlainText() throws Exception {
+  @Test
+  public void testAssertEmptyWithPlainText() {
     jTextComponent.setText("");
     assertTrue(textBox.textIsEmpty());
     jTextComponent.setText("a");
@@ -99,16 +110,18 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Text should be empty but contains: a", e.getMessage());
+      Assertions.assertEquals("Text should be empty but contains: a ==> expected: <true> but was: <false>", e.getMessage());
     }
   }
 
-  public void testSetText() throws Exception {
+  @Test
+  public void testSetText() {
     textBox.setText("new text");
-    assertEquals("new text", jTextComponent.getText());
+    Assertions.assertEquals("new text", jTextComponent.getText());
   }
 
-  public void testSetTextChecksThatTheComponentIsEditable() throws Exception {
+  @Test
+  public void testSetTextChecksThatTheComponentIsEditable() {
     textBox.setText("text");
     jTextComponent.setEditable(false);
     try {
@@ -116,58 +129,63 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("The text box is not editable", e.getMessage());
+      Assertions.assertEquals("The text box is not editable ==> expected: <true> but was: <false>", e.getMessage());
     }
-    assertEquals("text", jTextComponent.getText());
+    Assertions.assertEquals("text", jTextComponent.getText());
   }
 
-  public void testInsertText() throws Exception {
+  @Test
+  public void testInsertText() {
     jTextComponent.setEditable(true);
     textBox.insertText("text", 0);
-    assertEquals("text", textBox.getText());
+    Assertions.assertEquals("text", textBox.getText());
     textBox.insertText("this is some ", 0);
-    assertEquals("this is some text", textBox.getText());
+    Assertions.assertEquals("this is some text", textBox.getText());
     textBox.insertText("interesting ", 13);
-    assertEquals("this is some interesting text", textBox.getText());
+    Assertions.assertEquals("this is some interesting text", textBox.getText());
     textBox.insertText(", isn't it?", textBox.getText().length());
-    assertEquals("this is some interesting text, isn't it?", textBox.getText());
+    Assertions.assertEquals("this is some interesting text, isn't it?", textBox.getText());
   }
 
-  public void testInsertTextAtABadPosition() throws Exception {
+  @Test
+  public void testInsertTextAtABadPosition() {
     textBox.setText("text");
     try {
       textBox.insertText("a", 10);
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Position should be between 0 and 4", e.getMessage());
+      Assertions.assertEquals("Position should be between 0 and 4", e.getMessage());
     }
   }
 
-  public void testAppendAndClear() throws Exception {
+  @Test
+  public void testAppendAndClear() {
     jTextComponent.setEditable(true);
     textBox.clear();
-    assertEquals("", textBox.getText());
+    Assertions.assertEquals("", textBox.getText());
     textBox.clear();
-    assertEquals("", textBox.getText());
+    Assertions.assertEquals("", textBox.getText());
     textBox.appendText("blah");
-    assertEquals("blah", textBox.getText());
+    Assertions.assertEquals("blah", textBox.getText());
     textBox.appendText(" ");
     textBox.appendText("yadda");
-    assertEquals("blah yadda", textBox.getText());
+    Assertions.assertEquals("blah yadda", textBox.getText());
     textBox.clear();
-    assertEquals("", textBox.getText());
+    Assertions.assertEquals("", textBox.getText());
   }
 
-  public void testInsertAppendAndClearDoNotNotifyActionListeners() throws Exception {
+  @Test
+  public void testInsertAppendAndClearDoNotNotifyActionListeners() {
     DummyActionListener actionListener = initWithTextFieldAndActionListener();
     textBox.insertText("text", 0);
     textBox.clear();
     textBox.appendText("text");
-    assertEquals(0, actionListener.getCallCount());
+    Assertions.assertEquals(0, actionListener.getCallCount());
   }
 
-  public void testInsertAppendAndClearChecksThatTheComponentIsEditable() throws Exception {
+  @Test
+  public void testInsertAppendAndClearChecksThatTheComponentIsEditable() {
     textBox.setText("text");
     jTextComponent.setEditable(false);
     try {
@@ -175,26 +193,27 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("The text box is not editable", e.getMessage());
+      Assertions.assertEquals("The text box is not editable ==> expected: <true> but was: <false>", e.getMessage());
     }
     try {
       textBox.clear();
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("The text box is not editable", e.getMessage());
+      Assertions.assertEquals("The text box is not editable ==> expected: <true> but was: <false>", e.getMessage());
     }
     try {
       textBox.appendText("new text");
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("The text box is not editable", e.getMessage());
+      Assertions.assertEquals("The text box is not editable ==> expected: <true> but was: <false>", e.getMessage());
     }
-    assertEquals("text", jTextComponent.getText());
+    Assertions.assertEquals("text", jTextComponent.getText());
   }
 
-  public void testTextCannotBeEnteredWhenTheComponentIsDisabled() throws Exception {
+  @Test
+  public void testTextCannotBeEnteredWhenTheComponentIsDisabled() {
     jTextComponent.setEnabled(false);
 
     String message = "The text component is not enabled - text cannot be entered";
@@ -204,7 +223,7 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals(message, e.getMessage());
+      Assertions.assertEquals(message, e.getMessage());
     }
 
     try {
@@ -212,7 +231,7 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals(message, e.getMessage());
+      Assertions.assertEquals(message, e.getMessage());
     }
 
     try {
@@ -220,7 +239,7 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals(message, e.getMessage());
+      Assertions.assertEquals(message, e.getMessage());
     }
 
     try {
@@ -228,40 +247,38 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals(message, e.getMessage());
+      Assertions.assertEquals(message, e.getMessage());
     }
   }
 
-  public void testGetText() throws Exception {
+  @Test
+  public void testGetText() {
     jTextComponent.setText("some text");
-    assertEquals("some text", textBox.getText());
+    Assertions.assertEquals("some text", textBox.getText());
     textBox.setText("new text");
-    assertEquals("new text", textBox.getText());
+    Assertions.assertEquals("new text", textBox.getText());
     textBox.setText("new <b>text</b>");
-    assertEquals("new <b>text</b>", textBox.getText());
+    Assertions.assertEquals("new <b>text</b>", textBox.getText());
   }
 
-  public void testSetTextNotifiesActionListenersForJTextField() throws Exception {
+  @Test
+  public void testSetTextNotifiesActionListenersForJTextField() {
     DummyActionListener actionListener = initWithTextFieldAndActionListener();
 
     textBox.setText("text");
-    assertEquals(1, actionListener.getCallCount());
+    Assertions.assertEquals(1, actionListener.getCallCount());
   }
 
+  @Test
   public void testClickOnHyperlinkIsNotSupported() throws Exception {
-    checkAssertionError(new Functor() {
-      public void run() throws Exception {
-        textBox.clickOnHyperlink("text");
-      }
-    }, "This component does not support hyperlinks.");
-    checkAssertionError(new Functor() {
-      public void run() throws Exception {
-        textBox.triggerClickOnHyperlink("text").run();
-      }
-    }, "This component does not support hyperlinks.");
+    checkAssertionError(() -> textBox.clickOnHyperlink("text"),
+                        "This component does not support hyperlinks.");
+    checkAssertionError(() -> textBox.triggerClickOnHyperlink("text").run(),
+                        "This component does not support hyperlinks.");
   }
 
-  public void testPressingPrintableKeyAddsItToText() throws Exception {
+  @Test
+  public void testPressingPrintableKeyAddsItToText() {
     JTextField textField = new JTextField();
     TextBox textBox = new TextBox(textField);
     textBox.pressKey(Key.A);
@@ -272,7 +289,8 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
     assertTrue(textBox.textEquals("aBc"));
   }
 
-  public void testPressingPrintableKeyRejectedByTextField() throws Exception {
+  @Test
+  public void testPressingPrintableKeyRejectedByTextField() {
     JTextField textField = new JTextField();
     ((AbstractDocument)textField.getDocument()).setDocumentFilter(new DocumentFilter() {
       public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
@@ -292,7 +310,8 @@ public class TextBoxForRawTextComponentTest extends TextBoxComponentTestCase {
     assertTrue(textBox.textEquals("bA"));
   }
 
-  public void testPressingPrintableKeyInANonEmptyTextBoxStartsAtPosition0() throws Exception {
+  @Test
+  public void testPressingPrintableKeyInANonEmptyTextBoxStartsAtPosition0() {
     JTextField textField = new JTextField("text");
     TextBox textBox = new TextBox(textField);
     textBox.pressKey(Key.A);

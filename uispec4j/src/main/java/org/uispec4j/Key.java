@@ -1,12 +1,9 @@
 package org.uispec4j;
 
-import sun.security.action.GetPropertyAction;
-
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
-import java.security.AccessController;
 
 /**
  * Contants class defining keyboard keys.
@@ -187,7 +184,7 @@ public final class Key {
    * Returns META-Key on MacOS X, and CTRL-Key on other platforms.
    */
   public static Key plaformSpecificCtrl(Key key) {
-    String os = (String)AccessController.doPrivileged(new GetPropertyAction("os.name"));
+    String os = System.getProperty("os.name", "");
     boolean isMacOSX = os.contains("Mac OS X");
     return isMacOSX ? meta(key) : control(key);
   }
@@ -197,7 +194,7 @@ public final class Key {
   }
 
   public Character getChar() {
-    return (chr == null)? KeyEvent.CHAR_UNDEFINED : chr;
+    return (chr == null) ? KeyEvent.CHAR_UNDEFINED : chr;
   }
 
   public Modifier getModifier() {
@@ -212,13 +209,13 @@ public final class Key {
    * Constants class for keyboard modifiers such as Control or Shift.
    */
   public static final class Modifier {
-    public static final Modifier CONTROL = new Modifier(InputEvent.CTRL_MASK);
-    public static final Modifier SHIFT = new Modifier(InputEvent.SHIFT_MASK);
-    public static final Modifier ALT = new Modifier(InputEvent.ALT_MASK);
-    public static final Modifier META = new Modifier(InputEvent.META_MASK);
+    public static final Modifier CONTROL = new Modifier(InputEvent.CTRL_DOWN_MASK);
+    public static final Modifier SHIFT = new Modifier(InputEvent.SHIFT_DOWN_MASK);
+    public static final Modifier ALT = new Modifier(InputEvent.ALT_DOWN_MASK);
+    public static final Modifier META = new Modifier(InputEvent.META_DOWN_MASK);
     public static final Modifier NONE = new Modifier(0);
 
-    private int code;
+    private final int code;
 
     private Modifier(int code) {
       this.code = code;

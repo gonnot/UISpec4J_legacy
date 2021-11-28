@@ -50,7 +50,7 @@
           your test class:
         </p>
         <source><![CDATA[
-    public class MyOwnTest extends TestCase {
+    public class MyOwnTest{
       static {
           UISpec4J.init();
       }
@@ -83,7 +83,7 @@
           wrapper, and then start retrieving and using individual components:
         </p>
         <source><![CDATA[
-  public class MyOwnPanelTest extends TestCase {
+  public class MyOwnPanelTest{
     public void testInitialState() {
       ... setup the context needed to instanciate MyOwnPanel ...
       Panel panel = new Panel(new MyOwnPanel(...));
@@ -104,7 +104,7 @@
           which offers the following interface:</p>
 
         <source><![CDATA[
-        public void UISpecTestCase extends TestCase {
+        public void UISpecTestCase{
           public Window getMainWindow();
         }]]>
         </source>

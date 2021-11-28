@@ -1,10 +1,10 @@
 package org.uispec4j.finder;
 
 import org.uispec4j.utils.ComponentUtils;
-import org.uispec4j.utils.Utils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 /**
  * Standard searching policies, implemented as {@link ComponentMatcher} objects.
@@ -57,15 +57,12 @@ public class ComponentMatchers {
    * Matches components that are instances of the class.
    */
   public static <T extends Component> ComponentMatcher fromClass(final Class<T> swingClass) {
-    return new ComponentMatcher() {
-      public boolean matches(Component component) {
-        return swingClass.isInstance(component);
-      }
-    };
+    return swingClass::isInstance;
   }
 
   /**
    * Matches components based on labels (very useful when dealing with forms).
+   *
    * @see JLabel#setLabelFor(java.awt.Component)
    */
   public static ComponentMatcher componentLabelFor(final String labelName) {
@@ -76,7 +73,7 @@ public class ComponentMatchers {
         }
 
         JLabel label = ComponentUtils.findLabelFor(awtComp);
-        return label == null ? false : displayedNameSubstring(labelName).matches(label);
+        return label != null && displayedNameSubstring(labelName).matches(label);
       }
     };
   }
@@ -96,8 +93,7 @@ public class ComponentMatchers {
   public static ComponentMatcher intersection(final ComponentMatcher... matchers) {
     return new ComponentMatcher() {
       public boolean matches(Component component) {
-        for (int i = 0; i < matchers.length; i++) {
-          ComponentMatcher matcher = matchers[i];
+        for (ComponentMatcher matcher : matchers) {
           if (!matcher.matches(component)) {
             return false;
           }
@@ -122,8 +118,7 @@ public class ComponentMatchers {
   public static ComponentMatcher union(final ComponentMatcher... matchers) {
     return new ComponentMatcher() {
       public boolean matches(Component component) {
-        for (int i = 0; i < matchers.length; i++) {
-          ComponentMatcher matcher = matchers[i];
+        for (ComponentMatcher matcher : matchers) {
           if (matcher.matches(component)) {
             return true;
           }
@@ -137,23 +132,16 @@ public class ComponentMatchers {
    * Matches components rejected by the inner matcher.
    */
   public static ComponentMatcher not(final ComponentMatcher matcher) {
-    return new ComponentMatcher() {
-      public boolean matches(Component component) {
-        return !matcher.matches(component);
-      }
-    };
+    return component -> !matcher.matches(component);
   }
 
   public static ComponentMatcher toolTipEquals(final String text) {
-    return new ComponentMatcher() {
-      public boolean matches(Component component) {
-        if (!(component instanceof JComponent)) {
-          return false;
-        }
-        JComponent jComponent = (JComponent)component;
+    return component -> {
+      if (component instanceof JComponent jComponent) {
         String tooltip = jComponent.getToolTipText();
-        return text == null ? tooltip == null : text.equals(tooltip);
+        return Objects.equals(text, tooltip);
       }
+      return false;
     };
   }
 

@@ -27,11 +27,12 @@ Recent JDK updated have been changing several internal swing implementations tha
 to keep the source up to date. Please report issues if you fail to build on a specific version. While the official 2.5 
 release is not out, you can build the project as follows:
 
-| JDK   | Command                                   |
-| ----- | ----------------------------------------- |
-| jdk6  |  mvn -Pjdk6 -Dgpg.skip=true clean install |
-| jdk7  |  mvn -Pjdk7 -Dgpg.skip=true clean install |
-| jdk8  |  mvn -Pjdk8 -Dgpg.skip=true clean install |
+| JDK   | Command                                    |
+| ----- | ------------------------------------------ |
+| jdk6  |  mvn -Pjdk6 -Dgpg.skip=true clean install  |
+| jdk7  |  mvn -Pjdk7 -Dgpg.skip=true clean install  |
+| jdk8  |  mvn -Pjdk8 -Dgpg.skip=true clean install  |
+| jdk17 |  mvn -Pjdk17 -Dgpg.skip=true clean install |
 
 ## Running JDK7 on Linux
 
@@ -42,6 +43,8 @@ This is still the default Toolkit on Linux for UISpec4J. To make you tests run o
        mvn -Dawt.toolkit=sun.awt.X11.XToolkit clean test
 
 ## Experimental Headless mode
+
+https://github.com/CaciocavalloSilano/caciocavallo
 
 If you build from MASTER you may be able to run your test on a headless machine using 
 [Caciocavallo](http://rkennke.wordpress.com/2012/05/02/caciocavallo-1-1-released/) this is a Toolkit and Graphical 

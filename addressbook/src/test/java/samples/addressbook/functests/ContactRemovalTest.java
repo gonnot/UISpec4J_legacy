@@ -1,5 +1,7 @@
 package samples.addressbook.functests;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.MenuItem;
 import org.uispec4j.Trigger;
 import org.uispec4j.Window;
@@ -9,12 +11,14 @@ import org.uispec4j.interception.WindowInterceptor;
 
 public class ContactRemovalTest extends AddressBookTestCase {
 
-  protected void setUp() throws Exception {
-    super.setUp();
+  @BeforeEach
+  final protected void setUp() throws Exception {
+
     createContact("Smith", "John");
     createContact("Smith", "Maria");
   }
 
+  @Test
   public void testSimpleContactRemoval() throws Exception {
     deleteRow(0, true);
     assertThat(contactTable.contentEquals(new Object[][]{
@@ -27,6 +31,7 @@ public class ContactRemovalTest extends AddressBookTestCase {
     }));
   }
 
+  @Test
   public void testActionIsDisabledWhenNoContactIsSelected() throws Exception {
     contactTable.clearSelection();
     assertFalse(getRemoveMenuItem().isEnabled());

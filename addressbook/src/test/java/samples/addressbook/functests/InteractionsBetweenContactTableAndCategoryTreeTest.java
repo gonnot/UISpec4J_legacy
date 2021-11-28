@@ -1,24 +1,31 @@
 package samples.addressbook.functests;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 public class InteractionsBetweenContactTableAndCategoryTreeTest extends AddressBookTestCase {
-  protected void setUp() throws Exception {
-    super.setUp();
+  @BeforeEach
+  final protected void setUp() throws Exception {
+
     createCategory("", "friends");
     createCategory("", "work");
     createCategory("work", "team1");
     createCategory("work", "team2");
   }
 
+  @Test
   public void testCreateContactWithoutCategorySelection() throws Exception {
     categoryTree.clearSelection();
     createContactsAndCheckTableContent();
   }
 
+  @Test
   public void testCreateContactWithRootCategorySelected() throws Exception {
     categoryTree.selectRoot();
     createContactsAndCheckTableContent();
   }
 
+  @Test
   public void testCreateContactWithASpecificCategorySelected() throws Exception {
     categoryTree.select("friends");
 
@@ -28,19 +35,19 @@ public class InteractionsBetweenContactTableAndCategoryTreeTest extends AddressB
     assertThat(contactTable.contentEquals(new String[][]{
       {"Homer", "Simpson", "", "", ""},
       {"Marge", "Simpson", "", "", ""},
-    }));
+      }));
 
     checkTableContentForGivenCategory("",
                                       new String[][]{
                                         {"Homer", "Simpson", "", "", ""},
                                         {"Marge", "Simpson", "", "", ""},
-                                      });
+                                        });
 
     checkTableContentForGivenCategory("friends",
                                       new String[][]{
                                         {"Homer", "Simpson", "", "", ""},
                                         {"Marge", "Simpson", "", "", ""},
-                                      });
+                                        });
 
     checkTableContentForGivenCategory("work", new String[0][0]);
 
@@ -48,15 +55,16 @@ public class InteractionsBetweenContactTableAndCategoryTreeTest extends AddressB
                                       new String[][]{
                                         {"Homer", "Simpson", "", "", ""},
                                         {"Marge", "Simpson", "", "", ""},
-                                      });
+                                        });
 
     categoryTree.clearSelection();
     assertThat(contactTable.contentEquals(new String[][]{
       {"Homer", "Simpson", "", "", ""},
       {"Marge", "Simpson", "", "", ""},
-    }));
+      }));
   }
 
+  @Test
   public void testCreateContactsInAHierarchyOfCategories() throws Exception {
     categoryTree.select("work/team1");
     createContact("Luke", "Skywalker");
@@ -74,30 +82,30 @@ public class InteractionsBetweenContactTableAndCategoryTreeTest extends AddressB
                                         {"Han", "Solo", "", "", ""},
                                         {"Boba", "Fett", "", "", ""},
                                         {"Mickey", "Mouse", "", "", ""},
-                                      });
+                                        });
 
     checkTableContentForGivenCategory("work",
                                       new String[][]{
                                         {"Luke", "Skywalker", "", "", ""},
                                         {"Han", "Solo", "", "", ""},
                                         {"Boba", "Fett", "", "", ""},
-                                      });
+                                        });
 
     checkTableContentForGivenCategory("friends",
                                       new String[][]{
                                         {"Mickey", "Mouse", "", "", ""},
-                                      });
+                                        });
 
     checkTableContentForGivenCategory("work/team1",
                                       new String[][]{
                                         {"Luke", "Skywalker", "", "", ""},
                                         {"Han", "Solo", "", "", ""},
-                                      });
+                                        });
 
     checkTableContentForGivenCategory("work/team2",
                                       new String[][]{
                                         {"Boba", "Fett", "", "", ""},
-                                      });
+                                        });
 
     categoryTree.clearSelection();
     assertThat(contactTable.contentEquals(new String[][]{
@@ -105,7 +113,7 @@ public class InteractionsBetweenContactTableAndCategoryTreeTest extends AddressB
       {"Han", "Solo", "", "", ""},
       {"Boba", "Fett", "", "", ""},
       {"Mickey", "Mouse", "", "", ""},
-    }));
+      }));
   }
 
   private void createContactsAndCheckTableContent() {
@@ -115,13 +123,13 @@ public class InteractionsBetweenContactTableAndCategoryTreeTest extends AddressB
     assertThat(contactTable.contentEquals(new String[][]{
       {"Homer", "Simpson", "", "", ""},
       {"Marge", "Simpson", "", "", ""},
-    }));
+      }));
 
     checkTableContentForGivenCategory("",
                                       new String[][]{
                                         {"Homer", "Simpson", "", "", ""},
                                         {"Marge", "Simpson", "", "", ""},
-                                      });
+                                        });
 
     checkTableContentForGivenCategory("friends", new String[0][0]);
     checkTableContentForGivenCategory("work", new String[0][0]);

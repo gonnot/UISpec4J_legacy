@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.UIComponentFactory;
 import org.uispec4j.xml.EventLogger;
 
@@ -7,6 +8,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 public class MenuItemForJMenuTest extends MenuItemTestCase {
+  @Test
   public void testFactory() throws Exception {
     checkFactory(new JMenu(), MenuItem.class);
   }
@@ -73,7 +75,7 @@ public class MenuItemForJMenuTest extends MenuItemTestCase {
     }
   }
 
-  public MenuItemTestCase.MenuBuilder getBuilder(String text) {
+  public MenuBuilder getBuilder(String text) {
     return new JMenuBuilder(text);
   }
 }

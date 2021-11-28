@@ -1,5 +1,7 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.assertion.Assertion;
 import org.uispec4j.assertion.UISpecAssert;
 import org.uispec4j.interception.toolkit.Empty;
@@ -20,6 +22,7 @@ public abstract class ButtonTestCase extends UIComponentTestCase {
     return getButton();
   }
 
+  @Test
   public void testEnableDisable() throws Exception {
     checkEnabled(true);
     checkEnabled(false);
@@ -31,6 +34,7 @@ public abstract class ButtonTestCase extends UIComponentTestCase {
     assertTrue((enabled) ? enabledAssertion : not(enabledAssertion));
   }
 
+  @Test
   public void testCheckText() throws Exception {
     getSwingButton().setText("text");
     assertTrue(getButton().textEquals("text"));
@@ -42,19 +46,22 @@ public abstract class ButtonTestCase extends UIComponentTestCase {
     }
   }
 
+  @Test
   public void testCheckTextAcceptsNullText() throws Exception {
     getSwingButton().setText(null);
     assertTrue(getButton().textEquals(null));
   }
 
+  @Test
   public void testCheckTextTrimsTheActualButtonText() throws Exception {
     getSwingButton().setText(" text  ");
     assertTrue(getButton().textEquals("text"));
   }
 
+  @Test
   public void testIcons() throws Exception {
     Icon icon = new Empty.DummyIcon();
-    checkAssertionFails(getButton().iconEquals(icon), "The component contains no icon.");
+    checkAssertionFails(getButton().iconEquals(icon), "The component contains no icon. ==> expected: not <null>");
 
     getSwingButton().setIcon(icon);
     assertTrue(getButton().iconEquals(icon));
@@ -62,6 +69,7 @@ public abstract class ButtonTestCase extends UIComponentTestCase {
     assertFalse(getButton().iconEquals(new Empty.DummyIcon()));
   }
 
+  @Test
   public void testActivateIsRejectedIfTheButtonIsDisabled() throws Exception {
     getSwingButton().setEnabled(false);
     try {
@@ -69,30 +77,34 @@ public abstract class ButtonTestCase extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("The button is not enabled, it cannot be activated", e.getMessage());
+      Assertions.assertEquals("The button is not enabled, it cannot be activated ==> expected: <true> but was: <false>", e.getMessage());
     }
   }
 
+  @Test
   public void testClick() throws Exception {
     DummyActionListener listener = new DummyActionListener();
     getSwingButton().addActionListener(listener);
     getButton().click();
-    assertEquals(1, listener.getCallCount());
+    Assertions.assertEquals(1, listener.getCallCount());
   }
 
+  @Test
   public void testTriggerClick() throws Exception {
     DummyActionListener listener = new DummyActionListener();
     getSwingButton().addActionListener(listener);
     getButton().triggerClick().run();
-    assertEquals(1, listener.getCallCount());
+    Assertions.assertEquals(1, listener.getCallCount());
   }
 
+  @Test
   public void testClickTakesLessTimeThanWithDefaultSwingCalls() throws Exception {
     Chrono chrono = Chrono.start();
     getButton().click();
     chrono.assertElapsedTimeLessThan(30);
   }
 
+  @Test
   public void testWaitForEnabledState() throws Exception {
     AbstractButton button = getButton();
     final javax.swing.AbstractButton swingButton = (javax.swing.AbstractButton)button.getAwtComponent();
@@ -109,6 +121,7 @@ public abstract class ButtonTestCase extends UIComponentTestCase {
     assertTrue(button.isEnabled());
   }
 
+  @Test
   public void testCheckButtonIsVisible() throws Exception {
     DummyActionListener listener = new DummyActionListener();
     getSwingButton().addActionListener(listener);
@@ -118,8 +131,8 @@ public abstract class ButtonTestCase extends UIComponentTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("The button is not visible, it cannot be activated", e.getMessage());
+      Assertions.assertEquals("The button is not visible, it cannot be activated ==> expected: <true> but was: <false>", e.getMessage());
     }
-    assertEquals(0, listener.getCallCount());
+    Assertions.assertEquals(0, listener.getCallCount());
   }
 }

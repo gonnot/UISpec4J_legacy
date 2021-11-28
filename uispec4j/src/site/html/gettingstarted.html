@@ -42,7 +42,7 @@ dialogs, or writing functional/acceptance tests for the whole application.
   your test class:
 </p>
 <div class="code"><pre>
-public class MyOwnTest extends TestCase {
+public class MyOwnTest{
   static {
       UISpec4J.init();
   }
@@ -77,7 +77,7 @@ public class MyOwnPanel extends JPanel {
   wrapper, and then start retrieving and using individual components:
 </p>
 <div class="code"><pre>
-public class MyOwnPanelTest extends TestCase {
+public class MyOwnPanelTest{
   public void testInitialState() {
     ... setup the context needed to instanciate MyOwnPanel ...
     Panel panel = new Panel(new MyOwnPanel(...));
@@ -99,7 +99,7 @@ public class MyOwnPanelTest extends TestCase {
   which offers the following interface:</p>
 
 <div class="code"><pre>
-public void UISpecTestCase extends TestCase {
+public void UISpecTestCase{
   public Window getMainWindow();
 }
         </pre>

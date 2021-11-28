@@ -1,6 +1,6 @@
 package samples.utils;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 import java.util.*;
 
@@ -26,7 +26,7 @@ public class ArrayUtils {
   private static Integer[] toArray(int[] actual) {
     Integer[] result = new Integer[actual.length];
     for (int i = 0; i < actual.length; i++) {
-      result[i] = new Integer(actual[i]);
+      result[i] = actual[i];
     }
     return result;
   }
@@ -80,7 +80,7 @@ public class ArrayUtils {
   public static String toString(List list) {
     StringBuffer buffer = new StringBuffer();
     buffer.append('[');
-    for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+    for (Iterator iterator = list.iterator(); iterator.hasNext(); ) {
       buffer.append(iterator.next());
       if (iterator.hasNext()) {
         buffer.append(',');
@@ -110,19 +110,19 @@ public class ArrayUtils {
   private static void fail(String message, Object[] expected, Object[] actual) {
     boolean verticalDisplay = expected.length > 5 || actual.length > 5;
     if (verticalDisplay) {
-      Assert.assertEquals(message, toVerticalString(expected), toVerticalString(actual));
+      Assertions.assertEquals(message, toVerticalString(expected), toVerticalString(actual));
     }
     else {
       String prefix = message != null ? message + "\n" : "";
-      Assert.fail(prefix +
-                  "Expected: " + toString(expected) +
-                  "\nActual:   " + toString(actual));
+      Assertions.fail(prefix +
+                      "Expected: " + toString(expected) +
+                      "\nActual:   " + toString(actual));
     }
   }
 
   public static void assertEquals(Object[] expected, Object[] actual) {
     if (actual == null) {
-      Assert.assertNull("Actual array is not null", expected);
+      Assertions.assertNull(expected, "Actual array is not null");
     }
     if (!Arrays.equals(expected, actual)) {
       fail(null, expected, actual);
@@ -130,7 +130,7 @@ public class ArrayUtils {
   }
 
   public static void assertEquals(Object[][] expected, Object[][] actual) {
-    Assert.assertEquals(expected.length, actual.length);
+    Assertions.assertEquals(expected.length, actual.length);
     for (int i = 0; i < expected.length; i++) {
       assertEquals("Error at row " + i + ":", expected[i], actual[i]);
     }
@@ -151,17 +151,17 @@ public class ArrayUtils {
     List actualList = new ArrayList();
     while (actualIterator.hasNext()) {
       if (index >= expectedArray.length) {
-        for (Iterator iterator = actualIterator; iterator.hasNext();) {
+        for (Iterator iterator = actualIterator; iterator.hasNext(); ) {
           actualList.add(iterator.next());
         }
-        Assert.fail("The iterator contains too many elements: expected: " +
-                    toString(expectedArray) + " but was: " + actualList);
+        Assertions.fail("The iterator contains too many elements: expected: " +
+                        toString(expectedArray) + " but was: " + actualList);
       }
       Object obj = actualIterator.next();
       actualList.add(obj);
       if (!obj.equals(expectedArray[index])) {
-        Assert.fail("Mismatch at index " + index + ". expected: " + expectedArray[index] +
-                    " but was: " + obj);
+        Assertions.fail("Mismatch at index " + index + ". expected: " + expectedArray[index] +
+                        " but was: " + obj);
       }
       index++;
     }
@@ -171,40 +171,30 @@ public class ArrayUtils {
   }
 
   public static void orderedCompare(Object[][] expectedData, Object[][] actualData) {
-    compareCollection(actualData, expectedData, ArrayList.class);
+    compareCollection(actualData, expectedData);
   }
 
-  private static void compareCollection(Object[][] actualData, Object[][] expectedData, Class collectionClass) {
-    Collection actual;
-    Collection expected;
-    try {
-      actual = (Collection)collectionClass.newInstance();
-      expected = (Collection)collectionClass.newInstance();
+  private static void compareCollection(Object[][] actualData, Object[][] expectedData) {
+    Collection<String> actual = new ArrayList<>();
+    for (Object[] actualDatum : actualData) {
+      actual.add(toString(actualDatum));
     }
-    catch (InstantiationException e) {
-      throw new RuntimeException(e);
+    Collection<String> expected = new ArrayList<>();
+    for (Object[] expectedDatum : expectedData) {
+      expected.add(toString(expectedDatum));
     }
-    catch (IllegalAccessException e) {
-      throw new RuntimeException(e);
-    }
-    for (int i = 0; i < actualData.length; i++) {
-      actual.add(toString(actualData[i]));
-    }
-    for (int i = 0; i < expectedData.length; i++) {
-      expected.add(toString(expectedData[i]));
-    }
-    Assert.assertEquals(expected, actual);
+    Assertions.assertEquals(expected, actual);
   }
 
   public static void assertEmpty(Object[] array) {
     if ((array != null) && (array.length > 0)) {
-      Assert.fail("Array should be empty but is " + toString(array));
+      Assertions.fail("Array should be empty but is " + toString(array));
     }
   }
 
   public static void assertEmpty(List list) {
     if ((list != null) && (!list.isEmpty())) {
-      Assert.fail("List should be empty but is " + toString(list));
+      Assertions.fail("List should be empty but is " + toString(list));
     }
   }
 }

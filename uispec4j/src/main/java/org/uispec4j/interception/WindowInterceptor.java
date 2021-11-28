@@ -59,9 +59,9 @@ import java.util.List;
  */
 public final class WindowInterceptor {
 
-  private Trigger trigger;
-  private List handlers = new ArrayList();
-  private ExceptionContainer exceptionContainer = new ExceptionContainer();
+  private final Trigger trigger;
+  private final List<WindowHandler> handlers = new ArrayList<>();
+  private final ExceptionContainer exceptionContainer = new ExceptionContainer();
   private StackTraceElement[] stackReference;
 
   /**
@@ -163,7 +163,7 @@ public final class WindowInterceptor {
    */
   public WindowInterceptor processWithButtonClick(final String buttonName) {
     handlers.add(new WindowHandler("buttonClickHandler") {
-      public Trigger process(Window window) throws Exception {
+      public Trigger process(Window window) {
         return window.getButton(buttonName).triggerClick();
       }
     });
@@ -177,7 +177,7 @@ public final class WindowInterceptor {
    */
   public WindowInterceptor processWithButtonClick(final String title, final String buttonName) {
     handlers.add(new WindowHandler("buttonClickHandler") {
-      public Trigger process(Window window) throws Exception {
+      public Trigger process(Window window) {
         checkTitle(window, title);
         return window.getButton(buttonName).triggerClick();
       }
@@ -197,11 +197,8 @@ public final class WindowInterceptor {
     }
     initStackReference();
     try {
-      run(new TriggerAccessor() {
-        public Trigger getTrigger() {
-          return trigger;
-        }
-      }, new InterceptionHandlerAdapter(handlers.iterator()));
+      run(() -> trigger,
+          new InterceptionHandlerAdapter(handlers.iterator()));
     }
     catch (Throwable e) {
       storeException(e, handlers.size() > 1 ? "Error in first handler: " : "");
@@ -217,10 +214,10 @@ public final class WindowInterceptor {
   private void initStackReference() {
     Exception dummyException = new Exception();
     StackTraceElement[] trace = dummyException.getStackTrace();
-    List list = new ArrayList(Arrays.asList(trace));
+    List<StackTraceElement> list = new ArrayList<>(Arrays.asList(trace));
     list.remove(0);
     list.remove(0);
-    this.stackReference = (StackTraceElement[])list.toArray(new StackTraceElement[list.size()]);
+    this.stackReference = list.toArray(new StackTraceElement[0]);
   }
 
   private void storeException(Throwable e, String messagePrefix) {
@@ -233,10 +230,10 @@ public final class WindowInterceptor {
   }
 
   private class InterceptionHandlerAdapter implements InterceptionHandler {
-    private Iterator handlersIterator;
+    private final Iterator<WindowHandler> handlersIterator;
     private WindowHandler handler;
 
-    public InterceptionHandlerAdapter(Iterator handlersIterator) {
+    public InterceptionHandlerAdapter(Iterator<WindowHandler> handlersIterator) {
       this.handlersIterator = handlersIterator;
     }
 
@@ -245,11 +242,8 @@ public final class WindowInterceptor {
       String name = handler.getName();
       try {
         if (handlersIterator.hasNext()) {
-          WindowInterceptor.run(new TriggerAccessor() {
-            public Trigger getTrigger() throws Exception {
-              return handler.process(window);
-            }
-          }, this);
+          WindowInterceptor.run(() -> handler.process(window),
+                                this);
         }
         else {
           Trigger trigger = handler.process(window);
@@ -274,7 +268,7 @@ public final class WindowInterceptor {
     }
 
     private WindowHandler getNextHandler() {
-      return (WindowHandler)handlersIterator.next();
+      return handlersIterator.next();
     }
   }
 

@@ -1,5 +1,7 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.ArrayUtils;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.utils.Functor;
@@ -11,38 +13,42 @@ import java.awt.*;
 import java.util.regex.Pattern;
 
 public class TableHeaderTest extends TableTestCase {
+  @Test
   public void test() throws Exception {
     JTableHeader tableHeader = jTable.getTableHeader();
     tableHeader.setVisible(false);
     jTable.setTableHeader(null);
-    assertEquals(1, table.getHeader().findColumnIndex("1"));
+    Assertions.assertEquals(1, table.getHeader().findColumnIndex("1"));
   }
 
-  public void testContent() throws Exception {
+  @Test
+  public void testContent() {
     assertTrue(table.getHeader().contentEquals("0", "1", "2"));
     try {
       assertTrue(table.getHeader().contentEquals());
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      Pattern pattern = Pattern.compile("expected:<.*> but was:<.*0,1,2.*>");
+      Pattern pattern = Pattern.compile("expected: <.*> but was: <.*0,1,2.*>");
       if (!pattern.matcher(e.getMessage()).matches()) {
-        fail("Unexpected message: " + e.getMessage());
+        Assertions.fail("Unexpected message: " + e.getMessage());
       }
     }
   }
 
-  public void testPartialContent() throws Exception {
+  @Test
+  public void testPartialContent() {
     assertTrue(table.getHeader().contentEquals(2, "0", "1"));
     try {
       assertTrue(table.getHeader().contentEquals(2, "0", "2"));
       throw new AssertionFailureNotDetectedError();
     }
-    catch (AssertionError e) {
+    catch (AssertionError ignored) {
     }
   }
 
-  public void testClickOnHeader() throws Exception {
+  @Test
+  public void testClickOnHeader() {
     MouseLogger mouseLogger = new MouseLogger(jTable.getTableHeader());
     table.getHeader().click(0);
     mouseLogger.assertEquals("<log>" +
@@ -52,7 +58,8 @@ public class TableHeaderTest extends TableTestCase {
                              "</log>");
   }
 
-  public void testRightClickOnHeader() throws Exception {
+  @Test
+  public void testRightClickOnHeader() {
     MouseLogger dummyHeaderListener = new MouseLogger(jTable.getTableHeader());
     table.getHeader().rightClick(0);
     dummyHeaderListener.assertEquals("<log>" +
@@ -62,7 +69,8 @@ public class TableHeaderTest extends TableTestCase {
                                      "</log>");
   }
 
-  public void testHeader() throws Exception {
+  @Test
+  public void testHeader() {
     assertTrue(table.hasHeader());
 
     jTable.setTableHeader(null);
@@ -72,70 +80,28 @@ public class TableHeaderTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("The table contains an header", e.getMessage());
+      Assertions.assertEquals("The table contains an header", e.getMessage());
     }
   }
 
+  @Test
   public void testNoHeaderExceptions() throws Exception {
     jTable.setTableHeader(null);
-    checkNoHeaderException(new Functor() {
-      public void run() {
-        assertTrue(table.getHeader().backgroundEquals(null));
-      }
-    });
-    checkNoHeaderException(new Functor() {
-      public void run() {
-        assertTrue(table.getHeader().contentEquals());
-      }
-    });
-    checkNoHeaderException(new Functor() {
-      public void run() {
-        table.getHeader().click(0);
-      }
-    });
-    checkNoHeaderException(new Functor() {
-      public void run() {
-        table.getHeader().click("");
-      }
-    });
-    checkNoHeaderException(new Functor() {
-      public void run() throws Exception {
-        table.getHeader().triggerClick(0).run();
-      }
-    });
-    checkNoHeaderException(new Functor() {
-      public void run() throws Exception {
-        table.getHeader().triggerClick("").run();
-      }
-    });
-    checkNoHeaderException(new Functor() {
-      public void run() {
-        table.getHeader().getDefaultBackground();
-      }
-    });
-    checkNoHeaderException(new Functor() {
-      public void run() {
-        table.getHeader().rightClick(0);
-      }
-    });
-    checkNoHeaderException(new Functor() {
-      public void run() {
-        table.getHeader().rightClick("");
-      }
-    });
-    checkNoHeaderException(new Functor() {
-      public void run() throws Exception {
-        table.getHeader().triggerRightClick(0).run();
-      }
-    });
-    checkNoHeaderException(new Functor() {
-      public void run() throws Exception {
-        table.getHeader().triggerRightClick("").run();
-      }
-    });
+    checkNoHeaderException(() -> assertTrue(table.getHeader().backgroundEquals(null)));
+    checkNoHeaderException(() -> assertTrue(table.getHeader().contentEquals()));
+    checkNoHeaderException(() -> table.getHeader().click(0));
+    checkNoHeaderException(() -> table.getHeader().click(""));
+    checkNoHeaderException(() -> table.getHeader().triggerClick(0).run());
+    checkNoHeaderException(() -> table.getHeader().triggerClick("").run());
+    checkNoHeaderException(() -> table.getHeader().getDefaultBackground());
+    checkNoHeaderException(() -> table.getHeader().rightClick(0));
+    checkNoHeaderException(() -> table.getHeader().rightClick(""));
+    checkNoHeaderException(() -> table.getHeader().triggerRightClick(0).run());
+    checkNoHeaderException(() -> table.getHeader().triggerRightClick("").run());
   }
 
-  public void testAssertHeaderBackgroundEquals() throws Exception {
+  @Test
+  public void testAssertHeaderBackgroundEquals() {
     jTable.getTableHeader().setDefaultRenderer(new DefaultTableCellRenderer() {
       public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -156,26 +122,28 @@ public class TableHeaderTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Unexpected color at column 1 - expected:<BLACK> but was:<FF0000>", e.getMessage());
+      Assertions.assertEquals("Unexpected color at column 1 - expected: <BLACK> but was: <FF0000>", e.getMessage());
     }
   }
 
-  public void testGetColumnNames() throws Exception {
+  @Test
+  public void testGetColumnNames() {
     ArrayUtils.assertEquals(new String[0], new Table(new JTable()).getHeader().getColumnNames());
     ArrayUtils.assertEquals(new String[]{"0", "1", "2"}, table.getHeader().getColumnNames());
   }
 
-  public void testFindColumnIndex() throws Exception {
-    assertEquals(0, table.getHeader().findColumnIndex("0"));
-    assertEquals(1, table.getHeader().findColumnIndex("1"));
-    assertEquals(2, table.getHeader().findColumnIndex("2"));
+  @Test
+  public void testFindColumnIndex() {
+    Assertions.assertEquals(0, table.getHeader().findColumnIndex("0"));
+    Assertions.assertEquals(1, table.getHeader().findColumnIndex("1"));
+    Assertions.assertEquals(2, table.getHeader().findColumnIndex("2"));
 
     try {
       table.getHeader().findColumnIndex("unknown");
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("Column 'unknown' not found - actual names: [0, 1, 2]", e.getMessage());
+      Assertions.assertEquals("Column 'unknown' not found - actual names: [0, 1, 2]", e.getMessage());
     }
   }
 
@@ -185,7 +153,7 @@ public class TableHeaderTest extends TableTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("The table contains no header", e.getMessage());
+      Assertions.assertEquals("The table contains no header ==> expected: not <null>", e.getMessage());
     }
   }
 }

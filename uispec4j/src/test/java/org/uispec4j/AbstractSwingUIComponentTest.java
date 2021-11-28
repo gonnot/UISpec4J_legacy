@@ -1,12 +1,14 @@
 package org.uispec4j;
 
-import junit.framework.TestCase;
+
+import org.junit.jupiter.api.Test;
 import org.uispec4j.assertion.UISpecAssert;
 
 import javax.swing.*;
 
-public class AbstractSwingUIComponentTest extends TestCase {
+public class AbstractSwingUIComponentTest {
 
+  @Test
   public void testTooltips() throws Exception {
     DummySwingUIComponent component = new DummySwingUIComponent("label");
     component.getAwtComponent().setToolTipText("Hello world!");

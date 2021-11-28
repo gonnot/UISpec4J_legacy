@@ -1,6 +1,6 @@
 package org.uispec4j.extension;
 
-import org.objectweb.asm.util.ASMifierClassVisitor;
+import org.objectweb.asm.util.ASMifier;
 import org.uispec4j.Panel;
 
 /**
@@ -9,6 +9,6 @@ import org.uispec4j.Panel;
 public class Asmifier {
 
   public static void main(String[] args) throws Exception {
-    ASMifierClassVisitor.main(new String[]{Panel.class.getName()});
+    ASMifier.main(new String[]{Panel.class.getName()});
   }
 }

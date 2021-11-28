@@ -1,5 +1,7 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.ColorUtils;
 import org.uispec4j.utils.UnitTestCase;
 import org.uispec4j.xml.XmlAssert;
@@ -9,6 +11,7 @@ import java.awt.*;
 
 public class AbstractUIComponentTest extends UnitTestCase {
 
+  @Test
   public void testGetComponentTypeName() throws Exception {
     XmlAssert.assertEquivalent("<awtLabel name='myName'/>",
                                new DummyAwtUIComponent("myName").getDescription());
@@ -30,6 +33,7 @@ public class AbstractUIComponentTest extends UnitTestCase {
     }
   }
 
+  @Test
   public void testComponentUsesBlackAsDefaultForegroundColor() throws Exception {
     final JComponent jComponent = new JComponent() {
     };
@@ -46,6 +50,7 @@ public class AbstractUIComponentTest extends UnitTestCase {
     assertTrue(uiComponent.foregroundEquals("black"));
   }
 
+  @Test
   public void testForeground() throws Exception {
     DummyAwtUIComponent uiComponent = new DummyAwtUIComponent("name");
     uiComponent.component.setForeground(ColorUtils.getColor("2255F7"));
@@ -61,6 +66,7 @@ public class AbstractUIComponentTest extends UnitTestCase {
     assertFalse(uiComponent.foregroundNear("red"));
   }
 
+  @Test
   public void testBackground() throws Exception {
     DummyAwtUIComponent uiComponent = new DummyAwtUIComponent("name");
     uiComponent.component.setBackground(ColorUtils.getColor("2255F7"));
@@ -76,6 +82,7 @@ public class AbstractUIComponentTest extends UnitTestCase {
     assertFalse(uiComponent.backgroundNear("red"));
   }
 
+  @Test
   public void testGetContainer() throws Exception {
     JPanel rootPanel = new JPanel();
     rootPanel.setName("rootPanel");
@@ -85,11 +92,11 @@ public class AbstractUIComponentTest extends UnitTestCase {
     middlePanel.add(jLabel);
     TextBox label = new TextBox(jLabel);
 
-    assertSame(middlePanel, label.getContainer().getAwtComponent());
+    Assertions.assertSame(middlePanel, label.getContainer().getAwtComponent());
 
-    assertSame(rootPanel, label.getContainer("rootPanel").getAwtComponent());
-    assertNull(label.getContainer("unknown"));
+    Assertions.assertSame(rootPanel, label.getContainer("rootPanel").getAwtComponent());
+    Assertions.assertNull(label.getContainer("unknown"));
 
-    assertNull(new Panel(rootPanel).getContainer());
+    Assertions.assertNull(new Panel(rootPanel).getContainer());
   }
 }

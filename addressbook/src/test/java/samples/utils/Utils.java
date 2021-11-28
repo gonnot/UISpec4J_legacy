@@ -1,6 +1,6 @@
 package samples.utils;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 import javax.swing.*;
 import java.util.Arrays;
@@ -57,22 +57,22 @@ public class Utils {
     assertSetEquals(expected, actual, stringifier);
 
     for (int i = 0; i < actual.length; i++) {
-      Assert.assertTrue("Unexpected order in the collection" + getMessage(expected, actual, stringifier),
-                        expected[i].equals(actual[i]));
+      Assertions.assertTrue(expected[i].equals(actual[i]),
+                            "Unexpected order in the collection" + getMessage(expected, actual, stringifier));
     }
   }
 
   public static void assertSetEquals(Object[] expected, Object[] actual, Stringifier stringifier) {
     int expectedLength = expected.length;
     int actualLength = actual.length;
-    Assert.assertTrue(expectedLength + " elements instead of " + actualLength + getMessage(expected, actual, stringifier),
-                      expectedLength == actualLength);
+    Assertions.assertEquals(expectedLength, actualLength,
+                            expectedLength + " elements instead of " + actualLength + getMessage(expected, actual, stringifier));
 
     List list = Arrays.asList(expected);
     for (int i = 0; i < actual.length; i++) {
       Object element = actual[i];
-      Assert.assertTrue("Unexpected element '" + stringifier.toString(element) + "'" + getMessage(expected, actual, stringifier),
-                        list.contains(element));
+      Assertions.assertTrue(list.contains(element),
+                            "Unexpected element '" + stringifier.toString(element) + "'" + getMessage(expected, actual, stringifier));
     }
   }
 

@@ -1,5 +1,7 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.utils.AssertionFailureNotDetectedError;
 import org.uispec4j.xml.XmlAssert;
 
@@ -7,11 +9,13 @@ import javax.swing.*;
 import java.awt.*;
 
 public class WindowForAwtWindowTest extends WindowTestCase {
+  @Test
   public void test() throws Exception {
     Window window = createWindow();
-    assertEquals("", window.getTitle());
+    Assertions.assertEquals("", window.getTitle());
   }
 
+  @Test
   public void testWindowManagesMenuBars() throws Exception {
     Window window = new Window(new Frame());
     try {
@@ -19,28 +23,32 @@ public class WindowForAwtWindowTest extends WindowTestCase {
       throw new AssertionFailureNotDetectedError();
     }
     catch (AssertionError e) {
-      assertEquals("This component has no menu bar", e.getMessage());
+      Assertions.assertEquals("This component has no menu bar", e.getMessage());
     }
   }
 
+  @Test
   public void testGetTitle() throws Exception {
-    assertEquals("", createWindow().getTitle());
+    Assertions.assertEquals("", createWindow().getTitle());
   }
 
+  @Test
   public void testAssertTitleEquals() throws Exception {
     final Window window = createWindow();
     assertTrue(window.titleEquals(""));
     checkAssertionFails(window.titleEquals("title"),
-                        "Unexpected title - expected:<[title]> but was:<[]>");
+                        "Unexpected title - ==> expected: <title> but was: <>");
   }
 
+  @Test
   public void testAssertTitleContains() throws Exception {
     final Window window = createWindow();
     assertTrue(window.titleContains(""));
     checkAssertionFails(window.titleContains("title"),
-                        "expected to contain:<title> but was:<>");
+                        "expected to contain:<title> but was: <> ==> expected: <true> but was: <false>");
   }
 
+  @Test
   public void testGetDescription() throws Exception {
     Window window = createWindow();
     window.getAwtComponent().setName("myFrame");

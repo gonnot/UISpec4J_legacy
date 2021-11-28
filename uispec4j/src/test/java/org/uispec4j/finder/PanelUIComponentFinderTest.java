@@ -1,5 +1,8 @@
 package org.uispec4j.finder;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.Button;
 import org.uispec4j.*;
 
@@ -15,13 +18,15 @@ public class PanelUIComponentFinderTest extends PanelComponentFinderTestCase {
     }
   };
 
-  protected void setUp() throws Exception {
-    super.setUp();
+  @BeforeEach
+  final protected void setUp() throws Exception {
+
     button = addComponent(JButton.class, "button1");
   }
 
+  @Test
   public void testFindUIComponentByClass() throws Exception {
-    assertNull(panel.findUIComponent(TextBox.class));
+    Assertions.assertNull(panel.findUIComponent(TextBox.class));
 
     Button uispecButton = panel.findUIComponent(Button.class);
     TestUtils.assertUIComponentRefersTo(this.button, uispecButton);
@@ -29,33 +34,35 @@ public class PanelUIComponentFinderTest extends PanelComponentFinderTestCase {
     addComponent(JButton.class, "button2");
     try {
       panel.findUIComponent(Button.class);
-      fail();
+      Assertions.fail();
     }
     catch (ComponentAmbiguityException e) {
-      assertEquals(Messages.computeAmbiguityMessage(new String[]{"button1", "button2"}, Button.TYPE_NAME, null),
-                   e.getMessage());
+      Assertions.assertEquals(Messages.computeAmbiguityMessage(new String[]{"button1", "button2"}, Button.TYPE_NAME, null),
+                              e.getMessage());
     }
   }
 
+  @Test
   public void testFindUIComponentByName() throws Exception {
-    assertNull(panel.findUIComponent(Button.class, "unknown"));
-    assertNull(panel.findUIComponent(TextBox.class, "button"));
+    Assertions.assertNull(panel.findUIComponent(Button.class, "unknown"));
+    Assertions.assertNull(panel.findUIComponent(TextBox.class, "button"));
     TestUtils.assertUIComponentRefersTo(button, panel.findUIComponent(Button.class, "button1"));
     TestUtils.assertUIComponentRefersTo(button, panel.findUIComponent(Button.class, "button"));
 
     addComponent(JButton.class, "button2");
     try {
       panel.findUIComponent(Button.class, "button");
-      fail();
+      Assertions.fail();
     }
     catch (ComponentAmbiguityException e) {
-      assertEquals(Messages.computeAmbiguityMessage(new String[]{"button1", "button2"}, Button.TYPE_NAME, "button"),
-                   e.getMessage());
+      Assertions.assertEquals(Messages.computeAmbiguityMessage(new String[]{"button1", "button2"}, Button.TYPE_NAME, "button"),
+                              e.getMessage());
     }
   }
 
+  @Test
   public void testFindUIComponentWithCustomComponentMatcher() throws Exception {
-    assertNull(panel.findUIComponent(CUSTOM_MATCHER));
+    Assertions.assertNull(panel.findUIComponent(CUSTOM_MATCHER));
 
     button.setName("custom button");
     TestUtils.assertUIComponentRefersTo(button, panel.findUIComponent(CUSTOM_MATCHER));
@@ -68,12 +75,13 @@ public class PanelUIComponentFinderTest extends PanelComponentFinderTestCase {
       panel.findUIComponent(CUSTOM_MATCHER);
     }
     catch (ComponentAmbiguityException e) {
-      assertEquals(Messages.computeAmbiguityMessage(new Component[]{button, textField},
-                                                    null, null),
-                   e.getMessage());
+      Assertions.assertEquals(Messages.computeAmbiguityMessage(new Component[]{button, textField},
+                                                               null, null),
+                              e.getMessage());
     }
   }
 
+  @Test
   public void testGetUIComponentsByClass() throws Exception {
     JLabel label1 = addComponent(JLabel.class, "label1");
     JLabel label2 = addComponent(JLabel.class, "label2");
@@ -89,6 +97,7 @@ public class PanelUIComponentFinderTest extends PanelComponentFinderTestCase {
                                           panel.getSwingComponents(JTable.class));
   }
 
+  @Test
   public void testGetUIComponentsByName() throws Exception {
     JLabel label1 = addComponent(JLabel.class, "name1");
     JLabel label2 = addComponent(JLabel.class, "name2");
@@ -107,6 +116,7 @@ public class PanelUIComponentFinderTest extends PanelComponentFinderTestCase {
                                           panel.getSwingComponents(JTable.class, "name"));
   }
 
+  @Test
   public void testGetUIComponentsWithCustomComponentMatcher() throws Exception {
     TestUtils.assertUIComponentsReferTo(new Component[0],
                                         panel.getUIComponents(CUSTOM_MATCHER));

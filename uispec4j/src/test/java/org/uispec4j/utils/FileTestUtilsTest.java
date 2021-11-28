@@ -1,16 +1,18 @@
 package org.uispec4j.utils;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
-public class FileTestUtilsTest extends TestCase {
+public class FileTestUtilsTest {
+  @Test
   public void testDumpStringToFile() throws Exception {
     String content = "hello world" + Utils.LINE_SEPARATOR + "this a new line!";
     String filename = "example.txt";
     File file = FileTestUtils.dumpStringToFile(filename, content);
-    assertTrue(file.exists());
-    assertEquals(filename, file.getName());
-    assertEquals(content, FileTestUtils.loadTextFileToString(file));
+    Assertions.assertTrue(file.exists());
+    Assertions.assertEquals(filename, file.getName());
+    Assertions.assertEquals(content, FileTestUtils.loadTextFileToString(file));
   }
 }

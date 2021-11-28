@@ -1,5 +1,7 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.uispec4j.assertion.Assertion;
 import org.uispec4j.utils.Functor;
 import org.uispec4j.xml.XmlAssert;
@@ -8,17 +10,20 @@ import javax.swing.*;
 import java.util.Hashtable;
 
 public class SliderTest extends UIComponentTestCase {
-  private JSlider jSlider = createTemperatureSlider();
-  private Slider slider = new Slider(jSlider);
+  private final JSlider jSlider = createTemperatureSlider();
+  private final Slider slider = new Slider(jSlider);
 
+  @Test
   public void testGetComponentTypeName() throws Exception {
-    assertEquals("slider", slider.getDescriptionTypeName());
+    Assertions.assertEquals("slider", slider.getDescriptionTypeName());
   }
 
+  @Test
   public void testGetDescription() throws Exception {
     XmlAssert.assertEquivalent("<slider name='my thermometer'/>", slider.getDescription());
   }
 
+  @Test
   public void testFactory() throws Exception {
     checkFactory(createTemperatureSlider(), Slider.class);
   }
@@ -27,11 +32,12 @@ public class SliderTest extends UIComponentTestCase {
     return slider;
   }
 
+  @Test
   public void testLabels() throws Exception {
     checkAssertionFails(slider.labelsEqual("1", "2", "3", "4"),
                         "4 elements instead of 6\n" +
                         "Expected: [1,2,3,4],\n" +
-                        "but was: [-10,0,10,20,30,40]");
+                        "but was: [-10,0,10,20,30,40] ==> expected: <true> but was: <false>");
 
     assertTrue(slider.labelsEqual("-10", "0", "10", "20", "30", "40"));
 
@@ -40,15 +46,16 @@ public class SliderTest extends UIComponentTestCase {
     checkAssertionFails(slider.labelsEqual("1", "2", "3", "4", "5"),
                         "Unexpected element 'Very Cold'\n" +
                         "Expected: [1,2,3,4,5],\n" +
-                        "but was: [Very Cold,Cold,Cool,Warm,Hot]");
+                        "but was: [Very Cold,Cold,Cool,Warm,Hot] ==> expected: <true> but was: <false>");
     checkAssertionFails(slider.labelsEqual("Very Cold", "Cold", "Cool", "Hot", "Warm"),
                         "Unexpected order in the collection\n" +
                         "Expected: [Very Cold,Cold,Cool,Hot,Warm],\n" +
-                        "but was: [Very Cold,Cold,Cool,Warm,Hot]");
+                        "but was: [Very Cold,Cold,Cool,Warm,Hot] ==> expected: <true> but was: <false>");
     assertTrue(slider.labelsEqual("Very Cold", "Cold", "Cool", "Warm", "Hot"));
 
   }
 
+  @Test
   public void testPositionCheckBasedOnLabels() throws Exception {
     changeLabels();
 
@@ -69,27 +76,29 @@ public class SliderTest extends UIComponentTestCase {
     checkPosition(0, "Cold", "Hot");
   }
 
+  @Test
   public void testRelativePosition() throws Exception {
     jSlider.setValue(16);
     Assertion positionIsMiddle = slider.relativePositionEquals(50);
     assertTrue(positionIsMiddle);
 
     jSlider.setValue(17);
-    checkAssertionFails(positionIsMiddle, "Expected 50 but was 54");
+    checkAssertionFails(positionIsMiddle, "Expected 50 but was 54 ==> expected: <true> but was: <false>");
 
     slider.setPrecision(5);
     assertTrue(positionIsMiddle);
   }
 
+  @Test
   public void testSettingARelativePosition() throws Exception {
     slider.setRelativePosition(50);
-    assertEquals(15, jSlider.getValue());
+    Assertions.assertEquals(15, jSlider.getValue());
 
     slider.setRelativePosition(0);
-    assertEquals(-10, jSlider.getValue());
+    Assertions.assertEquals(-10, jSlider.getValue());
 
     slider.setRelativePosition(100);
-    assertEquals(40, jSlider.getValue());
+    Assertions.assertEquals(40, jSlider.getValue());
 
     checkAssertionError(
       new Functor() {
@@ -109,9 +118,9 @@ public class SliderTest extends UIComponentTestCase {
   }
 
   private void checkPosition(int intValue, String correctLabel, String wrongLabel) throws Exception {
-    assertEquals(intValue, jSlider.getValue());
+    Assertions.assertEquals(intValue, jSlider.getValue());
     assertTrue(slider.positionEquals(correctLabel));
-    checkAssertionFails(slider.positionEquals(wrongLabel), "expected:<[" + wrongLabel + "]> but was:<[" + correctLabel + "]>");
+    checkAssertionFails(slider.positionEquals(wrongLabel), "expected: <" + wrongLabel + "> but was: <" + correctLabel + ">");
   }
 
   private static JSlider createTemperatureSlider() {

@@ -1,14 +1,18 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.Test;
+
 import javax.swing.*;
 
 public class WindowForDialogTest extends WindowTestCase {
 
+  @Test
   public void testIsModalWithNonModalDialog() throws Exception {
     Window window = new Window(new JDialog());
     checkIsModal(window, false);
   }
 
+  @Test
   public void testIsModalWithModalDialog() throws Exception {
     JFrame frame = new JFrame();
     Window window = new Window(new JDialog(frame, true));

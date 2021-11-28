@@ -1,6 +1,8 @@
 package samples.calculator;
 
 import static org.testng.Assert.*;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import samples.utils.AssertionFailureNotDetectedError;
@@ -9,7 +11,8 @@ public class CalculatorTest {
   private Calculator calculator;
 
   @BeforeMethod
-  protected void setUp() throws Exception {
+  @BeforeEach
+  final protected void setUp() throws Exception {
     calculator = new Calculator();
   }
 

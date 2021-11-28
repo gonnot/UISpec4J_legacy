@@ -1,20 +1,77 @@
 package org.uispec4j.interception.toolkit;
 
-import sun.awt.image.SunVolatileImage;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.AWTEvent;
+import java.awt.AWTException;
+import java.awt.BufferCapabilities;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Composite;
+import java.awt.CompositeContext;
+import java.awt.Desktop;
+import java.awt.Dialog;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.Image;
+import java.awt.ImageCapabilities;
+import java.awt.Insets;
+import java.awt.MenuBar;
+import java.awt.Paint;
+import java.awt.PaintContext;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.PaintEvent;
+import java.awt.event.FocusEvent.Cause;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.*;
+import java.awt.im.spi.InputMethod;
+import java.awt.im.spi.InputMethodContext;
+import java.awt.im.spi.InputMethodDescriptor;
+import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.ColorModel;
+import java.awt.image.ImageConsumer;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
+import java.awt.image.Raster;
+import java.awt.image.RenderedImage;
+import java.awt.image.VolatileImage;
+import java.awt.image.WritableRaster;
 import java.awt.image.renderable.RenderableImage;
-import java.awt.peer.*;
+import java.awt.peer.CanvasPeer;
+import java.awt.peer.ComponentPeer;
+import java.awt.peer.ContainerPeer;
+import java.awt.peer.DesktopPeer;
+import java.awt.peer.MouseInfoPeer;
+import java.awt.peer.PanelPeer;
+import java.awt.peer.RobotPeer;
+import java.awt.peer.SystemTrayPeer;
+import java.awt.peer.TrayIconPeer;
+import java.awt.peer.WindowPeer;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 import java.text.AttributedCharacterIterator;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+
+import javax.swing.Icon;
+import javax.swing.JLabel;
+
+import sun.awt.image.SunVolatileImage;
+import sun.java2d.pipe.Region;
 
 /**
  * Contains a set of empty peer class designed to keep the UISpec peer implementation clean.
@@ -36,6 +93,7 @@ public final class Empty {
   public static final VolatileImage NULL_VOLATILE_IMAGE = new DummyVolatileImage();
   public static final AffineTransform NULL_AFFINE_TRANSFORM = new AffineTransform();
   public static final int DEFAULT_HEIGHT = 50;
+  public static final int DEFAULT_WIDTH = 50;
   public static final Paint NULL_PAINT = new DummyPaint();
   public static final PaintContext NULL_PAINT_CONTEXT = new DummyPaintContext();
   public static final ImageProducer NULL_IMAGE_PRODUCER = new DummyImageProducer();
@@ -45,9 +103,14 @@ public final class Empty {
   public static final Icon NULL_ICON = new DummyIcon();
 
   public static final RobotPeer NULL_ROBOT = new DummyRobotPeer();
-  public static final DummyLightweightPeer NULL_LIGHTWEIGHT_PEER = new DummyLightweightPeer();
   public static final DummyPanelPeer NULL_PANEL_PEER = new DummyPanelPeer();
   public static final DummyCanvasPeer NULL_CANVAS_PEER = new DummyCanvasPeer();
+  public static final DesktopPeer NULL_DESKTOP_PEER = new DummyDesktopPeer();
+  public static final SystemTrayPeer NULL_SYSTEM_TRAY_PEER = new DummySystemTrayPeer();
+  public static final TrayIconPeer NULL_TRAY_ICON_PEER = new DummyTrayIconPeer();
+
+  public static final InputMethodDescriptor NULL_INPUT_METHOD_DESCRIPTOR = new DummyInputMethodDescriptor();
+  public static final InputMethod NULL_INPUT_METHOD = new DummyInputMethod();
   public static final MouseInfoPeer NULL_MOUSE_INFO = new DummyMouseInfoPeer();
 
   static {
@@ -61,17 +124,16 @@ public final class Empty {
     public void toBack() {
     }
 
+    public void updateWindow() {
+    }
+
     public void setAlwaysOnTop(boolean b) {
     }
 
+    public void updateAlwaysOnTopState() {
+    }
+
     public void updateFocusableWindowState() {
-    }
-
-    public void updateAlwaysOnTop() {
-    }
-
-    public boolean requestWindowFocus() {
-      return false;
     }
 
     public void setModalBlocked(Dialog dialog, boolean b) {
@@ -100,24 +162,6 @@ public final class Empty {
 
     public Insets getInsets() {
       return NULL_INSETS;
-    }
-
-    public Insets insets() {
-      return NULL_INSETS;
-    }
-
-    public boolean isPaintPending() {
-      return false;
-    }
-
-    public void cancelPendingPaint(int x, int y, int w, int h) {
-    }
-
-    public void restack() {
-    }
-
-    public boolean isRestackSupported() {
-      return false;
     }
 
     public boolean canDetermineObscurity() {
@@ -160,20 +204,7 @@ public final class Empty {
     public void layout() {
     }
 
-    public Rectangle getBounds() {
-      return NULL_RECTANGLE;
-    }
-
-    public void disable() {
-    }
-
     public void dispose() {
-    }
-
-    public void enable() {
-    }
-
-    public void flip(BufferCapabilities.FlipContents flipAction) {
     }
 
     public Image getBackBuffer() {
@@ -219,9 +250,6 @@ public final class Empty {
       return false;
     }
 
-    public void hide() {
-    }
-
     public boolean isFocusable() {
       return false;
     }
@@ -230,15 +258,7 @@ public final class Empty {
       return false;
     }
 
-    public Dimension minimumSize() {
-      return NULL_DIMENSION;
-    }
-
     public void paint(Graphics g) {
-    }
-
-    public Dimension preferredSize() {
-      return NULL_DIMENSION;
     }
 
     public boolean prepareImage(Image img, int w, int h, ImageObserver o) {
@@ -251,23 +271,7 @@ public final class Empty {
     public void setBounds(int x, int y, int width, int height, int op) {
     }
 
-    public void repaint(long tm, int x, int y, int width, int height) {
-    }
-
-    public boolean requestFocus(Component lightweightChild,
-                                boolean temporary,
-                                boolean focusedWindowChangeAllowed,
-                                long time) {
-      return false;
-    }
-
-    public void reshape(int x, int y, int width, int height) {
-    }
-
     public void setBackground(Color c) {
-    }
-
-    public void setBounds(int x, int y, int width, int height) {
     }
 
     public void setEnabled(boolean b) {
@@ -280,12 +284,41 @@ public final class Empty {
     }
 
     public void setVisible(boolean b) {
+      if (b) {
+        show();
+      }
     }
 
     public void show() {
     }
 
     public void updateCursorImmediately() {
+    }
+
+    public boolean requestFocus(Component lightweightChild, boolean temporary, boolean focusedWindowChangeAllowed, long time, Cause cause) {
+    	return false;
+    }
+
+    public void setOpacity(float opacity) {
+    }
+
+    public void setOpaque(boolean isOpaque) {
+    }
+
+    public void repositionSecurityWarning() {
+    }
+
+    public void flip(int x1, int y1, int x2, int y2, BufferCapabilities.FlipContents flipAction) {
+    }
+
+    public void applyShape(Region shape) {
+    }
+
+    public void setZOrder(ComponentPeer above) {
+    }
+
+    public boolean updateGraphicsData(GraphicsConfiguration gc) {
+      return false;
     }
   }
 
@@ -298,9 +331,6 @@ public final class Empty {
     }
 
     public void setResizable(boolean resizeable) {
-    }
-
-    public void setIconImage(Image im) {
     }
 
     public void setMenuBar(MenuBar mb) {
@@ -318,10 +348,16 @@ public final class Empty {
 
     public void setTitle(String title) {
     }
+
+    public void emulateActivation(boolean activate) {
+    }
   }
 
   static class DialogPeer extends Empty.WindowPeeer implements java.awt.peer.DialogPeer {
     public void setResizable(boolean resizeable) {
+    }
+
+    public void blockWindows(java.util.List<Window> windows) {
     }
 
     public void setTitle(String title) {
@@ -355,6 +391,9 @@ public final class Empty {
     public int[] getRGBPixels(Rectangle bounds) {
       return new int[0];
     }
+
+    public void dispose() {
+    }
   }
 
   static class DummyGraphicsConfiguration extends GraphicsConfiguration {
@@ -367,7 +406,7 @@ public final class Empty {
     }
 
     public VolatileImage createCompatibleVolatileImage(int width, int height) {
-      return new SunVolatileImage(this, width, height);
+      return new SunVolatileImage(this, width, height, 0, getImageCapabilities());
     }
 
     public VolatileImage createCompatibleVolatileImage(int width, int height, int transparency) {
@@ -439,7 +478,7 @@ public final class Empty {
     }
 
     public int getWidth(ImageObserver observer) {
-      return DEFAULT_HEIGHT;
+      return DEFAULT_WIDTH;
     }
 
     public ImageProducer getSource() {
@@ -460,7 +499,7 @@ public final class Empty {
     }
 
     public int getWidth() {
-      return DEFAULT_HEIGHT;
+      return DEFAULT_WIDTH;
     }
 
     public int getHeight() {
@@ -484,7 +523,7 @@ public final class Empty {
     }
 
     public int getWidth(ImageObserver observer) {
-      return DEFAULT_HEIGHT;
+      return DEFAULT_WIDTH;
     }
 
     public int getHeight(ImageObserver observer) {
@@ -517,13 +556,7 @@ public final class Empty {
     public void destroyBuffers() {
     }
 
-    public void disable() {
-    }
-
     public void dispose() {
-    }
-
-    public void enable() {
     }
 
     public void hide() {
@@ -548,15 +581,6 @@ public final class Empty {
       return false;
     }
 
-    public void reshape(int x, int y, int width, int height) {
-    }
-
-    public void setBounds(int x, int y, int width, int height) {
-    }
-
-    public void repaint(long tm, int x, int y, int width, int height) {
-    }
-
     public void setEnabled(boolean b) {
     }
 
@@ -569,17 +593,10 @@ public final class Empty {
     public void createBuffers(int numBuffers, BufferCapabilities caps) throws AWTException {
     }
 
-    public void flip(BufferCapabilities.FlipContents flipAction) {
-    }
-
     public void setBackground(Color c) {
     }
 
     public void setForeground(Color c) {
-    }
-
-    public boolean requestFocus(Component lightweightChild, boolean temporary, boolean focusedWindowChangeAllowed, long time) {
-      return false;
     }
 
     public Dimension getMinimumSize() {
@@ -587,14 +604,6 @@ public final class Empty {
     }
 
     public Dimension getPreferredSize() {
-      return NULL_DIMENSION;
-    }
-
-    public Dimension minimumSize() {
-      return NULL_DIMENSION;
-    }
-
-    public Dimension preferredSize() {
       return NULL_DIMENSION;
     }
 
@@ -672,29 +681,15 @@ public final class Empty {
     public void endValidate() {
     }
 
-    public boolean isPaintPending() {
-      return false;
-    }
-
-    public void cancelPendingPaint(int x, int y, int w, int h) {
-    }
-
-    public void restack() {
-    }
-
-    public boolean isRestackSupported() {
-      return false;
-    }
-
     public Insets getInsets() {
       return NULL_INSETS;
     }
 
-    public Insets insets() {
-      return NULL_INSETS;
+    public void setBounds(int x, int y, int width, int height, int op) {
     }
 
-    public void setBounds(int x, int y, int width, int height, int op) {
+    public boolean requestFocus(Component lightweightChild, boolean temporary, boolean focusedWindowChangeAllowed, long time, Cause cause) {
+      return false;
     }
 
     public void reparent(ContainerPeer newContainer) {
@@ -707,16 +702,20 @@ public final class Empty {
     public void layout() {
     }
 
-    public Rectangle getBounds() {
-      return NULL_RECTANGLE;
-    }
-
     public void show() {
     }
-  }
 
-  private static class DummyLightweightPeer extends DummyContainerPeer implements LightweightPeer {
-    public void show() {
+    public void flip(int x1, int y1, int x2, int y2, BufferCapabilities.FlipContents flipAction) {
+    }
+
+    public void applyShape(Region shape) {
+    }
+
+    public void setZOrder(ComponentPeer above) {
+    }
+
+    public boolean updateGraphicsData(GraphicsConfiguration gc) {
+      return false;
     }
   }
 
@@ -724,7 +723,9 @@ public final class Empty {
   }
 
   private static class DummyCanvasPeer extends DummyContainerPeer implements CanvasPeer {
-
+    public GraphicsConfiguration getAppropriateGraphicsConfiguration(GraphicsConfiguration gc) {
+      return null;
+    }
   }
 
   private static class DummyGraphicsDevice extends GraphicsDevice {
@@ -1062,12 +1063,137 @@ public final class Empty {
     }
   }
 
+
+  private static class DummyDesktopPeer implements DesktopPeer {
+
+    public boolean isSupported(Desktop.Action action) {
+      return false;
+    }
+
+    public void open(File file) throws IOException {
+    }
+
+    public void edit(File file) throws IOException {
+    }
+
+    public void print(File file) throws IOException {
+    }
+
+    public void mail(URI uri) throws IOException {
+    }
+
+    public void browse(URI uri) throws IOException {
+    }
+  }
+
+  private static class DummySystemTrayPeer implements SystemTrayPeer {
+    public Dimension getTrayIconSize() {
+      return null;
+    }
+  }
+
+  private static class DummyTrayIconPeer implements TrayIconPeer {
+    public void displayMessage(String xml, String xml1, String xml2) {
+    }
+
+    public void dispose() {
+    }
+
+    public void setToolTip(String xml) {
+    }
+
+    public void showPopupMenu(int yyyymm, int yyyymm1) {
+    }
+
+    public void updateImage() {
+    }
+  }
+
+  private static class DummyInputMethodDescriptor implements InputMethodDescriptor {
+    public InputMethod createInputMethod() throws Exception {
+      return NULL_INPUT_METHOD;
+    }
+
+    public Locale[] getAvailableLocales() throws AWTException {
+      return new Locale[0];
+    }
+
+    public String getInputMethodDisplayName(Locale locale, Locale locale1) {
+      return locale.getVariant();
+    }
+
+    public Image getInputMethodIcon(Locale locale) {
+      return NULL_IMAGE;
+    }
+
+    public boolean hasDynamicLocaleList() {
+      return false;
+    }
+  }
+
+  private static class DummyInputMethod implements InputMethod {
+
+    public void setInputMethodContext(InputMethodContext inputMethodContext) {
+    }
+
+    public boolean setLocale(Locale locale) {
+      return false;
+    }
+
+    public Locale getLocale() {
+      return Locale.getDefault();
+    }
+
+    public void setCharacterSubsets(Character.Subset[] subsets) {
+    }
+
+    public void setCompositionEnabled(boolean b) {
+    }
+
+    public boolean isCompositionEnabled() {
+      return false;
+    }
+
+    public void reconvert() {
+    }
+
+    public void dispatchEvent(AWTEvent awtEvent) {
+    }
+
+    public void notifyClientWindowChange(Rectangle rectangle) {
+    }
+
+    public void activate() {
+    }
+
+    public void deactivate(boolean b) {
+    }
+
+    public void hideWindows() {
+    }
+
+    public void removeNotify() {
+    }
+
+    public void endComposition() {
+    }
+
+    public void dispose() {
+    }
+
+    public Object getControlObject() {
+      return null;
+    }
+
+
+  }
+
   private static class DummyMouseInfoPeer implements MouseInfoPeer {
     public int fillPointWithCoords(Point point) {
       return 0;
     }
 
-    public boolean isWindowUnderMouse(Window w) {
+    public boolean isWindowUnderMouse(Window window) {
       return false;
     }
   }

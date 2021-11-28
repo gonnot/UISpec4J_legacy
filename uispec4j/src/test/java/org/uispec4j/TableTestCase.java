@@ -1,5 +1,6 @@
 package org.uispec4j;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.uispec4j.utils.UIComponentFactory;
 import org.uispec4j.utils.UnitTestCase;
 
@@ -12,9 +13,10 @@ public abstract class TableTestCase extends UnitTestCase {
   Table table;
   JTable jTable;
 
-  protected void setUp() throws Exception {
-    super.setUp();
-    init(new JTable(new TableSelectionTest.MyModel()));
+  @BeforeEach
+  final protected void setUp() throws Exception {
+
+    init(new JTable(new MyModel()));
   }
 
   private void init(JTable table) {
