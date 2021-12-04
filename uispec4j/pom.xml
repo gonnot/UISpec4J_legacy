@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.uispec4j</groupId>
-  <version>17.0-SNAPSHOT</version>
+  <version>17.0-rc1</version>
   <artifactId>uispec4j</artifactId>
 
   <dependencies>
@@ -228,6 +228,16 @@
   </build>
 
   <profiles>
+    <profile>
+      <id>factset</id>
+      <distributionManagement>
+        <repository>
+          <id>thirdparty</id>
+          <name>bisam-thirdparty</name>
+          <url>https://artifactory.factset.com/artifactory/bisam-libs-thirdparty/</url>
+        </repository>
+      </distributionManagement>
+    </profile>
     <profile>
       <id>ci-headless</id>
       <dependencies>
